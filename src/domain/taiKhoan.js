@@ -23,6 +23,17 @@ export function emailDangNhap(nhap) {
   return s.includes('@') ? s : s + DUOI_EMAIL
 }
 
+/** Lỗi đăng nhập Supabase → câu dễ hiểu (không gộp mọi lỗi thành "sai mật khẩu" để còn biết nguyên nhân thật). */
+export function loiDangNhap(loi) {
+  const ma = loi?.code, tt = loi?.status
+  if (ma === 'invalid_credentials') return 'Sai tên đăng nhập hoặc mật khẩu. Kiểm tra phím Caps Lock và tắt bộ gõ tiếng Việt khi gõ mật khẩu.'
+  if (ma === 'over_request_rate_limit' || tt === 429) return 'Thử sai nhiều lần quá, chờ vài phút rồi thử lại.'
+  if (ma === 'email_not_confirmed') return 'Tài khoản chưa được xác nhận. Hãy hỏi thầy cô thư viện.'
+  if (ma === 'user_banned') return 'Tài khoản đã bị khoá. Hãy hỏi thầy cô thư viện.'
+  if (!tt || tt >= 500) return 'Không kết nối được máy chủ. Kiểm tra mạng rồi thử lại.'
+  return `Không đăng nhập được (${ma || tt}).`
+}
+
 /** Bỏ dấu tiếng Việt, chữ thường ("Nguyễn Đức" → "nguyen duc"). */
 export function boDau(s) {
   return String(s ?? '')

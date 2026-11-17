@@ -9,7 +9,7 @@
     "preview": "vite preview",
     "lint": "eslint .",
     "test": "vitest run",
-    "test:quyen": "vitest run --dir tests/that",
+    "test:quyen": "vitest run --dir tests/that --testTimeout 30000 --hookTimeout 30000",
     "sao-luu": "node scripts/sao-luu-neon.mjs"
   },
   "dependencies": {

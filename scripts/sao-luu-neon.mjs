@@ -5,21 +5,19 @@
 // Cần trong .env: NEON_DATABASE_URL, SUPABASE_PAT, VITE_SUPABASE_URL. Khôi phục: scripts/khoi-phuc-neon.mjs
 // ⚠ SaoLuu/ chứa dữ liệu học sinh và mật khẩu đã mã hoá: giữ riêng tư, KHÔNG đưa lên Git (đã chặn trong .gitignore).
 import pg from 'pg'
-import { readFileSync, writeFileSync, mkdirSync, readdirSync, rmSync } from 'fs'
+import { writeFileSync, mkdirSync, readdirSync, rmSync } from 'fs'
 import { gzipSync } from 'zlib'
-import { dirname, join } from 'path'
-import { fileURLToPath } from 'url'
+import { join } from 'path'
+import { docEnv, GOC_DU_AN as GOC } from './docEnv.mjs'
 
-const GOC = join(dirname(fileURLToPath(import.meta.url)), '..')
 const GIU_LAI = 8
 
-const env = readFileSync(join(GOC, '.env'), 'utf8')
-const lay = k => env.match(new RegExp(`^\\s*${k}\\s*=\\s*['"]?([^'"\\s]+)`, 'm'))?.[1]
+const lay = docEnv()
 const NEON_URL = lay('NEON_DATABASE_URL'), PAT = lay('SUPABASE_PAT')
 const REF = lay('VITE_SUPABASE_URL')?.match(/https:\/\/([a-z0-9]+)\.supabase\.co/)?.[1]
 if (!NEON_URL || !PAT || !REF) { console.error('Thiếu NEON_DATABASE_URL, SUPABASE_PAT hoặc VITE_SUPABASE_URL trong .env'); process.exit(1) }
 
-const c = new pg.Client({ connectionString: NEON_URL })
+const c = new pg.Client({ connectionString: NEON_URL.replace(/sslmode=require/, 'sslmode=verify-full') })
 await c.connect()
 const nx = async s => (await c.query(s)).rows
 

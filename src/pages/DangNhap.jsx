@@ -3,7 +3,7 @@ import { Navigate } from 'react-router-dom'
 import toast from 'react-hot-toast'
 import { BookOpen } from 'lucide-react'
 import { useAuth } from '../context/AuthContext'
-import { trangChu } from '../domain/taiKhoan'
+import { loiDangNhap, trangChu } from '../domain/taiKhoan'
 import { ManChoTai } from '../components/ui/ChoVaiTro'
 
 export default function DangNhap() {
@@ -20,8 +20,9 @@ export default function DangNhap() {
     setDangGui(true)
     try {
       await dangNhap(ten, matKhau)
-    } catch {
-      toast.error('Sai tên đăng nhập hoặc mật khẩu')
+    } catch (loi) {
+      console.warn('Đăng nhập lỗi:', loi?.code, loi?.status, loi?.message)
+      toast.error(loiDangNhap(loi), { duration: 6000 })
     } finally {
       setDangGui(false)
     }

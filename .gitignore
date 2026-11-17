@@ -10,3 +10,5 @@ dist
 SaoLuu/
 .vscode/*
 .DS_Store
+
+supabase/.temp/

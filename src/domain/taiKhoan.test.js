@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { boDau, emailDangNhap, goiYTenDangNhap, laNhanVien, taoMatKhau, trangChu } from './taiKhoan.js'
+import { boDau, emailDangNhap, goiYTenDangNhap, laNhanVien, loiDangNhap, taoMatKhau, trangChu } from './taiKhoan.js'
 
 describe('taiKhoan', () => {
   it('bỏ dấu tiếng Việt, kể cả đ', () => {
@@ -8,6 +8,12 @@ describe('taiKhoan', () => {
   it('email đăng nhập', () => {
     expect(emailDangNhap(' AnNV ')).toBe('annv@school.local')
     expect(emailDangNhap('co@gmail.com')).toBe('co@gmail.com')
+  })
+  it('báo đúng lý do đăng nhập lỗi', () => {
+    expect(loiDangNhap({ code: 'invalid_credentials', status: 400 })).toMatch(/Sai tên đăng nhập/)
+    expect(loiDangNhap({ status: 429 })).toMatch(/nhiều lần/)
+    expect(loiDangNhap({ status: 0 })).toMatch(/kết nối/)
+    expect(loiDangNhap({ code: 'la', status: 400 })).toBe('Không đăng nhập được (la).')
   })
   it('gợi ý tên đăng nhập + chống trùng', () => {
     const da = new Set()

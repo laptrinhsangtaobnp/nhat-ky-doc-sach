@@ -18,20 +18,48 @@ Máy thầy: scripts/sao-luu-neon.mjs (Neon + auth Supabase → SaoLuu/), script
 | Dữ liệu | `src/data/` | CHỈ nơi gọi Supabase / Neon; chọn sẵn cột, có giới hạn dòng |
 | Nghiệp vụ | `src/domain/` | hàm thuần, có test |
 
-| src/data/ | Nguồn |
-|---|---|
-| `dangNhap.js` | Supabase Auth |
-| `hoSo.js` | ho_so (+ rpc sua_ho_so) |
-| `lop.js` | lop |
-| `taiKhoan.js` | Edge Functions tài khoản |
-| `tepExcel.js` | đọc tệp .xlsx trong trình duyệt, tải tệp CSV về |
-| `cauHinh.js` | đã đủ biến kết nối chưa |
+## Danh mục hàm — TRA Ở ĐÂY TRƯỚC KHI VIẾT HÀM MỚI
+Có rồi thì dùng lại; thấy 2 hàm cùng việc thì gộp. Thêm / đổi / xoá hàm → sửa bảng này cùng lúc.
 
-| src/domain/ | Quy tắc |
-|---|---|
-| `taiKhoan.js` | vai trò, trang chủ theo vai trò, tên đăng nhập → email, gợi ý tên đăng nhập, mật khẩu 6 số |
-| `nhapHocSinh.js` | đọc bảng học sinh từ Excel, chuẩn hoá lớp, chống trùng tên đăng nhập, CSV tài khoản |
-| `namHoc.js` | năm học hiện tại (đổi từ tháng 8) |
+**src/domain/** (hàm thuần, có test)
+| Tệp | Hàm | Việc |
+|---|---|---|
+| `taiKhoan.js` | `VAI_TRO`, `TEN_VAI_TRO`, `DUOI_EMAIL`, `TEN_DANG_NHAP_HOP_LE` | hằng số vai trò, đuôi email, mẫu tên đăng nhập |
+| | `laNhanVien(vaiTro)` | quản trị hoặc thủ thư? |
+| | `trangChu(vaiTro)` | đường dẫn trang chủ theo vai trò |
+| | `emailDangNhap(nhap)` | chữ gõ ở ô đăng nhập → email (có `@` thì giữ nguyên) |
+| | `loiDangNhap(loi)` | lỗi Supabase Auth → câu tiếng Việt dễ hiểu |
+| | `boDau(s)` | bỏ dấu tiếng Việt, chữ thường |
+| | `goiYTenDangNhap(hoTen, daDung)` | "Nguyễn Văn An" → `annv`, trùng thì `annv2` |
+| | `taoMatKhau(rand)` | mật khẩu 6 chữ số |
+| `nhapHocSinh.js` | `chuanHoaLop(s)`, `khoiCuaLop(lop)` | "3 a" → "3A"; khối của lớp |
+| | `docBangHocSinh(dongs)` | dòng Excel → danh sách học sinh + lỗi từng dòng |
+| | `ganTenDangNhap(hocSinh, daCo, rand)` | gán tên đăng nhập + mật khẩu, chống trùng |
+| | `csvTaiKhoan(ds)` | CSV tài khoản để in phát cho HS (có BOM cho Excel) |
+| `namHoc.js` | `namHocHienTai(ngay)` | "2026-2027" (đổi năm học từ tháng 8) |
+
+**src/data/** (chỉ nơi gọi Supabase / Neon)
+| Tệp | Hàm | Việc |
+|---|---|---|
+| `dangNhap.js` | `dangNhap`, `dangXuat`, `layPhien`, `theoDoiDangNhap`, `doiMatKhauCuaToi` | Supabase Auth |
+| `hoSo.js` | `layHoSo(id)` | hồ sơ 1 người |
+| | `layNguoiDung({lopId, vaiTro, tuKhoa, trang})` | danh sách có lọc, 50 dòng/trang + tổng |
+| | `layTenDangNhapDaCo(ds)` | tên đăng nhập nào đã có (chống trùng khi nhập Excel) |
+| | `suaHoSo({...})` | rpc `sua_ho_so` |
+| `lop.js` | `layCacLop(namHoc)`, `damBaoCoLop(ten, namHoc)`, `taoLop`, `datThiDiem`, `xoaLop` | bảng `lop` |
+| `taiKhoan.js` | `taoTaiKhoan(ds, moiLan)`, `datLaiMatKhau(id, mk)`, `xoaTaiKhoan(id)` | Edge Functions tài khoản (lô 40 người) |
+| `tepExcel.js` | `docTepExcel(tep)`, `taiVeTep(noiDung, tenTep)` | đọc .xlsx (≤ 5MB), tải tệp về máy |
+| `cauHinh.js` | `THIEU_CAU_HINH` | đã đủ biến kết nối chưa |
+
+**src/hooks/**: `useTaiKhoan()` — tải + thao tác của trang Tài khoản.
+
+**Edge Functions** `supabase/functions/_shared/chung.ts`: `json`, `laOptions`, `quanTriSupabase()`, `neon(duong, token)`,
+`nguoiGoi(req, sb)` (chỉ trả về nếu là nhân viên đang hoạt động), `vaiTroCua(id, token)`.
+
+**Hàm Neon (SQL)**: `vai_tro_cua_toi()`, `lop_cua_toi()`, `la_nhan_vien()`, `tao_ho_so`, `sua_ho_so`, `xoa_ho_so`.
+
+**scripts/**: `docEnv.mjs` → `docEnv()` (đọc .env — mọi script và test thật dùng chung), `GOC_DU_AN`.
+`sao-luu-neon.mjs`, `khoi-phuc-neon.mjs`, `chay-sql.mjs` (chạy 1 tệp SQL trên Neon).
 
 ## Cơ sở dữ liệu (Neon) — `sql/2026-11-17_khoi_tao.sql`
 | Bảng | Ai đọc | Ai ghi |

@@ -8,4 +8,4 @@
 
 | Tệp | Nội dung | Đã chạy |
 |---|---|---|
-| `2026-11-17_khoi_tao.sql` | ho_so, lop, cai_dat, RLS, hàm tài khoản | chưa |
+| `2026-11-17_khoi_tao.sql` | ho_so, lop, cai_dat, RLS, hàm tài khoản | 17/11 trên Neon |
