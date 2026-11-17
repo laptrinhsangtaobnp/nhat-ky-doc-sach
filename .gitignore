@@ -1,0 +1,12 @@
+node_modules
+dist
+*.log
+.env
+.env.local
+*.local
+*.local.sql
+.vercel
+# Sao lưu có dữ liệu học sinh — không đưa lên Git
+SaoLuu/
+.vscode/*
+.DS_Store
