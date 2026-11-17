@@ -138,3 +138,7 @@ tự đổi trạng thái mượn, gọi thống kê → phải bị chặn), c�
 - 17/11: Giai đoạn 0 — xong phần mã (khung app 3 tầng, đăng nhập 4 vai trò, SQL hồ sơ / lớp / cài đặt + RLS,
   3 Edge Function tài khoản, nhập học sinh từ Excel, sao lưu / khôi phục, test quyền thật).
   Chờ thầy tạo tài khoản dịch vụ theo `HUONG-DAN-CAI-DAT.md` để chạy SQL, đưa hàm lên và thử thật.
+- 17/11 (tối): Giai đoạn 0 chạy thật — Supabase + Neon + 3 Edge Function, đăng nhập quản trị / HS, nhập HS từ Excel,
+  sao lưu lần đầu OK, test quyền thật 8/8. Còn: thử khôi phục vào nhánh Neon; đưa lên Vercel (chưa cần).
+- 17/11 (tối): Giai đoạn 1 phần chính — chủ đề, nhập danh mục Excel (tệp mẫu), tìm sách không dấu / lọc chủ đề / khối,
+  chi tiết + sửa sách; test quyền sách 6/6. Còn: ảnh bìa (cần Cloudinary), AI nháp giới thiệu (cần khoá Gemini).

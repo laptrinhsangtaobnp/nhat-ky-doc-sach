@@ -17,7 +17,7 @@ if (!thuMuc || !dich || !existsSync(join(thuMuc, 'kiem-tra.json'))) {
 }
 
 // Thứ tự: bảng được trỏ tới trước (cha trước con). Bảng mới thêm ở giai đoạn sau → bổ sung vào đây.
-const THU_TU = ['lop', 'cai_dat', 'ho_so']
+const THU_TU = ['lop', 'cai_dat', 'ho_so', 'chu_de', 'sach', 'sach_chu_de']
 
 const kt = JSON.parse(readFileSync(join(thuMuc, 'kiem-tra.json'), 'utf8'))
 const coTrongBan = kt.bang.filter(b => b.bang?.startsWith('public.')).map(b => b.bang.slice(7))
@@ -32,9 +32,13 @@ try {
   for (const b of [...THU_TU].reverse().filter(b => coTrongBan.includes(b))) await c.query(`delete from public."${b}"`)
   for (const b of THU_TU.filter(b => coTrongBan.includes(b))) {
     const dong = JSON.parse(gunzipSync(readFileSync(join(thuMuc, `public.${b}.json.gz`))).toString())
+    // Bỏ cột máy chủ tự tính (generated, ví dụ sach.tim) — chèn vào sẽ lỗi, máy chủ tự tính lại
+    const cot = (await c.query(`select column_name from information_schema.columns
+      where table_schema='public' and table_name=$1 and is_generated='NEVER' order by ordinal_position`, [b])).rows
+      .map(r => `"${r.column_name}"`).join(', ')
     for (let i = 0; i < dong.length; i += 500) {
-      await c.query(`insert into public."${b}" overriding system value
-        select * from jsonb_populate_recordset(null::public."${b}", $1::jsonb)`, [JSON.stringify(dong.slice(i, i + 500))])
+      await c.query(`insert into public."${b}" (${cot}) overriding system value
+        select ${cot} from jsonb_populate_recordset(null::public."${b}", $1::jsonb)`, [JSON.stringify(dong.slice(i, i + 500))])
     }
     const [{ n }] = (await c.query(`select count(*)::int n from public."${b}"`)).rows
     console.log(`${n === dong.length ? 'OK  ' : 'LỆCH'} ${b}: ${n}/${dong.length} dòng`)

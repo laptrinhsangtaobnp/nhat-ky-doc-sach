@@ -3,27 +3,12 @@
 //   THU_HS1=tendangnhap:matkhau, THU_HS2=..., THU_THU_THU=... (tài khoản thử, tạo riêng, không phải học sinh thật).
 // Kiểm tra không để lại thay đổi: mọi lệnh ghi thử đều phải bị chặn; nếu lọt thì báo đỏ.
 import { describe, it, expect, beforeAll } from 'vitest'
-import { createClient } from '@supabase/supabase-js'
-import { emailDangNhap } from '../../src/domain/taiKhoan.js'
-import { docEnv } from '../../scripts/docEnv.mjs'
-
-const lay = docEnv()
-const URL_SB = lay('VITE_SUPABASE_URL'), KHOA = lay('VITE_SUPABASE_ANON_KEY'), NEON = lay('VITE_NEON_DATA_URL')
-const DU = URL_SB && KHOA && NEON && lay('THU_HS1') && lay('THU_HS2') && lay('THU_THU_THU')
-
-async function vao(bien) {
-  const v = lay(bien), i = v.indexOf(':')
-  const sb = createClient(URL_SB, KHOA, { auth: { persistSession: false } })
-  const { data, error } = await sb.auth.signInWithPassword({ email: emailDangNhap(v.slice(0, i)), password: v.slice(i + 1) })
-  if (error) throw new Error(`${bien}: ${error.message}`)
-  const db = createClient(NEON, KHOA, { accessToken: async () => data.session.access_token })
-  return { sb, db, id: data.user.id }
-}
+import { DU, nguoiLa, vao } from './_chung.js'
 
 describe.skipIf(!DU)('quyền dữ liệu thật', () => {
   let la, hs1, hs2, tt
   beforeAll(async () => {
-    la = createClient(NEON, KHOA)
+    la = nguoiLa()
     ;[hs1, hs2, tt] = await Promise.all([vao('THU_HS1'), vao('THU_HS2'), vao('THU_THU_THU')])
   })
 

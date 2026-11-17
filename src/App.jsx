@@ -6,6 +6,8 @@ import ChoVaiTro, { ManChoTai } from './components/ui/ChoVaiTro'
 import KhungTrang from './components/ui/KhungTrang'
 import DangNhap from './pages/DangNhap'
 import TrangSapCo from './pages/TrangSapCo'
+import TimSachPage from './pages/sach/TimSachPage'
+import ChiTietSachPage from './pages/sach/ChiTietSachPage'
 import { trangChu } from './domain/taiKhoan'
 import { THIEU_CAU_HINH } from './data/cauHinh'
 
@@ -32,14 +34,16 @@ export default function App() {
           <Route path="/dang-nhap" element={<DangNhap />} />
           <Route element={<ChoVaiTro><KhungTrang /></ChoVaiTro>}>
             <Route path="/hoc-sinh" element={<ChoVaiTro vaiTro={['hoc_sinh']}>
-              <TrangSapCo tieuDe="Trang của em" viec={['Tìm sách trong thư viện', 'Đặt mượn sách', 'Viết nhật ký đọc sách', 'Giới thiệu sách cho bạn']} />
+              <TrangSapCo tieuDe="Trang của em" viec={['Đặt mượn sách', 'Viết nhật ký đọc sách', 'Giới thiệu sách cho bạn']} />
             </ChoVaiTro>} />
             <Route path="/giao-vien" element={<ChoVaiTro vaiTro={['giao_vien']}>
               <TrangSapCo tieuDe="Lớp của tôi" viec={['Xem nhật ký đọc của học sinh lớp mình', 'Thống kê đọc sách của lớp']} />
             </ChoVaiTro>} />
             <Route path="/thu-vien" element={<ChoVaiTro vaiTro={NHAN_VIEN}>
-              <TrangSapCo tieuDe="Thư viện" viec={['Danh mục sách (nhập Excel, ảnh bìa)', 'Duyệt mượn – ghi trả', 'Duyệt review', 'Thống kê trước – sau']} />
+              <TrangSapCo tieuDe="Thư viện" viec={['Ảnh bìa sách', 'Duyệt mượn – ghi trả', 'Duyệt review', 'Thống kê trước – sau']} />
             </ChoVaiTro>} />
+            <Route path="/sach" element={<TimSachPage />} />
+            <Route path="/sach/:id" element={<ChiTietSachPage />} />
             <Route path="/thu-vien/tai-khoan" element={<ChoVaiTro vaiTro={NHAN_VIEN}><Suspense fallback={<ManChoTai />}><TaiKhoanPage /></Suspense></ChoVaiTro>} />
           </Route>
           <Route path="*" element={<VeTrangChu />} />

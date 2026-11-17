@@ -5,9 +5,9 @@ import { useAuth } from '../../context/AuthContext'
 import { laNhanVien, TEN_VAI_TRO } from '../../domain/taiKhoan'
 
 function menuTheoVaiTro(vaiTro) {
-  if (vaiTro === 'hoc_sinh') return [{ to: '/hoc-sinh', ten: 'Trang của em' }]
-  if (vaiTro === 'giao_vien') return [{ to: '/giao-vien', ten: 'Lớp của tôi' }]
-  if (laNhanVien(vaiTro)) return [{ to: '/thu-vien', ten: 'Thư viện' }, { to: '/thu-vien/tai-khoan', ten: 'Tài khoản' }]
+  if (vaiTro === 'hoc_sinh') return [{ to: '/hoc-sinh', ten: 'Trang của em' }, { to: '/sach', ten: 'Tìm sách' }]
+  if (vaiTro === 'giao_vien') return [{ to: '/giao-vien', ten: 'Lớp của tôi' }, { to: '/sach', ten: 'Tìm sách' }]
+  if (laNhanVien(vaiTro)) return [{ to: '/thu-vien', ten: 'Thư viện' }, { to: '/sach', ten: 'Danh mục sách' }, { to: '/thu-vien/tai-khoan', ten: 'Tài khoản' }]
   return []
 }
 
