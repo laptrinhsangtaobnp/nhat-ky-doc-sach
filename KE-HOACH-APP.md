@@ -142,3 +142,30 @@ tự đổi trạng thái mượn, gọi thống kê → phải bị chặn), c�
   sao lưu lần đầu OK, test quyền thật 8/8. Còn: thử khôi phục vào nhánh Neon; đưa lên Vercel (chưa cần).
 - 17/11 (tối): Giai đoạn 1 phần chính — chủ đề, nhập danh mục Excel (tệp mẫu), tìm sách không dấu / lọc chủ đề / khối,
   chi tiết + sửa sách; test quyền sách 6/6. Còn: ảnh bìa (cần Cloudinary), AI nháp giới thiệu (cần khoá Gemini).
+- 18/11: Thầy duyệt lọc chức năng app mẫu (`docs/LOC-CHUC-NANG-APP-MAU.md`): **chuỗi tuần** (≥ 3 lần ghi / tuần), mốc nhẹ
+  (cuốn đầu, 5 / 10 / 20 cuốn, chuỗi 4 / 8 tuần), thử thách lớp **để sau**, mặc định mượn: tối đa 2 cuốn, mượn 7 ngày,
+  giữ sách đã soạn 3 ngày, hết bản → hàng chờ, em tự huỷ khi chưa soạn.
+- 18/11: Giai đoạn 2 mượn – trả — bảng `luot_muon` + hàm máy chủ; HS: đặt trước ở trang sách, Tủ sách của em;
+  thủ thư: Mượn – trả (Cần soạn / Chờ em đến nhận / Đang mượn / Lịch sử), cho mượn tại chỗ, quy tắc mượn. Test quyền thật 6/6.
+
+## 10. Thiết kế chức năng người dùng — thầy chốt 17/11/2026 (thay phần tương ứng ở mục 1, 5, 6)
+
+**Cốt lõi** (lấy từ app mẫu `E:\UNG DUNG\NHAT-KY-DOC-SACH`): HS ghi **nhật ký đọc sách** để **sau 1 năm xem lại** mình đọc
+mấy cuốn và **cảm xúc gắn với từng đoạn** trong sách. Sách **chỉ từ thư viện**. **Bỏ huy hiệu**, bỏ Google Books / ISBN,
+thử thách tự đặt, cộng đồng tự do.
+
+**Nhật ký (HS):** mỗi lần ghi = sách (chọn từ danh mục; sách đang mượn hiện đầu) + **đoạn em nhớ** (chép câu / kể ngắn, trang tuỳ chọn)
++ **cảm xúc** (chọn hình: vui, buồn, bất ngờ, hồi hộp, xúc động, suy nghĩ, buồn cười) + **em nghĩ gì**. Một cuốn ghi nhiều lần.
+"Đọc xong" → mức thích 1–5. Ai xem: em, GVCN lớp em, thủ thư. Giới thiệu sách cho bạn = câu riêng, thủ thư duyệt mới hiện.
+Nhật ký giữ qua các năm (lên lớp không mất).
+
+**Nhìn lại năm đọc sách (HS):** số cuốn đọc xong, số đoạn đã ghi, cảm xúc nhiều nhất, dòng thời gian theo tháng (bìa sách),
+bấm cuốn → các đoạn + cảm xúc; in / lưu sổ đọc sách (tuỳ chọn che tên để làm minh chứng).
+
+**Gợi ý (HS):** theo chủ đề + mức thích trong nhật ký (và chủ đề em chọn lúc đầu), hợp khối, em chưa đọc, còn bản.
+
+**Mượn sách:** HS **đặt trước** trong app → thủ thư thấy danh sách đặt trước, **soạn sẵn** → em **lên thư viện lúc nào cũng được**,
+cô thư viện bấm **cho mượn** → hạn trả → ghi trả / báo mất. Thủ thư cũng cho mượn trực tiếp không cần đặt trước.
+Máy chủ kiểm: số cuốn (đặt + đang mượn) ≤ tối đa, không đặt trùng.
+
+**Chuẩn bị sách (thủ thư):** danh sách đặt trước cần soạn; sách nhiều em chờ mà ít bản; nhu cầu theo lớp.

@@ -8,11 +8,13 @@ import DangNhap from './pages/DangNhap'
 import TrangSapCo from './pages/TrangSapCo'
 import TimSachPage from './pages/sach/TimSachPage'
 import ChiTietSachPage from './pages/sach/ChiTietSachPage'
+import TuSachPage from './pages/hocSinh/TuSachPage'
 import { trangChu } from './domain/taiKhoan'
 import { THIEU_CAU_HINH } from './data/cauHinh'
 
 // Trang nhân viên tải riêng (kèm thư viện đọc Excel) → học sinh mở app nhẹ hơn
 const TaiKhoanPage = lazy(() => import('./pages/quanTri/TaiKhoanPage'))
+const MuonTraPage = lazy(() => import('./pages/thuThu/MuonTraPage'))
 
 const NHAN_VIEN = ['quan_tri', 'thu_thu']
 
@@ -33,15 +35,11 @@ export default function App() {
         <Routes>
           <Route path="/dang-nhap" element={<DangNhap />} />
           <Route element={<ChoVaiTro><KhungTrang /></ChoVaiTro>}>
-            <Route path="/hoc-sinh" element={<ChoVaiTro vaiTro={['hoc_sinh']}>
-              <TrangSapCo tieuDe="Trang của em" viec={['Đặt mượn sách', 'Viết nhật ký đọc sách', 'Giới thiệu sách cho bạn']} />
-            </ChoVaiTro>} />
+            <Route path="/hoc-sinh" element={<ChoVaiTro vaiTro={['hoc_sinh']}><TuSachPage /></ChoVaiTro>} />
             <Route path="/giao-vien" element={<ChoVaiTro vaiTro={['giao_vien']}>
               <TrangSapCo tieuDe="Lớp của tôi" viec={['Xem nhật ký đọc của học sinh lớp mình', 'Thống kê đọc sách của lớp']} />
             </ChoVaiTro>} />
-            <Route path="/thu-vien" element={<ChoVaiTro vaiTro={NHAN_VIEN}>
-              <TrangSapCo tieuDe="Thư viện" viec={['Ảnh bìa sách', 'Duyệt mượn – ghi trả', 'Duyệt review', 'Thống kê trước – sau']} />
-            </ChoVaiTro>} />
+            <Route path="/thu-vien" element={<ChoVaiTro vaiTro={NHAN_VIEN}><Suspense fallback={<ManChoTai />}><MuonTraPage /></Suspense></ChoVaiTro>} />
             <Route path="/sach" element={<TimSachPage />} />
             <Route path="/sach/:id" element={<ChiTietSachPage />} />
             <Route path="/thu-vien/tai-khoan" element={<ChoVaiTro vaiTro={NHAN_VIEN}><Suspense fallback={<ManChoTai />}><TaiKhoanPage /></Suspense></ChoVaiTro>} />

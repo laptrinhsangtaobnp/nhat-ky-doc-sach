@@ -4,6 +4,40 @@ Ghi mới nhất ở trên. Mỗi phiên thêm 1 mục: đã làm, kiểm tra g�
 
 ---
 
+## 18/11/2026 — Thầy duyệt lọc chức năng + Giai đoạn 2 (mượn – trả)
+
+### Trạng thái
+- Chưa commit (thầy chưa bảo). Neon đã chạy `sql/2026-11-18_muon_tra.sql` (2 lần, chạy lại được), thầy đã Refresh schema cache.
+- Test: `npm test` 35/35 · `npm run test:quyen` 20/20 (8 tài khoản + 6 sách + 6 mượn – trả) · eslint sạch · build OK.
+
+### Thầy chốt (18/11) — 4 ý trong `docs/LOC-CHUC-NANG-APP-MAU.md`
+1. **Chuỗi tuần** (tuần nào ghi nhật ký ≥ 3 lần thì giữ chuỗi), không chuỗi ngày.
+2. Mốc nhẹ: cuốn đầu tiên, 5 / 10 / 20 cuốn, chuỗi 4 / 8 tuần. Không bảng xếp hạng.
+3. Thử thách lớp do GVCN / thủ thư đặt: **để sau** (theo tệp lọc).
+4. Mượn: tối đa 2 cuốn (đặt + soạn + mượn), mượn 7 ngày, giữ sách đã soạn 3 ngày, hết bản → hàng chờ, em tự huỷ khi cô chưa soạn.
+
+### Đã làm
+- Bảng `luot_muon` (dat_truoc → da_soan → dang_muon → da_tra / mat; huy), `cai_dat.so_ngay_giu`. HS chỉ đọc lượt của mình,
+  không ai ghi thẳng bảng. Hàm máy chủ: `dat_truoc`, `huy_dat_truoc`, `muon_cua_toi`, `tinh_trang_sach`, `soan_sach`, `cho_muon`,
+  `cho_muon_truc_tiep`, `ghi_tra`, `bao_mat` (giảm số bản), `ds_muon`, `dem_muon`. "Hôm nay" theo giờ VN. Sách có lượt mượn không xoá được.
+- HS: trang chủ `/hoc-sinh` = **Tủ sách của em** (đã đặt / đang mượn / đã mượn); trang chi tiết sách có khung **Đặt trước**
+  (còn mấy bản, hàng chờ, tình trạng lượt của em, huỷ).
+- Thủ thư: trang chủ `/thu-vien` = **Mượn – trả** (4 thẻ có số đếm + quá hạn, tìm theo sách / tên HS / lớp, nút theo trạng thái),
+  **Cho mượn tại chỗ**, **Quy tắc mượn**. Không tự hỏi máy chủ định kỳ — có nút Làm mới.
+- Test thật `tests/that/muonTra.test.js`; `_chung.js` thêm `sqlChu` (dọn dữ liệu thử bằng quyền chủ CSDL). `test:quyen` chạy lần lượt
+  từng tệp (1 lần đỏ chập chờn ở sach.test khi chạy song song, chạy lại 2 lần xanh — chưa rõ nguyên nhân).
+- Thầy nhờ cài **skill GSAP** (`npx skills add …gsap-skills` → `.claude/skills/gsap-*`, `skills-lock.json`) + `npm install gsap`.
+  Chưa dùng gsap trong mã.
+
+### Còn dở / tiếp theo
+- [ ] Thầy thử trên máy: HS (dùng `thu.hs3` hoặc HS thật — test xoá lượt mượn của thu.hs1/hs2) đặt trước → thủ thư soạn → cho mượn → trả.
+- [ ] Chưa làm (chờ thầy quyết nếu cần): gia hạn mượn; chặn đặt khi em đang quá hạn; GVCN xem lượt mượn lớp mình; tự động huỷ khi quá hạn giữ
+      (hiện: thủ thư thấy "quá hạn giữ" và bấm Cất lại).
+- [ ] **Giai đoạn 3: nhật ký + Nhìn lại năm đọc sách** — bắt đầu bằng thảo luận màn hình với thầy (theo tệp lọc đã duyệt).
+- [ ] `npm audit` báo vài lỗ hổng ở thư viện — chưa xem. Gói chính `index` ~540 kB (cảnh báo > 500 kB) — xem lại khi đưa lên Vercel.
+
+---
+
 ## 17/11/2026 — Giai đoạn 0 chạy thật + Giai đoạn 1 (danh mục sách) phần chính
 
 ### Trạng thái hiện tại
@@ -49,6 +83,26 @@ Nên dọn sau: tạo lại 4 tài khoản thử với `@school.local` (thầy p
 - [ ] **Giai đoạn 2: mượn – trả** (không cần dịch vụ mới): bảng `luot_muon`, hàm `dat_muon` / `duyet_muon` / `ghi_tra` / `bao_mat`
       (máy chủ kiểm số cuốn tối đa, còn bản, không đặt trùng), trang HS đặt mượn, trang thủ thư duyệt / quá hạn, Cài đặt quy tắc.
       Xem `KE-HOACH-APP.md` mục 5–6.
+
+### Thầy dặn
+- **Trước khi viết chức năng người dùng (màn hình HS / GV / thủ thư): thảo luận kỹ với thầy trước.** Thầy chưa tự mô tả
+  chi tiết chức năng từng vai trò; đến giờ mọi thứ suy từ tài liệu thư viện + `KE-HOACH-APP.md`, giai đoạn 1 Claude tự thiết kế
+  → khi có dịp nhờ thầy xem lại màn Tìm sách / Nhập danh mục. Giai đoạn 2 (mượn – trả) bắt đầu bằng buổi thảo luận, chưa viết mã.
+
+### Ý tưởng cốt lõi của thầy (17/11, sau khi xem app mẫu `E:\UNG DUNG\NHAT-KY-DOC-SACH` — Flutter/Firebase, THCS/THPT)
+- HS dùng app để **ghi chú lại nội dung đã đọc**; **sách chỉ từ thư viện** (không Google Books / ISBN / sách ngoài).
+- Muốn đọc tiếp → app **gợi ý theo sở thích cá nhân**.
+- Đồng thời **giúp nhân viên thư viện chuẩn bị sách** cho học sinh (biết em nào / lớp nào sắp cần cuốn gì).
+- Từ app mẫu chỉ lấy ý: 3 ngăn Muốn đọc / Đang đọc / Đã đọc, ghi chú khi đọc, đánh giá sao + nhãn, gợi ý. Bỏ: Google Books,
+  "Cú đêm", thử thách tự đặt, cộng đồng tự do, ghi chú 5 loại. Chi tiết luồng: đang thảo luận (chưa chốt).
+- **Thầy chốt cốt lõi:** nhật ký để **sau 1 năm em xem lại** mình đọc mấy cuốn và **cảm xúc gắn với từng đoạn** trong sách.
+  → mỗi ghi chép = sách (từ danh mục thư viện) + đoạn em nhớ + cảm xúc + em nghĩ gì; có trang **"Nhìn lại năm đọc sách"**.
+  **Bỏ huy hiệu** (ít nhất là bản đầu). Dữ liệu HS phải giữ qua các năm (lên lớp không mất nhật ký).
+- Thầy chốt mượn: HS **đặt trước** trong app → thủ thư soạn sẵn → em lên thư viện lúc nào cũng được, cô cho mượn.
+  Thiết kế tổng hợp: `KE-HOACH-APP.md` mục 10. Còn chờ thầy duyệt vài mặc định (giữ sách mấy ngày, hết bản thì sao).
+- Thầy chốt **thứ tự**: mượn – trả → nhật ký + Nhìn lại → gợi ý + chuẩn bị sách → thống kê.
+- Thầy nhấn mạnh: **cái chính là nhật ký → tạo thói quen ghi nhật ký và thói quen đọc sách.** Đã lọc toàn bộ chức năng app mẫu
+  vào `docs/LOC-CHUC-NANG-APP-MAU.md` (giữ / sửa / bỏ / để sau) — **chờ thầy duyệt** trước khi làm nhật ký.
 
 ### Điều cần nhớ (đã vấp trong phiên này)
 - **Sau khi chạy SQL có bảng / hàm mới: thầy phải vào Neon → Data API → Refresh schema cache.**

@@ -1,4 +1,4 @@
-# Kiến trúc — cập nhật 17/11/2026 (giai đoạn 1: danh mục sách)
+# Kiến trúc — cập nhật 18/11/2026 (giai đoạn 2: mượn – trả)
 
 ```
 Trình duyệt (React, Vercel)
@@ -43,6 +43,14 @@ Có rồi thì dùng lại; thấy 2 hàm cùng việc thì gộp. Thêm / đổ
 | | `tachChuDe(s)` | "Cổ tích; Khoa học" → mảng, bỏ trùng |
 | | `docBangSach(dongs, chuDeCo)` | dòng Excel → sách + lỗi từng dòng + chủ đề mới; chống trùng mã trong tệp |
 | | `mauTim(s)` | chữ ô tìm → mẫu không dấu cho cột `sach.tim` |
+| `ngay.js` | `ngayVN(luc)` | "YYYY-MM-DD" theo giờ Việt Nam (khớp `hom_nay()` ở máy chủ) |
+| | `soNgayDen(han, homNay)`, `chuNgay(ngay, homNay)` | số ngày đến hạn (âm = quá); "25/11" |
+| `muonTra.js` | `DANG_DUNG`, `TEN_TRANG_THAI` | các trạng thái đang giữ sách; tên trạng thái |
+| | `coBanChoEm(l)` | đặt trước đã có bản trên kệ cho em chưa (thứ chờ ≤ số bản còn) |
+| | `moTaChoEm(l, homNay)` | câu báo cho HS theo trạng thái / hạn → { tieuDe, chiTiet, mau } |
+| | `nhanHan(han, homNay)` | "Quá hạn 3 ngày" / "Hạn hôm nay" / "Còn 2 ngày" cho nhân viên |
+| | `loiMuonTra(loi)` | mã lỗi hàm máy chủ → câu dễ hiểu |
+| | `boLuotKhoiHang(ds, luot, layBan)` | cập nhật tại chỗ hàng chờ sau khi soạn / cho mượn / huỷ |
 
 **src/data/** (chỉ nơi gọi Supabase / Neon)
 | Tệp | Hàm | Việc |
@@ -58,10 +66,14 @@ Có rồi thì dùng lại; thấy 2 hàm cùng việc thì gộp. Thêm / đổ
 | | `laySach(id)`, `suaSach(id, {...chuDeIds})`, `xoaSach(id)` | chi tiết / sửa (cột được phép + rpc `dat_chu_de_sach`) / xoá |
 | | `nhapDanhMuc(ds, moiLan)` | rpc `nhap_danh_muc`, lô 200 cuốn |
 | `chuDe.js` | `layChuDe`, `themChuDe`, `suaChuDe`, `xoaChuDe` | bảng `chu_de` |
+| `muonTra.js` | `datTruoc(sachId, nguon)`, `huyDatTruoc(id)`, `layMuonCuaToi()`, `layTinhTrangSach(sachId)` | HS (rpc; ném lỗi khi máy chủ từ chối) |
+| | `soanSach`, `choMuon`, `choMuonTrucTiep(hsId, sachId)`, `ghiTra`, `baoMat`, `layDsMuon({loai, tuKhoa, trang})`, `demMuon()` | nhân viên (rpc), 50 dòng/trang |
+| `caiDat.js` | `layCaiDat()`, `suaCaiDat({...})` | quy tắc mượn (bảng `cai_dat`) |
 | `tepExcel.js` | `docTepExcel(tep)`, `taiVeTep(noiDung, tenTep)` | đọc .xlsx (≤ 5MB), tải tệp về máy |
 | `cauHinh.js` | `THIEU_CAU_HINH` | đã đủ biến kết nối chưa |
 
-**src/hooks/**: `useTaiKhoan()` — trang Tài khoản · `useTimSach()` — trang Tìm sách (lọc, "Xem thêm", cập nhật tại chỗ).
+**src/hooks/**: `useTaiKhoan()` — trang Tài khoản · `useTimSach()` — trang Tìm sách (lọc, "Xem thêm", cập nhật tại chỗ) ·
+`useTuSach()` — Tủ sách của em · `useMuonTra()` — trang Mượn – trả (thẻ đếm, danh sách, thao tác cập nhật tại chỗ).
 
 **Edge Functions** `supabase/functions/_shared/chung.ts`: `json`, `laOptions`, `quanTriSupabase()`, `neon(duong, token)`,
 `nguoiGoi(req, sb)` (chỉ trả về nếu là nhân viên đang hoạt động), `vaiTroCua(id, token)`.
@@ -69,19 +81,23 @@ Có rồi thì dùng lại; thấy 2 hàm cùng việc thì gộp. Thêm / đổ
 **Hàm Neon (SQL)**: `vai_tro_cua_toi()`, `lop_cua_toi()`, `la_nhan_vien()`, `tao_ho_so`, `sua_ho_so`, `xoa_ho_so`,
 `bo_dau(t)` (bỏ dấu, dùng cho cột `sach.tim`), `nhap_danh_muc(p_ds)`, `dat_chu_de_sach(p_sach_id, p_chu_de_ids)`,
 trigger `kiem_toi_da_chu_de` (≤ 2 chủ đề / sách).
+Mượn – trả: HS `dat_truoc`, `huy_dat_truoc` (cả nhân viên), `muon_cua_toi`, `tinh_trang_sach`; nhân viên `soan_sach`, `cho_muon`,
+`cho_muon_truc_tiep`, `ghi_tra`, `bao_mat`, `ds_muon(loai, tu_khoa, trang)`, `dem_muon`. Nội bộ (không cấp cho trình duyệt):
+`hom_nay()` (giờ VN), `ban_ranh(sach)`, `thu_tu_cho(luot)`, `kiem_con_cho(hs, sach)` (không trùng, chưa quá tối đa).
 
 **scripts/**: `docEnv.mjs` → `docEnv()` (đọc .env — mọi script và test thật dùng chung), `GOC_DU_AN`.
 `sao-luu-neon.mjs`, `khoi-phuc-neon.mjs`, `chay-sql.mjs` (chạy 1 tệp SQL trên Neon).
 
-## Cơ sở dữ liệu (Neon) — `sql/2026-11-17_khoi_tao.sql`, `sql/2026-11-18_danh_muc_sach.sql`
+## Cơ sở dữ liệu (Neon) — `sql/2026-11-17_khoi_tao.sql`, `sql/2026-11-18_danh_muc_sach.sql`, `sql/2026-11-18_muon_tra.sql`
 | Bảng | Ai đọc | Ai ghi |
 |---|---|---|
 | `ho_so` | tự mình; nhân viên: tất cả; GVCN: HS lớp mình | chỉ qua hàm `tao_ho_so` / `sua_ho_so` (nhân viên; thủ thư chỉ với HS) / `xoa_ho_so` (quản trị) |
 | `lop` | mọi người đã đăng nhập | nhân viên |
-| `cai_dat` (1 dòng: số sách tối đa, số ngày mượn) | mọi người đã đăng nhập | nhân viên |
+| `cai_dat` (1 dòng: số sách tối đa, số ngày mượn, số ngày giữ sách đã soạn) | mọi người đã đăng nhập | nhân viên |
 | `chu_de` | mọi người đã đăng nhập | nhân viên |
 | `sach` (`tim` = tên + tác giả + mã bỏ dấu, chỉ mục trigram) | nhân viên: tất cả; người khác: sách không ẩn | nhân viên: sửa đúng các cột được cấp; thêm qua `nhap_danh_muc` |
 | `sach_chu_de` (≤ 2 / sách) | mọi người đã đăng nhập | nhân viên |
+| `luot_muon` (dat_truoc → da_soan → dang_muon → da_tra / mat; huy) | HS: lượt của mình; nhân viên: tất cả | **không ai ghi thẳng** — chỉ qua hàm mượn – trả (kiểm vai trò, khoá dòng, tối đa, còn bản). Sách có lượt mượn không xoá được (chỉ ẩn) |
 
 Hàm hỏi quyền: `vai_tro_cua_toi()`, `lop_cua_toi()`, `la_nhan_vien()` — STABLE, security definer, gọi trong RLS dạng
 `(select ...)` để chỉ tính 1 lần mỗi câu lệnh. Tài khoản bị khoá (`hoat_dong=false`) → các hàm trả null → không đọc được gì.
@@ -89,4 +105,6 @@ Hàm hỏi quyền: `vai_tro_cua_toi()`, `lop_cua_toi()`, `la_nhan_vien()` — S
 ## Kiểm tra
 - `npm test`: domain + quy tắc tầng / độ dài tệp.
 - `npm run test:quyen` (`tests/that/`, dùng chung `_chung.js`): `quyen.test.js` hồ sơ / tài khoản, `sach.test.js` danh mục
-  (HS không ghi được, không thấy sách ẩn, nhập lại không trùng, ≤ 2 chủ đề) — người lạ, HS, thủ thư thật trên Neon / Edge Function.
+  (HS không ghi được, không thấy sách ẩn, nhập lại không trùng, ≤ 2 chủ đề), `muonTra.test.js` mượn – trả (HS không tự đổi trạng thái,
+  không xem lượt của bạn; trùng / tối đa / hết bản / sách ẩn bị chặn; đủ vòng đặt → soạn → mượn → trả; báo mất giảm số bản)
+  — người lạ, HS, thủ thư thật trên Neon / Edge Function. Chạy lần lượt từng tệp; dọn dữ liệu thử bằng `sqlChu` (quyền chủ CSDL).

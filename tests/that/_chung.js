@@ -7,7 +7,7 @@ export const lay = docEnv()
 const URL_SB = lay('VITE_SUPABASE_URL'), KHOA = lay('VITE_SUPABASE_ANON_KEY'), NEON = lay('VITE_NEON_DATA_URL')
 
 /** Đủ biến để chạy test thật chưa (thiếu thì bỏ qua, không báo đỏ). */
-export const DU = Boolean(URL_SB && KHOA && NEON && lay('THU_HS1') && lay('THU_HS2') && lay('THU_THU_THU'))
+export const DU = Boolean(URL_SB && KHOA && NEON && lay('NEON_DATABASE_URL') && lay('THU_HS1') && lay('THU_HS2') && lay('THU_THU_THU'))
 
 /** Đăng nhập tài khoản thử trong .env (dạng tên:mật khẩu) → { sb, db, id }. */
 export async function vao(bien) {
@@ -21,3 +21,11 @@ export async function vao(bien) {
 
 /** Client Neon chưa đăng nhập. */
 export const nguoiLa = () => createClient(NEON, KHOA)
+
+/** Chạy SQL bằng quyền chủ CSDL (NEON_DATABASE_URL) — CHỈ để dọn dữ liệu thử, không dùng để kiểm quyền. */
+export async function sqlChu(cau, thamSo = []) {
+  const { default: pg } = await import('pg')
+  const c = new pg.Client({ connectionString: lay('NEON_DATABASE_URL') })
+  await c.connect()
+  try { return (await c.query(cau, thamSo)).rows } finally { await c.end() }
+}

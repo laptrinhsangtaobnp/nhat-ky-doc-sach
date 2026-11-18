@@ -1,4 +1,4 @@
-// Chi tiết 1 cuốn sách — mọi vai trò (HS không mở được sách ẩn: RLS trả rỗng). Nhân viên có nút Sửa.
+// Chi tiết 1 cuốn sách — mọi vai trò (HS không mở được sách ẩn: RLS trả rỗng). Nhân viên có nút Sửa; HS đặt trước.
 import { lazy, Suspense, useEffect, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { ArrowLeft, Pencil } from 'lucide-react'
@@ -8,6 +8,7 @@ import { layChuDe } from '../../data/chuDe'
 import { laNhanVien } from '../../domain/taiKhoan'
 import { chuKhoi } from '../../domain/danhMuc'
 import BiaSach from '../../components/sach/BiaSach'
+import KhungDatTruoc from '../../components/muonTra/KhungDatTruoc'
 
 const SuaSachModal = lazy(() => import('../../components/sach/SuaSachModal'))
 
@@ -64,6 +65,7 @@ export default function ChiTietSachPage() {
             <dt>Mã sách</dt><dd className="font-mono">{sach.ma_sach}</dd>
             {nv && <><dt>Số bản</dt><dd>{sach.so_ban}{sach.an && ' · đang ẩn với học sinh'}</dd></>}
           </dl>
+          <KhungDatTruoc key={sach.so_ban} sachId={sach.id} laHocSinh={hoSo?.vai_tro === 'hoc_sinh'} />
         </div>
       </article>
 

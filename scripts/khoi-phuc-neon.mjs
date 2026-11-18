@@ -17,7 +17,7 @@ if (!thuMuc || !dich || !existsSync(join(thuMuc, 'kiem-tra.json'))) {
 }
 
 // Thứ tự: bảng được trỏ tới trước (cha trước con). Bảng mới thêm ở giai đoạn sau → bổ sung vào đây.
-const THU_TU = ['lop', 'cai_dat', 'ho_so', 'chu_de', 'sach', 'sach_chu_de']
+const THU_TU = ['lop', 'cai_dat', 'ho_so', 'chu_de', 'sach', 'sach_chu_de', 'luot_muon']
 
 const kt = JSON.parse(readFileSync(join(thuMuc, 'kiem-tra.json'), 'utf8'))
 const coTrongBan = kt.bang.filter(b => b.bang?.startsWith('public.')).map(b => b.bang.slice(7))
