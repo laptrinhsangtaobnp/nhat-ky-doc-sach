@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<title>Hướng dẫn thủ thư — Nhật ký đọc sách</title>
+<style>
+  @page { size: A4; margin: 20mm 20mm 20mm 30mm; }
+  body { font-family: "Times New Roman", Times, serif; font-size: 13pt; line-height: 1.5; color: #000; margin: 0; }
+  h1, h2, h3 { font-weight: bold; page-break-after: avoid; }
+  h1 { font-size: 14pt; text-transform: uppercase; margin: 18pt 0 6pt; }
+  h2 { font-size: 13pt; margin: 12pt 0 4pt; }
+  h3 { font-size: 13pt; font-style: italic; margin: 8pt 0 2pt; }
+  p { margin: 4pt 0; text-align: justify; }
+  ol, ul { margin: 4pt 0 4pt 0; padding-left: 22pt; }
+  li { margin: 2pt 0; text-align: justify; }
+  .bia { height: 247mm; display: flex; flex-direction: column; text-align: center; border: 3px double #000; padding: 14mm 12mm; box-sizing: border-box; page-break-after: always; }
+  .bia .tren { font-weight: bold; }
+  .bia .giua { margin-top: auto; margin-bottom: auto; }
+  .bia .ten { font-size: 20pt; font-weight: bold; text-transform: uppercase; line-height: 1.35; margin: 10pt 0; }
+  .bia .phu { font-size: 15pt; font-weight: bold; }
+  .bia .duoi { font-size: 13pt; }
+  .muc-luc { page-break-after: always; }
+  .muc-luc li { list-style: none; }
+  figure { margin: 8pt 0 10pt; text-align: center; page-break-inside: avoid; }
+  figure img { border: 1px solid #999; max-width: 100%; }
+  .khung { overflow: hidden; border: 1px solid #999; margin: 0 auto; }
+  .khung img { border: 0; width: 100%; display: block; }
+  figcaption { font-style: italic; font-size: 12pt; margin-top: 3pt; }
+  .doi { display: flex; gap: 10mm; justify-content: center; page-break-inside: avoid; margin: 8pt 0 10pt; }
+  .doi figure { margin: 0; width: 62mm; }
+  .doi img { width: 62mm; }
+  table { border-collapse: collapse; width: 100%; margin: 6pt 0 10pt; font-size: 12pt; page-break-inside: auto; }
+  th, td { border: 1px solid #000; padding: 3pt 5pt; vertical-align: top; text-align: left; }
+  th { background: #e8e8e8; text-align: center; }
+  tr { page-break-inside: avoid; }
+  .luu-y { border: 1px solid #000; background: #f3f3f3; padding: 5pt 8pt; margin: 6pt 0; page-break-inside: avoid; }
+  .luu-y b:first-child { text-transform: uppercase; }
+  .so-do { display: flex; align-items: center; justify-content: center; gap: 4pt; flex-wrap: wrap; margin: 8pt 0; font-size: 12pt; page-break-inside: avoid; }
+  .so-do span.b { border: 1.5px solid #000; padding: 4pt 6pt; text-align: center; border-radius: 4pt; width: 27mm; }
+  .so-do span.m { font-size: 14pt; }
+  .nut { font-family: Arial, sans-serif; font-size: 10.5pt; border: 1px solid #555; border-radius: 3pt; padding: 0 4pt; white-space: nowrap; }
+  .o { width: 14mm; text-align: center; }
+  .ngat { page-break-before: always; }
+</style>
+</head>
+<body>
+
+<section class="bia">
+  <div class="tren">TÀI LIỆU HƯỚNG DẪN SỬ DỤNG<br>SÁNG KIẾN THƯ VIỆN NĂM HỌC 2026 – 2027</div>
+  <div class="giua">
+    <div class="ten">Ứng dụng<br>Nhật ký đọc sách</div>
+    <div class="phu">HƯỚNG DẪN DÀNH CHO CÁN BỘ THƯ VIỆN</div>
+    <p style="text-align:center;margin-top:10pt">Phần 1: Nhập danh mục sách<br>Phần 2: Mượn – trả sách (đặt trước, soạn sách, cho mượn, ghi trả)<br>Phần 3: Kế hoạch dùng thử</p>
+    <p style="text-align:center;margin-top:14pt">Địa chỉ ứng dụng: <b>https://nhat-ky-doc-sach.vercel.app</b></p>
+  </div>
+  <div class="duoi">Người biên soạn: Bùi Nguyên Phương<br>Tháng 11 năm 2026</div>
+</section>
+
+<section class="muc-luc">
+  <h1 style="text-align:center">Mục lục</h1>
+  <ul>
+    <li><b>Mở đầu</b> — Ứng dụng làm gì, cần chuẩn bị gì</li>
+    <li><b>I. Đăng nhập</b></li>
+    <li><b>II. Nhập và quản lý danh mục sách</b>
+      <ul><li>1. Chuẩn bị tệp Excel · 2. Nhập tệp vào ứng dụng · 3. Tìm sách · 4. Sửa, ẩn, xoá sách · 5. Chủ đề</li></ul></li>
+    <li><b>III. Mượn – trả sách</b>
+      <ul><li>1. Quy trình chung · 2. Học sinh đặt trước · 3. Cần soạn · 4. Chờ em đến nhận · 5. Đang mượn – ghi trả – báo mất
+        · 6. Cho mượn tại chỗ · 7. Lịch sử và tìm theo lớp · 8. Quy tắc mượn</li></ul></li>
+    <li><b>IV. Kế hoạch dùng thử (phiếu ghi kết quả)</b></li>
+    <li><b>V. Khi gặp sự cố</b></li>
+  </ul>
+</section>
+
+<h1>Mở đầu</h1>
+<p>Ứng dụng <b>Nhật ký đọc sách</b> giúp học sinh khối 3–4 <b>ghi nhật ký đọc sách</b> và hình thành thói quen đọc. Sách học sinh đọc
+đều lấy từ thư viện trường. Vì vậy trước tiên thư viện cần đưa <b>danh mục sách</b> lên ứng dụng. Sau đó học sinh có thể
+<b>đặt trước</b> sách ngay trên ứng dụng, cô thư viện <b>soạn sẵn</b>, em lên thư viện là nhận được ngay.</p>
+<p>Tài liệu này hướng dẫn hai việc của cán bộ thư viện đang có trong bản thử: <b>nhập danh mục sách</b> và <b>quản lý mượn – trả</b>.
+Phần nhật ký đọc sách của học sinh sẽ có hướng dẫn riêng khi hoàn thành.</p>
+<p><b>Cần chuẩn bị:</b></p>
+<ul>
+  <li>Máy tính (hoặc điện thoại) có Internet, trình duyệt Chrome / Edge / Cốc Cốc.</li>
+  <li><b>Tài khoản thủ thư</b> và <b>một tài khoản học sinh thử</b> (thầy Phương cấp riêng tên đăng nhập và mật khẩu).</li>
+  <li>Danh sách sách của thư viện trên Excel (hoặc dùng tệp mẫu trong ứng dụng để điền).</li>
+</ul>
+
+<h1>I. Đăng nhập</h1>
+<ol>
+  <li>Mở trình duyệt, vào địa chỉ <b>https://nhat-ky-doc-sach.vercel.app</b>.</li>
+  <li>Gõ <b>Tên đăng nhập</b> và <b>Mật khẩu</b> được cấp, bấm <span class="nut">Đăng nhập</span>.</li>
+  <li>Đăng nhập xong, thanh trên cùng có 3 mục: <b>Mượn – trả</b> · <b>Danh mục sách</b> · <b>Tài khoản</b>.</li>
+</ol>
+<div class="luu-y"><b>Lưu ý:</b> khi gõ mật khẩu, <b>tắt bộ gõ tiếng Việt (Unikey / EVKey)</b> và kiểm tra phím Caps Lock.
+Nếu ứng dụng báo "Sai tên đăng nhập hoặc mật khẩu", đa số là do bộ gõ. Tài khoản có dạng email (có dấu @) thì gõ đầy đủ cả email.</div>
+<div class="doi">
+  <figure style="width:105mm"><div class="khung" style="aspect-ratio:1920/1200"><img src="anh/01-dang-nhap.png" alt="" style="width:100%"></div><figcaption>Hình 1. Màn hình đăng nhập (máy tính)</figcaption></figure>
+  <figure style="width:45mm"><img src="anh/11-hs-dang-nhap.png" alt="" style="width:45mm"><figcaption>Hình 2. Trên điện thoại</figcaption></figure>
+</div>
+
+<h1 class="ngat">II. Nhập và quản lý danh mục sách</h1>
+<h2>1. Chuẩn bị tệp Excel</h2>
+<p>Vào mục <b>Danh mục sách</b> → bấm <span class="nut">Nhập danh mục Excel</span> → bấm <b>Tải tệp mẫu</b> để lấy tệp
+<i>mau-danh-muc-sach.xlsx</i>. Tệp có sẵn 4 dòng ví dụ và trang tính "Hướng dẫn". Xoá 4 dòng ví dụ rồi điền sách thật theo bảng sau:</p>
+<table>
+  <tr><th style="width:24%">Cột</th><th style="width:16%">Bắt buộc?</th><th>Cách điền</th></tr>
+  <tr><td>Mã sách</td><td>Có</td><td>Mã dán trên sách, chữ không dấu, số, dấu . _ - (ví dụ <b>TN001</b>, <b>TK-015</b>). Mỗi đầu sách một mã, không trùng.</td></tr>
+  <tr><td>Tên sách</td><td>Có</td><td>Tên đầy đủ, có dấu.</td></tr>
+  <tr><td>Tác giả</td><td>Không</td><td>Có thể để trống hoặc ghi "Nhiều tác giả".</td></tr>
+  <tr><td>NXB - năm</td><td>Không</td><td>Ví dụ: <i>Kim Đồng, 2020</i>.</td></tr>
+  <tr><td>Chủ đề</td><td>Không</td><td>Tối đa <b>2 chủ đề</b>, cách nhau bằng dấu chấm phẩy ";" (ví dụ <i>Phiêu lưu; Văn học Việt Nam</i>).
+    Cả thư viện nên dùng chung khoảng <b>8–12 chủ đề</b>, viết thống nhất (học sinh lọc sách theo chủ đề).</td></tr>
+  <tr><td>Khối</td><td>Không</td><td>Khối phù hợp: <i>3</i> hoặc <i>3-5</i>. Để trống = mọi khối.</td></tr>
+  <tr><td>Số bản</td><td>Không</td><td>Số cuốn thư viện đang có của đầu sách đó (mặc định 1). <b>Rất quan trọng</b> cho mượn – trả.</td></tr>
+  <tr><td>Vị trí</td><td>Không</td><td>Kệ / ngăn để tìm nhanh khi soạn sách, ví dụ <i>Kệ A1</i>.</td></tr>
+  <tr><td>Giới thiệu</td><td>Không</td><td>1–3 câu ngắn, dễ hiểu cho học sinh (tối đa 600 ký tự).</td></tr>
+</table>
+
+<h2>2. Nhập tệp vào ứng dụng</h2>
+<ol>
+  <li>Bấm <span class="nut">Nhập danh mục Excel</span>, bấm <b>Chọn tệp</b> và chọn tệp Excel đã điền (Hình 3).</li>
+  <li>Ứng dụng đọc tệp và hiện <b>bảng xem trước</b> (Hình 4): số sách hợp lệ, các chủ đề mới sẽ được tạo, các dòng bị lỗi (nếu có, kèm số dòng và lý do).
+    Đọc kỹ dòng màu vàng: nếu chủ đề mới là do gõ nhầm tên chủ đề đã có, hãy sửa trong Excel rồi chọn lại tệp.</li>
+  <li>Bấm <span class="nut">Nhập … sách</span>. Đợi đến khi hiện "Xong: thêm mới … sách, cập nhật … sách" (Hình 5). Không đóng trang khi đang nhập.</li>
+</ol>
+<figure><div class="khung" style="aspect-ratio:1920/760"><img src="anh/03-nhap-chon-tep.png" alt=""></div><figcaption>Hình 3. Hộp nhập danh mục — có liên kết Tải tệp mẫu</figcaption></figure>
+<figure><div class="khung" style="aspect-ratio:1920/740"><img src="anh/04-nhap-xem-truoc.png" alt=""></div><figcaption>Hình 4. Xem trước trước khi nhập: số sách hợp lệ, chủ đề mới, từng dòng</figcaption></figure>
+<figure><div class="khung" style="aspect-ratio:1920/560"><img src="anh/05-nhap-xong.png" alt=""></div><figcaption>Hình 5. Nhập xong</figcaption></figure>
+<div class="luu-y"><b>Nhập lại không sợ trùng:</b> nếu sửa tệp Excel rồi nhập lại, sách <b>cùng mã</b> sẽ được <b>cập nhật</b>, không tạo thêm bản trùng.
+Ô để trống thì giữ nội dung cũ. Có thể nhập từng đợt (ví dụ mỗi kệ một tệp). Mỗi lần nhập tối đa vài nghìn dòng.</div>
+
+<h2>3. Xem và tìm sách</h2>
+<p>Mục <b>Danh mục sách</b> hiện toàn bộ sách (Hình 6). Ô tìm kiếm <b>không cần gõ dấu</b>: gõ "de men" vẫn ra "Dế Mèn phiêu lưu ký" (Hình 7).
+Có thể lọc theo <b>chủ đề</b> và <b>khối</b>. Mỗi lần hiện 30 cuốn, bấm <span class="nut">Xem thêm</span> để xem tiếp. Học sinh cũng dùng đúng trang này để tìm sách.</p>
+<figure><div class="khung" style="aspect-ratio:1920/1200"><img src="anh/06-danh-muc.png" alt=""></div><figcaption>Hình 6. Danh mục sách (sách chưa có ảnh bìa sẽ hiện bìa màu kèm tên)</figcaption></figure>
+<figure><div class="khung" style="aspect-ratio:1920/950"><img src="anh/07-tim-khong-dau.png" alt=""></div><figcaption>Hình 7. Tìm "de men" không dấu</figcaption></figure>
+
+<h2>4. Xem chi tiết, sửa, ẩn, xoá sách</h2>
+<p>Bấm vào một cuốn để xem chi tiết (Hình 8). Dòng cuối cho biết <b>còn mấy bản trên kệ</b> và <b>mấy bạn đang đặt trước</b>.
+Bấm <span class="nut">Sửa</span> để sửa thông tin, số bản, chủ đề, giới thiệu (Hình 9).</p>
+<ul>
+  <li><b>Ẩn với học sinh</b>: dùng khi sách hỏng, đang sửa, chưa lên kệ. Học sinh không thấy và không đặt được; bỏ đánh dấu là hiện lại.</li>
+  <li><b>Xoá sách</b>: chỉ xoá được sách <b>chưa từng có ai mượn</b> (để giữ lịch sử đọc của học sinh). Sách đã có lượt mượn thì dùng <b>Ẩn</b>.</li>
+  <li>Mã sách không sửa được. Muốn đổi mã thì xoá rồi nhập lại (chỉ khi sách chưa ai mượn).</li>
+</ul>
+<figure><div class="khung" style="aspect-ratio:1920/800"><img src="anh/08-chi-tiet-nv.png" alt=""></div><figcaption>Hình 8. Chi tiết sách (nhân viên thấy thêm số bản và nút Sửa)</figcaption></figure>
+<figure><div class="khung" style="aspect-ratio:1920/1050"><img src="anh/09-sua-sach.png" alt=""></div><figcaption>Hình 9. Sửa sách: số bản, chủ đề (tối đa 2), ẩn với học sinh, xoá</figcaption></figure>
+
+<h2>5. Chủ đề</h2>
+<p>Bấm <span class="nut">Chủ đề</span> ở trang Danh mục sách để thêm, đổi tên, xoá chủ đề (Hình 10). Đổi tên một chủ đề thì mọi sách thuộc chủ đề đó đổi theo.
+Toàn thư viện tối đa 30 chủ đề, nên dùng 8–12.</p>
+<figure><div class="khung" style="aspect-ratio:1920/900"><img src="anh/10-chu-de.png" alt=""></div><figcaption>Hình 10. Quản lý chủ đề</figcaption></figure>
+
+<h1 class="ngat">III. Mượn – trả sách</h1>
+<h2>1. Quy trình chung</h2>
+<div class="so-do">
+  <span class="b">Học sinh bấm<br><b>Đặt trước</b><br>trên ứng dụng</span><span class="m">→</span>
+  <span class="b">Cô bấm<br><b>Đã soạn</b><br>(để sách riêng)</span><span class="m">→</span>
+  <span class="b">Em lên thư viện<br>lúc nào cũng được</span><span class="m">→</span>
+  <span class="b">Cô bấm<br><b>Cho mượn</b><br>(tính hạn trả)</span><span class="m">→</span>
+  <span class="b">Em trả sách,<br>cô bấm<br><b>Ghi trả</b></span>
+</div>
+<p>Quy tắc mặc định (sửa được ở mục 8): mỗi em giữ <b>tối đa 2 cuốn</b> (tính cả sách đặt trước, đã soạn và đang mượn); mượn <b>7 ngày</b>;
+sách đã soạn được giữ <b>3 ngày</b> chờ em đến nhận. Nếu các bản đều đang có bạn mượn, em vẫn đặt được và <b>xếp hàng chờ</b> theo thứ tự đặt.
+Em tự huỷ được khi cô <b>chưa soạn</b>.</p>
+<p>Mọi kiểm tra (quá số cuốn, đặt trùng, hết bản, sách ẩn) do <b>máy chủ</b> làm, nên học sinh không thể tự đổi trạng thái mượn hay "gian lận" bằng cách bấm nhiều lần.</p>
+<p>Trang <b>Mượn – trả</b> là trang đầu tiên sau khi thủ thư đăng nhập. Có 4 ô: <b>Cần soạn</b> · <b>Chờ em đến nhận</b> · <b>Đang mượn</b> · <b>Lịch sử</b>.
+Số trong ô là số lượt; dòng chữ đỏ dưới số cho biết có bao nhiêu lượt <b>quá hạn</b>. Ứng dụng không tự cập nhật liên tục — bấm <span class="nut">Làm mới</span> để xem đặt trước mới.</p>
+
+<h2>2. Học sinh đặt trước (để cô biết học sinh thấy gì)</h2>
+<p>Học sinh mở một cuốn sách → thấy "Còn … bản trên kệ" và nút <span class="nut">Đặt trước cuốn này</span> (Hình 11). Đặt xong, khung báo
+"Em đã đặt trước" (Hình 12). Trang đầu của học sinh là <b>Tủ sách của em</b>, cho biết sách nào cô đã soạn, đang mượn, hạn trả (Hình 16, 17).</p>
+<div class="doi">
+  <figure><img src="anh/12-hs-dat-truoc.png" alt=""><figcaption>Hình 11. Học sinh xem sách, bấm Đặt trước</figcaption></figure>
+  <figure><img src="anh/13-hs-da-dat.png" alt=""><figcaption>Hình 12. Đặt xong</figcaption></figure>
+</div>
+
+<h2>3. Ô "Cần soạn"</h2>
+<p>Danh sách các lượt đặt trước, ai đặt trước đứng trên (Hình 13). Mỗi dòng có tên sách, mã, <b>vị trí kệ</b>, tên học sinh, lớp, ngày đặt:</p>
+<ul>
+  <li><b>"Có sách trên kệ"</b> (xanh): lấy sách, để riêng (kẹp giấy ghi tên em), rồi bấm <span class="nut">Đã soạn</span>.</li>
+  <li><b>"Chờ bạn trả (thứ 2, còn 0 bản)"</b> (cam): các bản đang có bạn mượn; nút Đã soạn bị mờ. Khi có bạn trả, dòng này tự chuyển sang "Có sách trên kệ" (Hình 14).</li>
+  <li><span class="nut">Cho mượn luôn</span>: em đang đứng ở thư viện thì cho mượn ngay, không cần qua bước soạn.</li>
+  <li><span class="nut">Huỷ</span>: huỷ lượt đặt (ví dụ sách hỏng, em chuyển trường).</li>
+</ul>
+<figure><div class="khung" style="aspect-ratio:1920/860"><img src="anh/14-can-soan.png" alt=""></div><figcaption>Hình 13. Cần soạn: 2 em đặt cùng một cuốn chỉ có 1 bản — em thứ 2 phải chờ</figcaption></figure>
+<figure><div class="khung" style="aspect-ratio:1920/720"><img src="anh/23-hang-cho.png" alt=""></div><figcaption>Hình 14. Hàng chờ: em thứ 2 chỉ được soạn khi có bản trên kệ</figcaption></figure>
+
+<h2>4. Ô "Chờ em đến nhận"</h2>
+<p>Các sách cô đã soạn, đang chờ học sinh lên lấy (Hình 15). Cột hạn giữ hiện "Còn … ngày"; quá hạn hiện chữ đỏ "Quá hạn … ngày".
+Học sinh thấy thông báo <b>"Sách đã soạn xong! Em lên thư viện nhận sách trước hết ngày …"</b> (Hình 16).</p>
+<ul>
+  <li>Em đến nhận: bấm <span class="nut">Cho mượn</span>. Hạn trả tự tính = hôm nay + số ngày mượn.</li>
+  <li>Quá hạn giữ mà em không đến: bấm <span class="nut">Cất lại</span> để đưa sách về kệ cho bạn khác.</li>
+</ul>
+<figure><div class="khung" style="aspect-ratio:1920/600"><img src="anh/15-cho-em-nhan.png" alt=""></div><figcaption>Hình 15. Chờ em đến nhận</figcaption></figure>
+<div class="doi">
+  <figure><img src="anh/16-hs-da-soan.png" alt=""><figcaption>Hình 16. Học sinh thấy "Sách đã soạn xong"</figcaption></figure>
+  <figure><img src="anh/18-hs-dang-muon.png" alt=""><figcaption>Hình 17. Học sinh thấy hạn trả</figcaption></figure>
+</div>
+
+<h2>5. Ô "Đang mượn" — ghi trả, báo mất</h2>
+<p>Danh sách sách đang ở nhà học sinh, sách <b>sắp đến hạn / quá hạn xếp trên cùng</b> (Hình 18).</p>
+<ul>
+  <li>Em trả sách: tìm theo tên em, tên sách hoặc mã sách → bấm <span class="nut">Ghi trả</span>.</li>
+  <li>Em làm mất sách: bấm <span class="nut">Báo mất</span> → ứng dụng hỏi lại → đồng ý. <b>Số bản của sách tự giảm 1.</b></li>
+</ul>
+<figure><div class="khung" style="aspect-ratio:1920/600"><img src="anh/17-dang-muon.png" alt=""></div><figcaption>Hình 18. Đang mượn: hạn trả, nút Ghi trả và Báo mất</figcaption></figure>
+
+<h2>6. Cho mượn tại chỗ (không đặt trước)</h2>
+<p>Khi em đến thư viện tự chọn sách: bấm <span class="nut">Cho mượn tại chỗ</span> → gõ vài chữ tên học sinh, chọn em → gõ tên hoặc mã sách, chọn sách
+→ bấm <span class="nut">Cho mượn</span> (Hình 19). Ứng dụng vẫn kiểm tra số cuốn tối đa và số bản trên kệ.</p>
+<figure><div class="khung" style="aspect-ratio:1920/740"><img src="anh/19-tai-cho.png" alt=""></div><figcaption>Hình 19. Cho mượn tại chỗ</figcaption></figure>
+
+<h2>7. Lịch sử và tìm theo lớp</h2>
+<p>Ô <b>Lịch sử</b> lưu các lượt đã trả, báo mất, huỷ (mới nhất ở trên) (Hình 20). Ở mọi ô, có thể gõ <b>tên lớp</b> (ví dụ <i>4A</i>) để xem riêng một lớp (Hình 21).</p>
+<figure><div class="khung" style="aspect-ratio:1920/600"><img src="anh/22-lich-su.png" alt=""></div><figcaption>Hình 20. Lịch sử mượn – trả</figcaption></figure>
+<figure><div class="khung" style="aspect-ratio:1920/740"><img src="anh/21-tim-theo-lop.png" alt=""></div><figcaption>Hình 21. Gõ tên lớp để lọc</figcaption></figure>
+
+<h2>8. Quy tắc mượn</h2>
+<p>Bấm <span class="nut">Quy tắc mượn</span> để đổi: số cuốn tối đa mỗi em giữ (1–10), số ngày mượn (1–60), số ngày giữ sách đã soạn (1–14) (Hình 22).
+Quy tắc mới áp dụng cho các lượt từ lúc lưu trở đi.</p>
+<figure><div class="khung" style="aspect-ratio:1920/900"><img src="anh/20-quy-tac.png" alt=""></div><figcaption>Hình 22. Quy tắc mượn</figcaption></figure>
+
+<h1 class="ngat">IV. Kế hoạch dùng thử (phiếu ghi kết quả)</h1>
+<p>Đề nghị cô làm lần lượt các việc dưới đây, đánh dấu ✓ ở cột "Được" hoặc ghi rõ ở cột "Ghi chú" nếu thấy khó dùng, báo sai hay chậm.
+Phần mượn – trả cần 2 cửa sổ: một cửa sổ đăng nhập <b>thủ thư</b>, một cửa sổ (hoặc điện thoại) đăng nhập <b>học sinh thử</b>.</p>
+<table>
+  <tr><th style="width:6%">TT</th><th>Việc cần thử</th><th>Kết quả đúng</th><th class="o">Được</th><th style="width:22%">Ghi chú</th></tr>
+  <tr><td>1</td><td>Đăng nhập tài khoản thủ thư trên máy tính và trên điện thoại</td><td>Vào trang Mượn – trả</td><td></td><td></td></tr>
+  <tr><td>2</td><td>Tải tệp mẫu, điền <b>10–20 sách thật</b>, nhập vào ứng dụng</td><td>Báo "thêm mới … sách"</td><td></td><td></td></tr>
+  <tr><td>3</td><td>Sửa 1 dòng trong Excel (ví dụ số bản), nhập lại cùng tệp</td><td>Báo "cập nhật …", không có sách trùng</td><td></td><td></td></tr>
+  <tr><td>4</td><td>Cố ý để trống tên sách hoặc trùng mã ở 1 dòng rồi nhập</td><td>Bảng xem trước báo lỗi đúng dòng</td><td></td><td></td></tr>
+  <tr><td>5</td><td>Tìm sách bằng chữ không dấu; lọc theo chủ đề, theo khối</td><td>Ra đúng sách</td><td></td><td></td></tr>
+  <tr><td>6</td><td>Ẩn 1 cuốn; đăng nhập học sinh thử tìm cuốn đó</td><td>Học sinh không thấy cuốn bị ẩn</td><td></td><td></td></tr>
+  <tr><td>7</td><td>Học sinh thử đặt trước 1 cuốn; thủ thư bấm Làm mới</td><td>Lượt hiện ở Cần soạn</td><td></td><td></td></tr>
+  <tr><td>8</td><td>Thủ thư bấm Đã soạn; học sinh mở Tủ sách của em</td><td>Học sinh thấy "Sách đã soạn xong"</td><td></td><td></td></tr>
+  <tr><td>9</td><td>Thủ thư bấm Cho mượn</td><td>Chuyển sang Đang mượn, có hạn trả</td><td></td><td></td></tr>
+  <tr><td>10</td><td>Học sinh thử đặt thêm sách đến khi quá số cuốn tối đa</td><td>Không đặt được, có lời báo</td><td></td><td></td></tr>
+  <tr><td>11</td><td>Học sinh thử huỷ 1 lượt chưa soạn</td><td>Huỷ được; lượt đã soạn thì không</td><td></td><td></td></tr>
+  <tr><td>12</td><td>Một cuốn chỉ có 1 bản: cho mượn rồi để học sinh khác đặt</td><td>Học sinh thấy "Em đang chờ (thứ …)"</td><td></td><td></td></tr>
+  <tr><td>13</td><td>Ghi trả cuốn ở mục 12</td><td>Lượt chờ chuyển sang "Có sách trên kệ"</td><td></td><td></td></tr>
+  <tr><td>14</td><td>Cho mượn tại chỗ 1 cuốn cho học sinh thử</td><td>Hiện ở Đang mượn</td><td></td><td></td></tr>
+  <tr><td>15</td><td>Báo mất 1 lượt đang mượn</td><td>Số bản của sách giảm 1</td><td></td><td></td></tr>
+  <tr><td>16</td><td>Gõ tên lớp vào ô tìm ở trang Mượn – trả</td><td>Chỉ còn lượt của lớp đó</td><td></td><td></td></tr>
+  <tr><td>17</td><td>Đổi Quy tắc mượn (ví dụ 3 cuốn) rồi đổi lại 2</td><td>Lưu được</td><td></td><td></td></tr>
+  <tr><td>18</td><td>Dùng thử trên điện thoại các bước 7–9</td><td>Đọc rõ, bấm dễ</td><td></td><td></td></tr>
+</table>
+<p><b>Góp ý thêm</b> (cách làm việc ở thư viện có gì khác với quy trình trên? số ngày mượn, số cuốn có hợp lý không? cần thêm gì?):</p>
+<p style="line-height:2">…………………………………………………………………………………………………………………………<br>
+…………………………………………………………………………………………………………………………<br>
+…………………………………………………………………………………………………………………………</p>
+
+<h1>V. Khi gặp sự cố</h1>
+<ul>
+  <li><b>Không đăng nhập được:</b> tắt bộ gõ tiếng Việt, kiểm tra Caps Lock, gõ lại. Vẫn không được thì báo thầy Phương đặt lại mật khẩu.</li>
+  <li><b>Lần mở đầu tiên trong ngày hơi chậm (vài giây):</b> máy chủ miễn phí "ngủ" khi không ai dùng, lần đầu cần thức dậy. Bình thường.</li>
+  <li><b>Báo "Lượt này đã đổi trạng thái"</b>: có người vừa xử lý lượt đó ở máy khác. Bấm <span class="nut">Làm mới</span>.</li>
+  <li><b>Thấy sai hoặc lỗi:</b> chụp màn hình, ghi lại vừa bấm gì, gửi cho thầy Phương (Zalo).</li>
+  <li><b>Dữ liệu dùng thử:</b> danh mục sách thật nhập trong đợt thử được <b>giữ lại</b> dùng chính thức. Các lượt mượn của tài khoản học sinh thử
+    sẽ được xoá trước khi dùng với học sinh thật.</li>
+</ul>
+
+</body>
+</html>

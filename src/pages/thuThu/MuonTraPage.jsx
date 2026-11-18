@@ -11,8 +11,8 @@ const QuyTacMuonModal = lazy(() => import('../../components/muonTra/QuyTacMuonMo
 
 const THE = [
   { loai: 'can_soan', ten: 'Cần soạn', so: d => d.can_soan },
-  { loai: 'da_soan', ten: 'Chờ em đến nhận', so: d => d.da_soan, canhBao: d => d.qua_han_giu && `${d.qua_han_giu} quá hạn giữ` },
-  { loai: 'dang_muon', ten: 'Đang mượn', so: d => d.dang_muon, canhBao: d => d.qua_han && `${d.qua_han} quá hạn` },
+  { loai: 'da_soan', ten: 'Chờ em đến nhận', so: d => d.da_soan, canhBao: d => (d.qua_han_giu > 0 ? `${d.qua_han_giu} quá hạn giữ` : null) },
+  { loai: 'dang_muon', ten: 'Đang mượn', so: d => d.dang_muon, canhBao: d => (d.qua_han > 0 ? `${d.qua_han} quá hạn` : null) },
   { loai: 'lich_su', ten: 'Lịch sử' },
 ]
 
@@ -51,7 +51,7 @@ export default function MuonTraPage() {
             <button key={t.loai} role="tab" aria-selected={chon} onClick={() => mt.datLoai(t.loai)}
               className={`rounded-xl border p-3 text-left ${chon ? 'border-emerald-500 bg-emerald-50' : 'border-stone-200 bg-white hover:bg-stone-50'}`}>
               <span className="block text-sm text-stone-600">{t.ten}</span>
-              <span className="text-2xl font-bold">{t.so ? (mt.dem ? t.so(mt.dem) : '…') : '·'}</span>
+              {t.so ? <span className="text-2xl font-bold">{mt.dem ? t.so(mt.dem) : '…'}</span> : <span className="text-sm text-stone-500">Lượt đã trả / huỷ</span>}
               {cb && <span className="block text-xs font-semibold text-rose-700">{cb}</span>}
             </button>
           )

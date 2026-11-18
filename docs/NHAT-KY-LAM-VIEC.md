@@ -30,6 +30,11 @@ Ghi mới nhất ở trên. Mỗi phiên thêm 1 mục: đã làm, kiểm tra g�
   Chưa dùng gsap trong mã.
 
 ### Còn dở / tiếp theo
+- **Git + Vercel (18/11):** repo `github.com/laptrinhsangtaobnp/nhat-ky-doc-sach` (remote đi kèm tên `laptrinhsangtaobnp`, tên/email
+  commit đặt riêng cho dự án). Repo đang **public** → đã khuyên thầy chuyển Private (lộ email quản trị, tên TK thử, link tài liệu).
+  Vercel tài khoản `phuongbui` (Hobby), link chính **https://nhat-ky-doc-sach.vercel.app** (link có mã băm / `-phuongbui` đòi đăng nhập
+  Vercel — không đưa cho HS). Vercel có 3 biến VITE_; đã kiểm bản dựng chứa đúng kết nối, Neon + Supabase cho phép gọi từ domain này.
+  Còn: Supabase → Authentication → URL Configuration thêm link Vercel; thầy thử đăng nhập trên điện thoại.
 - [ ] Thầy thử trên máy: HS (dùng `thu.hs3` hoặc HS thật — test xoá lượt mượn của thu.hs1/hs2) đặt trước → thủ thư soạn → cho mượn → trả.
 - [ ] Chưa làm (chờ thầy quyết nếu cần): gia hạn mượn; chặn đặt khi em đang quá hạn; GVCN xem lượt mượn lớp mình; tự động huỷ khi quá hạn giữ
       (hiện: thủ thư thấy "quá hạn giữ" và bấm Cất lại).
