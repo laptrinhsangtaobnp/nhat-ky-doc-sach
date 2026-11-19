@@ -47,7 +47,7 @@ export default function MaLopPinPage() {
           <p>Mã lớp: <b className="font-mono text-3xl tracking-widest">{p.ma}</b></p>
           <p className="break-all text-sm text-stone-500">{linkLop(p.ma)}</p>
           <button disabled={p.dangLam} onClick={() => confirm('Đổi mã lớp? Mã và QR cũ sẽ không dùng được nữa (PIN của các em giữ nguyên).') && p.doiMa()}
-            className="rounded-lg border border-stone-300 px-3 py-1.5 text-sm">Đổi mã lớp (khi bị lộ)</button>
+            className="rounded-lg border border-stone-300 px-3 py-1.5 text-sm">Đổi mã lớp (khi bị lộ / cả lớp bị khoá)</button>
         </div>
       </section>
 
@@ -69,7 +69,8 @@ export default function MaLopPinPage() {
             </li>
           ))}
         </ul>
-        <p className="text-sm text-stone-500">Em quên PIN hoặc bị khoá: bấm “Đặt PIN mới” rồi in / đọc PIN cho em. PIN chỉ hiện ngay lúc tạo.</p>
+        <p className="text-sm text-stone-500">Em quên PIN hoặc bị khoá: bấm “Đặt PIN mới” rồi in / đọc PIN cho em. PIN chỉ hiện ngay lúc tạo.
+          Các em báo "lớp tạm khoá đăng nhập" (có người nhập sai rất nhiều lần): bấm “Đổi mã lớp” rồi phát mã mới — lớp mở khoá ngay.</p>
       </section>
     </div>
   )

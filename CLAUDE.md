@@ -15,7 +15,8 @@ Dự án Supabase / Neon / Gemini **mới hoàn toàn**, không dùng chung vớ
 - **3 tầng**: giao diện (`pages`, `components`, `hooks`) → `src/data/` (CHỈ nơi gọi `supabase.from/rpc/auth/functions`)
   → `src/domain/` (hàm thuần, có test). `src/khongGoiThangDb.test.js` đỏ nếu vi phạm, nếu tệp > 400 dòng.
 - **Không viết 2 hàm cùng việc**: trước khi viết hàm mới, tra "Danh mục hàm" trong `docs/ARCHITECTURE.md` và grep
-  `src/domain`, `src/data`, `scripts`; có rồi thì dùng lại, thấy bản chép thì gộp. Thêm / đổi hàm → sửa danh mục cùng lúc.
+  `src/domain`, `src/data`, `scripts`; có rồi thì dùng lại, thấy bản chép thì gộp. Thêm / đổi hàm → sửa danh mục cùng lúc
+  (`src/danhMucHam.test.js` đỏ nếu hàm xuất ra / hàm SQL chưa có tên trong ARCHITECTURE.md).
   Đọc `.env` trong script / test: chỉ dùng `scripts/docEnv.mjs`.
 - Vai trò: `quan_tri` · `thu_thu` · `giao_vien` · `hoc_sinh`. Nhân viên = quan_tri + thu_thu (`la_nhan_vien()`).
 - Ghi hồ sơ CHỈ qua hàm Neon (`tao_ho_so`, `sua_ho_so`, `xoa_ho_so`) — không có quyền ghi thẳng bảng `ho_so`.

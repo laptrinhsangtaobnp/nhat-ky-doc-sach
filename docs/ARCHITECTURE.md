@@ -62,7 +62,7 @@ Có rồi thì dùng lại; thấy 2 hàm cùng việc thì gộp. Thêm / đổ
 | | `camXucNhieuNhat(dem)`, `chuThang(thang)`, `loiNhatKy(loi)` | Nhìn lại; "T11"; lỗi máy chủ → câu dễ hiểu |
 | `thongKe.js` | `CHI_SO`, `PHAM_VI`, `moiThang(so, soNgay)`, `tiLe(a, b)`, `khoangMacDinh(homNay)`, `kiemKhoang` | 8 chỉ số trước – sau (tự đo / nhập tay, giảm là tốt); quy đổi 30 ngày; % |
 | | `giaTriTuDong(tk)`, `docSo`, `kiemSo`, `bangSoSanh(soLieu, tuDong)`, `chuChenh`, `theoKhoi`, `cacTrangExcel(tk, bang, phamVi)`, `loiThongKe` | số Sau app đo; bảng so sánh + chênh lệch; các trang Excel (không tên HS) |
-| `thuThach.js` | `congNgay(ngay, n)`, `doDai(tu, den)`, `thuThachMau(homNay)`, `kiemThuThach(f, homNay)` | ngày; form mặc định 4 tuần / 12 ngày; kiểm trước như máy chủ |
+| `thuThach.js` | `congNgay(ngay, n)`, `doDai(tu, den)`, `thuThachMau(homNay)`, `kiemThuThach(f, homNay)`, `TT_TOI_DA_NGAY` (62), `TT_LUI_TOI_DA` (31) | ngày; form mặc định 4 tuần / 12 ngày; kiểm trước như máy chủ |
 | | `tinhTrangThuThach(tt, homNay)`, `phanTramEm`, `loiEm`, `loiThuThach(loi)` | sắp / đang / xong + chữ; câu cho em; lỗi máy chủ → câu dễ hiểu |
 | `hoChieu.js` | `mauTem(i)`, `tienDoHoChieu(tem)`, `loiHoChieu(td)` | màu tem; { co, tong, conLai }; câu khích lệ |
 | `review.js` | `REVIEW_TOI_THIEU`, `REVIEW_TOI_DA`, `LY_DO_KHONG_DUYET`, `TRANG_THAI_REVIEW` | 10–300 ký tự; lý do không duyệt; nhãn trạng thái |
@@ -80,20 +80,20 @@ Có rồi thì dùng lại; thấy 2 hàm cùng việc thì gộp. Thêm / đổ
 | | `suaHoSo({...})` | rpc `sua_ho_so` |
 | `lop.js` | `layCacLop(namHoc)`, `damBaoCoLop(ten, namHoc)`, `taoLop`, `datThiDiem`, `xoaLop` | bảng `lop` |
 | `taiKhoan.js` | `taoTaiKhoan(ds, moiLan)`, `datLaiMatKhau(id, mk)`, `xoaTaiKhoan(id)` | Edge Functions tài khoản (lô 40 người) |
-| `sach.js` | `timSach({tuKhoa, chuDeId, khoi, trang})` | tìm không dấu, lọc chủ đề / khối, 30 cuốn/trang + tổng |
+| `sach.js` | `timSach({tuKhoa, chuDeId, khoi, trang})`, `SACH_MOI_TRANG` | tìm không dấu, lọc chủ đề / khối, 30 cuốn/trang + tổng |
 | | `laySach(id)`, `suaSach(id, {...so_trang, cau_hoi, chuDeIds})`, `xoaSach(id)` | chi tiết / sửa (cột được phép + rpc `dat_chu_de_sach`) / xoá |
 | | `nhapDanhMuc(ds, moiLan)` | rpc `nhap_danh_muc` (có số trang, câu hỏi — `sql/2026-11-19_nhap_so_trang.sql`), lô 200 cuốn |
 | `chuDe.js` | `layChuDe`, `themChuDe`, `suaChuDe`, `xoaChuDe` | bảng `chu_de` |
 | `muonTra.js` | `datTruoc(sachId, nguon)`, `huyDatTruoc(id)`, `layMuonCuaToi()`, `layTinhTrangSach(sachId)` | HS (rpc; ném lỗi khi máy chủ từ chối) |
-| | `soanSach`, `choMuon`, `choMuonTrucTiep(hsId, sachId)`, `ghiTra`, `baoMat`, `layDsMuon({loai, tuKhoa, trang})`, `demMuon()` | nhân viên (rpc), 50 dòng/trang |
+| | `soanSach`, `choMuon`, `choMuonTrucTiep(hsId, sachId)`, `ghiTra`, `baoMat`, `layDsMuon({loai, tuKhoa, trang})`, `demMuon()`, `MUON_MOI_TRANG` | nhân viên (rpc), 50 dòng/trang |
 | `caiDat.js` | `layCaiDat()`, `suaCaiDat({...})` | quy tắc mượn (bảng `cai_dat`) |
 | `nhatKy.js` | `ghiNhatKy(sachId, nd)`, `suaNhatKy(id, nd)`, `xoaNhatKy(id)`, `doiChoCoXem(id, cho)`, `danhDauDocXong(sachId, mucThich, camNhan, thu)`, `moThu(sachId)` | HS ghi (rpc, ném lỗi) |
 | | `layHoChieu()` | hộ chiếu thể loại (rpc `ho_chieu_cua_toi`) |
+| | `layTongQuan()`, `layGoiYDocTiep(sachId)`, `layNhinLai(hsId)`, `layLopTongQuan(lopId)` | rpc đọc (máy chủ tính cây / mốc / thống kê; người khác chỉ nhận con số) |
+| | `layNhatKy({hsId, sachId, camXuc, tuKhoa, trang})`, `layMotNhatKy(id)`, `NHAT_KY_MOI_TRANG` | bảng `nhat_ky` (RLS: em hết; GVCN / nhân viên chỉ lần "Cho cô xem"), 30 dòng/trang |
 | `thongKe.js` | `layThongKe({tu, den, phamVi, lopId})`, `laySoLieuSangKien()`, `luuSoLieu(chiSo, gt)` | chỉ nhân viên (rpc) |
 | `tepExcel.js` | `taiVeExcel(cacTrang, tenTep)` | ghi .xlsx nhiều trang (write-excel-file, tải khi bấm) |
 | `thuThach.js` | `layThuThachCuaToi()`, `layThuThachLop(lopId)`, `taoThuThach(lopId, f)`, `ketThucThuThach(id)` | thử thách lớp (rpc, ném lỗi) |
-| | `layTongQuan()`, `layGoiYDocTiep(sachId)`, `layNhinLai(hsId)`, `layLopTongQuan(lopId)` | rpc đọc (máy chủ tính cây / mốc / thống kê; người khác chỉ nhận con số) |
-| | `layNhatKy({hsId, sachId, camXuc, tuKhoa, trang})`, `layMotNhatKy(id)` | bảng `nhat_ky` (RLS: em hết; GVCN / nhân viên chỉ lần "Cho cô xem"), 30 dòng/trang |
 | `review.js` | `vietReview(sachId, noiDung, anTen)`, `xoaReview(sachId)`, `layReviewSach(sachId)` | HS viết / sửa (→ chờ duyệt lại) / xoá; trang sách (rpc) |
 | | `layReviewChoDuyet()`, `duyetReview(id, suaLuc)`, `khongDuyetReview(id, lyDo)` | nhân viên: hàng chờ (50), duyệt đúng bản đang xem, không duyệt / gỡ |
 | `tepExcel.js` | `docTepExcel(tep)`, `taiVeTep(noiDung, tenTep)` | đọc .xlsx (≤ 5MB), tải tệp về máy |
@@ -102,9 +102,10 @@ Có rồi thì dùng lại; thấy 2 hàm cùng việc thì gộp. Thêm / đổ
 **src/hooks/**: `useTaiKhoan()` — trang Tài khoản · `useTimSach()` — trang Tìm sách (lọc, "Xem thêm", cập nhật tại chỗ) ·
 `useTuSach()` — trang chủ HS (lượt mượn + tổng quan thói quen) · `useMuonTra()` — trang Mượn – trả ·
 `useGhiNhatKy({id, sachId})` — ghi / sửa nhật ký · `useDsNhatKy({hsId, sachId})` — danh sách nhật ký (lọc, xoá / bật tắt "Cho cô xem" tại chỗ) ·
-`usePinLop(lopId)` — trang Mã lớp & PIN · `useReviewSach(sachId)` — mục "Các bạn nói gì" · `useReviewChoDuyet()` — thẻ Review chờ duyệt.
+`usePinLop(lopId)` — trang Mã lớp & PIN · `useReviewSach(sachId)` — mục "Các bạn nói gì" · `useReviewChoDuyet()` — thẻ Review chờ duyệt ·
+`useThongKe()` — trang Thống kê (bộ lọc, bấm Xem mới tính lại; lưu số Trước / Sau tại chỗ).
 
-**src/lib/**: `supabase.js` (2 client), `goiLai.js` (gọi lại khi Neon chưa nhận thẻ), `conDaLuu.js` (các bạn đã vào trên máy này:
+**src/lib/**: `supabase.js` (2 client), `goiLai.js` (`fetchGoiLai()`, `MA_CHUA_NHAN_DIEN`: gọi lại khi Neon chưa nhận thẻ), `conDaLuu.js` (`docConDaLuu`, `ghiConDaLuu`: các bạn đã vào trên máy này:
 chỉ id, tên rút gọn, lớp, mã lớp — không PIN, không dữ liệu đọc sách).
 
 **src/domain/dangNhapPin.js**: `MA_LOP_HOP_LE`, `chuanMaLop(s)`, `loiPin(kq, homNay)`, `themCon(ds, con)`, `boCon(ds, id)`, `TOI_DA_CON`.
@@ -126,6 +127,8 @@ Nhật ký: HS `ghi_nhat_ky`, `sua_nhat_ky` / `xoa_nhat_ky` (7 ngày), `doi_cho_
 Hộ chiếu (`sql/2026-11-19_ho_chieu.sql`, **thay** `cap_nhat_moc`, `danh_dau_doc_xong` (+ `tem_moi`), `lop_tong_quan` (+ `so_tem`, `tong_chu_de`)):
 HS `ho_chieu_cua_toi` (tem theo chủ đề + ≤ 2 gợi ý cho tem chưa có); nội bộ `tem_cua(hs)` (chủ đề đã có tem, tính từ doc_xong + sach_chu_de).
 Mốc `tham_hiem` (5 tem), `ho_chieu_day` (đủ tem, thư viện ≥ 5 chủ đề).
+Hàm phụ không kiểm quyền (thuần, không đọc dữ liệu): `bo_dau`, `so_chu`, `tao_ma_lop`, `ten_hien`. **Đã bỏ** (không còn trên Neon, chỉ còn trong tệp
+SQL cũ): `chuoi_cua` (chuỗi tuần), `dat_muc_tieu` (mục tiêu tháng) — thay bằng cây đọc sách 19/11.
 Thống kê (`sql/2026-11-19_thong_ke.sql`): chỉ nhân viên — `thong_ke(tu, den, pham_vi, lop)` (≤ 401 ngày; mượn theo tháng / lớp, top 10, trễ, mất,
 đặt qua app / từ gợi ý; sách nằm im **toàn trường**; số liệu app; không tên HS), `lay_so_lieu_sang_kien`, `luu_so_lieu` ("Sau" chỉ cho 4 chỉ số nhập tay).
 Thử thách lớp (`sql/2026-11-19_thu_thach_lop.sql`, **thay** `cap_nhat_moc` (+ mốc `thu_thach`)): GVCN lớp mình / nhân viên `tao_thu_thach`
@@ -166,7 +169,7 @@ Mã lớp + PIN (`sql/2026-11-19_dang_nhap_pin.sql`): `quan_ly_lop(lop)`, `lay_m
 | `thu_thach_lop` (tên, từ – đến ngày, số ngày cần ghi; lớp) | **không ai đọc thẳng** — qua `thu_thach_cua_toi` / `thu_thach_lop` | chỉ qua `tao_thu_thach` / `ket_thuc_thu_thach` |
 | `tuy_chon_hs` (mục tiêu tháng — **bỏ từ 19/11**, giữ bảng) | em | không còn hàm ghi |
 
-Hàm hỏi quyền: `vai_tro_cua_toi()`, `lop_cua_toi()`, `la_nhan_vien()` — STABLE, security definer, gọi trong RLS dạng
+Hàm hỏi quyền: `toi()` (id người gọi từ thẻ đăng nhập), `vai_tro_cua_toi()`, `lop_cua_toi()`, `la_nhan_vien()` — STABLE, security definer, gọi trong RLS dạng
 `(select ...)` để chỉ tính 1 lần mỗi câu lệnh. Tài khoản bị khoá (`hoat_dong=false`) → các hàm trả null → không đọc được gì.
 
 ## Kiểm tra

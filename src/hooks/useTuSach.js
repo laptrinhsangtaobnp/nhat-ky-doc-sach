@@ -45,7 +45,7 @@ export function useTuSach() {
     toiDa, tq,
     daDocXong: id => Boolean(tq?.doc_xong?.includes(id)),
     huy,
-    sauDocXong: () => { taiTongQuan(); tai() },
+    sauDocXong: taiTongQuan,          // đọc xong không đổi lượt mượn → chỉ lấy lại phần tổng quan (1 lần gọi nhẹ)
     taiTongQuan,
   }
 }

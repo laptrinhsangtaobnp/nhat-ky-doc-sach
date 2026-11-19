@@ -1,0 +1,270 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<title>Hướng dẫn dùng thử (tập 3) — Nhật ký đọc sách</title>
+<style>
+  @page { size: A4; margin: 20mm 20mm 20mm 30mm; }
+  body { font-family: "Times New Roman", Times, serif; font-size: 13pt; line-height: 1.5; color: #000; margin: 0; }
+  h1, h2, h3 { font-weight: bold; page-break-after: avoid; }
+  h1 { font-size: 14pt; text-transform: uppercase; margin: 18pt 0 6pt; }
+  h2 { font-size: 13pt; margin: 12pt 0 4pt; }
+  h3 { font-size: 13pt; font-style: italic; margin: 8pt 0 2pt; }
+  p { margin: 4pt 0; text-align: justify; }
+  ol, ul { margin: 4pt 0 4pt 0; padding-left: 22pt; }
+  li { margin: 2pt 0; text-align: justify; }
+  .bia { height: 247mm; display: flex; flex-direction: column; text-align: center; border: 3px double #000; padding: 14mm 12mm; box-sizing: border-box; page-break-after: always; }
+  .bia .tren { font-weight: bold; }
+  .bia .giua { margin-top: auto; margin-bottom: auto; }
+  .bia .ten { font-size: 20pt; font-weight: bold; text-transform: uppercase; line-height: 1.35; margin: 10pt 0; }
+  .bia .phu { font-size: 15pt; font-weight: bold; }
+  .bia .duoi { font-size: 13pt; }
+  .muc-luc { page-break-after: always; }
+  .muc-luc li { list-style: none; }
+  figure { margin: 8pt 0 10pt; text-align: center; page-break-inside: avoid; }
+  figure img { border: 1px solid #999; max-width: 100%; }
+  .khung { overflow: hidden; border: 1px solid #999; margin: 0 auto; }
+  .khung img { border: 0; width: 100%; display: block; }
+  figcaption { font-style: italic; font-size: 12pt; margin-top: 3pt; }
+  .doi { display: flex; gap: 10mm; justify-content: center; page-break-inside: avoid; margin: 8pt 0 10pt; }
+  .doi figure { margin: 0; width: 62mm; }
+  .doi img { width: 62mm; }
+  table { border-collapse: collapse; width: 100%; margin: 6pt 0 10pt; font-size: 12pt; page-break-inside: auto; }
+  th, td { border: 1px solid #000; padding: 3pt 5pt; vertical-align: top; text-align: left; }
+  th { background: #e8e8e8; text-align: center; }
+  tr { page-break-inside: avoid; }
+  .luu-y { border: 1px solid #000; background: #f3f3f3; padding: 5pt 8pt; margin: 6pt 0; page-break-inside: avoid; }
+  .luu-y b:first-child { text-transform: uppercase; }
+  .so-do { display: flex; align-items: center; justify-content: center; gap: 4pt; flex-wrap: wrap; margin: 8pt 0; font-size: 12pt; page-break-inside: avoid; }
+  .so-do span.b { border: 1.5px solid #000; padding: 4pt 6pt; text-align: center; border-radius: 4pt; width: 27mm; }
+  .so-do span.m { font-size: 14pt; }
+  .nut { font-family: Arial, sans-serif; font-size: 10.5pt; border: 1px solid #555; border-radius: 3pt; padding: 0 4pt; white-space: nowrap; }
+  .o { width: 14mm; text-align: center; }
+  .ngat { page-break-before: always; }
+</style>
+</head>
+<body>
+
+<section class="bia">
+  <div class="tren">TÀI LIỆU HƯỚNG DẪN SỬ DỤNG<br>SÁNG KIẾN THƯ VIỆN NĂM HỌC 2026 – 2027</div>
+  <div class="giua">
+    <div class="ten">Ứng dụng<br>Nhật ký đọc sách</div>
+    <div class="phu">HƯỚNG DẪN DÙNG THỬ<br>DÀNH CHO CÁN BỘ THƯ VIỆN VÀ GIÁO VIÊN CHỦ NHIỆM<br>(TẬP 3)</div>
+    <p style="text-align:center;margin-top:10pt">Bạn bè giới thiệu sách (review) · Hộ chiếu thể loại<br>
+      Thử thách lớp · Thống kê sáng kiến và xuất Excel<br>Phiếu dùng thử, kể cả phần thử quyền truy cập</p>
+    <p style="text-align:center;margin-top:14pt">Địa chỉ ứng dụng: <b>https://nhat-ky-doc-sach.vercel.app</b></p>
+  </div>
+  <div class="duoi">Người biên soạn: Bùi Nguyên Phương<br>Tháng 11 năm 2026</div>
+</section>
+
+<section class="muc-luc">
+  <h1 style="text-align:center">Mục lục</h1>
+  <ul>
+    <li><b>Mở đầu</b> — Có gì mới so với tập 2, cần chuẩn bị gì</li>
+    <li><b>I. Chủ đề sách và Hộ chiếu thể loại</b></li>
+    <li><b>II. Bạn bè giới thiệu sách (review)</b>
+      <ul><li>1. Học sinh viết · 2. Thủ thư duyệt · 3. Các bạn đọc ở trang sách</li></ul></li>
+    <li><b>III. Thử thách lớp</b> (giáo viên chủ nhiệm đặt)</li>
+    <li><b>IV. Thống kê sáng kiến</b>
+      <ul><li>1. Gắn lớp thí điểm · 2. Xem số liệu · 3. So sánh trước – sau · 4. Xuất Excel minh chứng</li></ul></li>
+    <li><b>V. Ai xem được gì (quyền riêng tư)</b></li>
+    <li><b>VI. Phiếu dùng thử</b></li>
+    <li><b>VII. Khi gặp sự cố</b></li>
+  </ul>
+</section>
+
+<h1>Mở đầu</h1>
+<p>Tập 1 hướng dẫn danh mục sách và mượn – trả, tập 2 hướng dẫn đăng nhập bằng mã lớp + PIN và nhật ký đọc sách.
+Tập 3 giới thiệu <b>4 chức năng mới</b> và một <b>phiếu dùng thử</b> để cô kiểm tra lại từng chức năng trước khi đưa cho học sinh dùng thật.</p>
+<table>
+  <tr><th style="width:26%">Chức năng</th><th>Để làm gì</th><th style="width:22%">Ai dùng</th></tr>
+  <tr><td><b>Bạn bè giới thiệu sách</b></td><td>Em đọc xong viết vài câu giới thiệu; thư viện duyệt rồi mới hiện ở trang cuốn sách cho các bạn đọc.</td><td>Học sinh viết, thủ thư duyệt</td></tr>
+  <tr><td><b>Hộ chiếu thể loại</b></td><td>Mỗi chủ đề sách là một "con tem". Đọc xong một cuốn được đóng tem chủ đề đó → khuyến khích em đọc đa dạng.</td><td>Học sinh</td></tr>
+  <tr><td><b>Thử thách lớp</b></td><td>Cô đặt mục tiêu "mỗi em ghi nhật ký N ngày" trong một khoảng thời gian; em thấy tiến độ của mình và số bạn đã đạt.</td><td>Giáo viên chủ nhiệm (thủ thư cũng đặt được)</td></tr>
+  <tr><td><b>Thống kê sáng kiến</b></td><td>Số liệu mượn sách và nhật ký do máy chủ tự tính; bảng so sánh trước – sau; xuất Excel làm minh chứng.</td><td>Thủ thư, quản trị</td></tr>
+</table>
+<p><b>Cần chuẩn bị:</b></p>
+<ul>
+  <li>Danh mục sách có cột <b>Chủ đề</b> (tập 1). Nên giữ <b>8–10 chủ đề</b> cố định cho cả thư viện — mỗi chủ đề là một con tem.</li>
+  <li>Đánh dấu <b>lớp thí điểm</b> (mục IV.1) để trang Thống kê tính đúng nhóm lớp.</li>
+  <li>Số liệu <b>"trước khi có app"</b> (phần 2 của tài liệu chuẩn bị sáng kiến): lượt mượn mỗi tháng, tỉ lệ học sinh có mượn, sách nằm im,
+    trả trễ / mất, thời gian làm báo cáo, kết quả phiếu khảo sát học sinh và phụ huynh.</li>
+  <li>Một máy tính (thủ thư / giáo viên) và một điện thoại (vai học sinh), dùng <b>lớp thử 3THU</b> như tập 2.</li>
+</ul>
+
+<h1 class="ngat">I. Chủ đề sách và Hộ chiếu thể loại</h1>
+<p>Hộ chiếu không cần nhập thêm gì: ứng dụng dùng chính <b>chủ đề của sách</b> đã có trong danh mục.
+Em bấm <b>"Em đọc xong rồi"</b> một cuốn → được đóng tem các chủ đề của cuốn đó (cuốn có 2 chủ đề thì được 2 tem).
+Tem do <b>máy chủ tự tính</b> từ những cuốn em đã đọc xong; đọc lại cuốn cùng chủ đề không được tem thêm.</p>
+<ul>
+  <li>Mục <b>Hộ chiếu</b> (menu học sinh): tem đã có tô màu, ghi ngày và cuốn sách; tem chưa có ghi "Chưa có tem" kèm
+    <b>tối đa 2 cuốn gợi ý</b> cùng thể loại (đúng khối của em, cuốn còn trên kệ hiện trước) và nút <span class="nut">Đặt trước</span>.</li>
+  <li>Hộp chúc mừng khi đọc xong báo <b>"🎫 Em nhận tem …"</b>.</li>
+  <li>Hai mốc mới: <b>🧭 Nhà thám hiểm</b> (5 tem khác nhau) và <b>🌏 Hộ chiếu đầy</b> (đủ tem mọi chủ đề, khi thư viện có từ 5 chủ đề).</li>
+  <li>Trang <b>Lớp của tôi / Lớp học</b> có thêm cột <b>Tem thể loại</b> (ví dụ 3/8) — chỉ con số.</li>
+</ul>
+<div class="luu-y"><b>Lưu ý:</b> thư viện chưa có chủ đề nào thì hộ chiếu trống. Đổi tên chủ đề thì tem đổi tên theo; xoá chủ đề thì tem đó mất.
+Vì vậy nên chốt danh sách chủ đề từ đầu năm học và hạn chế xoá.</div>
+<div class="doi">
+  <figure><img src="anh/05-hs-nhan-tem.png"><figcaption>Hình 1. Đọc xong: nhận tem, mốc, gợi ý đọc tiếp</figcaption></figure>
+  <figure><div class="khung" style="width:62mm;height:150mm"><img src="anh/06-hs-ho-chieu.png"></div><figcaption>Hình 2. Hộ chiếu: 3/6 tem, gợi ý cho tem còn thiếu</figcaption></figure>
+</div>
+
+<h1 class="ngat">II. Bạn bè giới thiệu sách (review)</h1>
+<h2>1. Học sinh viết</h2>
+<p>Trong hộp <b>"Em đọc xong rồi"</b> có thêm ô <b>📣 Giới thiệu sách cho bạn</b> (không bắt buộc). Em cũng viết được ở trang cuốn sách,
+mục <b>Các bạn nói gì</b>, nếu đã đọc xong cuốn đó.</p>
+<ul>
+  <li>Từ <b>10 đến 300 ký tự</b>. Mỗi em <b>1 bài cho 1 cuốn</b>; sửa bài thì bài phải được duyệt lại. Tối đa 5 bài mới mỗi ngày.</li>
+  <li>Em tích <b>"Ẩn tên em"</b> thì các bạn chỉ thấy "Một bạn lớp 3A". Không ẩn thì hiện <b>tên rút gọn</b>, ví dụ "Lan N.T. – lớp 3A".</li>
+  <li>Phần này <b>tách riêng</b> với "cảm nhận cuối" và "thư gửi chính mình" (2 phần đó chỉ em xem).</li>
+</ul>
+<div class="doi">
+  <figure><div class="khung" style="width:62mm;height:110mm"><img src="anh/04-hs-doc-xong-gioi-thieu.png" style="margin-top:-62mm"></div><figcaption>Hình 3. Ô "Giới thiệu sách cho bạn"</figcaption></figure>
+  <figure><img src="anh/07-hs-cac-ban-noi-gi.png"><figcaption>Hình 4. Trang sách: bài của em đang chờ duyệt, bài của bạn đã duyệt</figcaption></figure>
+</div>
+
+<h2>2. Thủ thư duyệt</h2>
+<ol>
+  <li>Vào <b>Mượn – trả</b>, bấm thẻ thứ năm <span class="nut">Review chờ duyệt</span> (số trên thẻ là số bài đang chờ).</li>
+  <li>Mỗi bài hiện tên em, lớp, cuốn sách, nội dung và dòng <b>"Các bạn sẽ thấy tên: …"</b> để cô biết bài sẽ hiện thế nào.</li>
+  <li>Bấm <span class="nut">✓ Duyệt</span> → bài hiện ngay ở trang cuốn sách. Hoặc bấm <span class="nut">✕ Không duyệt</span> và chọn
+    1 lý do: <i>Chưa phù hợp</i>, <i>Quá ngắn, em viết thêm nhé</i>, <i>Có thông tin cá nhân (tên, địa chỉ, số điện thoại…)</i>. Em sẽ thấy lý do và sửa lại được.</li>
+</ol>
+<div class="luu-y"><b>Khi nào không duyệt:</b> bài có tên thật, địa chỉ, số điện thoại, lời chê bạn, từ ngữ chưa hay, hoặc chỉ ghi "hay" cho đủ chữ.
+Bài đã duyệt mà thấy cần gỡ: mở trang cuốn sách, bấm <span class="nut">Gỡ</span> ở bài đó và chọn lý do.
+Nếu em vừa sửa bài trong lúc cô đang đọc, ứng dụng báo "Bài này vừa được sửa…": cô bấm <span class="nut">Làm mới</span> để đọc bản mới rồi mới duyệt.</div>
+<figure><img src="anh/08-tt-review-cho-duyet.png" style="width:150mm"><figcaption>Hình 5. Thẻ "Review chờ duyệt" ở trang Mượn – trả</figcaption></figure>
+<figure><div class="khung" style="width:150mm;height:45mm"><img src="anh/09-tt-chon-ly-do.png" style="margin-top:-29mm"></div><figcaption>Hình 6. Không duyệt: chọn 1 trong 3 lý do</figcaption></figure>
+
+<h2>3. Các bạn đọc ở trang sách</h2>
+<p>Mục <b>💬 Các bạn nói gì</b> ở trang mỗi cuốn hiện số bạn đã đọc, số bạn cùng lớp đã đọc và tối đa 30 bài đã duyệt mới nhất.
+Bài chưa duyệt hoặc không được duyệt <b>chỉ em viết thấy</b> (Hình 7).</p>
+<figure><img src="anh/12-hs-bai-da-duyet.png" style="width:75mm"><figcaption>Hình 7. Sau khi thủ thư duyệt: "Đã hiện cho các bạn xem"</figcaption></figure>
+
+<h1 class="ngat">III. Thử thách lớp</h1>
+<p>Giáo viên chủ nhiệm vào <b>Lớp của tôi</b> (thủ thư: <b>Lớp học</b> → chọn lớp) → khung <b>🏁 Thử thách lớp</b> → <span class="nut">+ Đặt thử thách</span>.</p>
+<ol>
+  <li>Điền <b>tên thử thách</b>, <b>từ ngày – đến ngày</b> (tối đa 62 ngày; ngày bắt đầu lùi được tối đa 31 ngày) và
+    <b>số ngày mỗi em cần ghi</b>. Mẫu có sẵn: 4 tuần, mỗi em 12 ngày.</li>
+  <li>Bấm <span class="nut">Đặt thử thách</span>. Mỗi lớp chỉ có <b>1 thử thách đang chạy</b>; muốn đặt cái mới thì bấm
+    <span class="nut">Kết thúc sớm</span> trước (thử thách kết thúc ở hôm qua; chưa bắt đầu thì bị xoá).</li>
+</ol>
+<ul>
+  <li><b>Ngày được tính</b> giống "cây đọc sách": ngày em có ghi nhật ký ít nhất 1 câu ngắn; ghi nhiều lần trong ngày vẫn tính 1 ngày.
+    <b>Máy chủ tự đếm</b>, em không tự cộng được.</li>
+  <li><b>Học sinh</b> thấy thẻ ở trang chủ: số ngày của em, câu khích lệ và <b>"Cả lớp: X/Y bạn đã đạt"</b> — <b>không có tên bạn nào</b>, không xếp hạng.</li>
+  <li><b>Giáo viên</b> thấy tiến độ chung và cột <b>Thử thách</b> trong bảng (ví dụ 7/10; đạt thì có 🏅).</li>
+  <li>Em đạt được mốc <b>🏅 Hoàn thành thử thách lớp</b> (nhận ở lần đạt đầu tiên).</li>
+</ul>
+<figure><img src="anh/03-hs-the-thu-thach.png" style="width:70mm"><figcaption>Hình 8. Thẻ thử thách ở trang chủ học sinh</figcaption></figure>
+<figure><img src="anh/01-gv-dat-thu-thach.png" style="width:150mm"><figcaption>Hình 9. Đặt thử thách lớp</figcaption></figure>
+<figure><img src="anh/02-gv-lop-co-thu-thach.png" style="width:150mm"><figcaption>Hình 10. Lớp của tôi: tiến độ thử thách và cột "Thử thách"</figcaption></figure>
+
+<h1 class="ngat">IV. Thống kê sáng kiến</h1>
+<p>Menu <b>Thống kê</b> chỉ có ở tài khoản thủ thư và quản trị. Mọi con số do <b>máy chủ tự tính</b> từ dữ liệu mượn – trả và nhật ký;
+trang và tệp Excel <b>không có tên học sinh</b>, chỉ số theo lớp, khối và theo sách.</p>
+
+<h2>1. Gắn lớp thí điểm</h2>
+<p>Vào <b>Tài khoản</b> → danh sách lớp ở đầu trang → bấm vào tên lớp thí điểm để gắn dấu <b>★</b> (bấm lần nữa để bỏ).
+Chưa gắn lớp nào thì phạm vi "Các lớp thí điểm" ra 0 học sinh và trang có dòng nhắc.</p>
+
+<h2>2. Xem số liệu</h2>
+<p>Chọn <b>từ ngày – đến ngày</b> (mặc định từ 1/9 năm học đến hôm nay, tối đa khoảng 13 tháng) và <b>phạm vi</b>:
+các lớp thí điểm, toàn trường hoặc một lớp → bấm <span class="nut">Xem</span>.</p>
+<table>
+  <tr><th style="width:30%">Nhóm</th><th>Chỉ số</th></tr>
+  <tr><td>Mượn sách</td><td>Lượt mượn mỗi tháng (quy về 30 ngày để so với sổ mượn) · tỉ lệ học sinh có mượn ít nhất 1 lần · trả trễ / mất ·
+    <b>sách "nằm im"</b> (tính toàn trường) · lượt đặt qua app và lượt đến từ gợi ý của app · lượt mượn theo tháng, khối, lớp · 10 sách mượn nhiều nhất</td></tr>
+  <tr><td>Riêng của app</td><td>Số em có nhật ký, số lần ghi, số ngày cây lớn · số em đọc cùng bố mẹ · lượt đọc xong · review được duyệt ·
+    số em hoàn thành thử thách lớp · tem trung bình · <b>chủ đề được yêu thích</b> (căn cứ đề xuất mua sách)</td></tr>
+</table>
+<p>Học sinh được tính theo <b>lớp hiện tại</b> của em. "Lượt mượn" là lượt thủ thư đã giao sách (đang mượn, đã trả, mất), tính theo ngày giao.</p>
+<figure><div class="khung" style="width:150mm;height:150mm"><img src="anh/10-tt-thong-ke.png"></div><figcaption>Hình 11. Trang Thống kê, tab "Số liệu"</figcaption></figure>
+
+<h2>3. So sánh trước – sau</h2>
+<p>Tab <b>So sánh trước – sau</b> có đúng 8 chỉ số của bảng phần 3A trong tài liệu chuẩn bị sáng kiến.
+Bấm <span class="nut">Nhập số</span> ở từng dòng để nhập số <b>Trước</b> (gộp chung các lớp thí điểm) và ghi <b>nguồn</b> (ví dụ "Sổ mượn HK I 2025–2026").</p>
+<ul>
+  <li><b>4 chỉ số app tự điền cột Sau</b> theo khoảng ngày đang xem: lượt mượn mỗi tháng, tỉ lệ có mượn, sách nằm im, trả trễ / mất.
+    Máy chủ <b>không cho nhập tay</b> cột Sau của 4 chỉ số này.</li>
+  <li><b>4 chỉ số cô nhập cả Trước và Sau</b> (từ khảo sát lại, bấm giờ): thời gian làm báo cáo, tỉ lệ thích đọc, số sách trung bình mỗi tháng theo khảo sát,
+    tỉ lệ phụ huynh thường xuyên đọc cùng con.</li>
+  <li>App tự tính <b>chênh lệch và %</b>: chữ xanh là tiến bộ (với sách nằm im, trả trễ, thời gian báo cáo thì <b>giảm</b> là tiến bộ), chữ đỏ là kém đi.</li>
+</ul>
+<div class="luu-y"><b>Quan trọng:</b> nhập số <b>Trước</b> ngay khi có (trước khi học sinh bắt đầu dùng app) và giữ nguyên câu hỏi khảo sát cho lần đo Sau.
+Khi xem so sánh, chọn phạm vi <b>Các lớp thí điểm</b> để số Sau cùng nhóm với số Trước (chọn phạm vi khác thì trang có dòng cảnh báo).</div>
+<figure><div class="khung" style="width:150mm;height:105mm"><img src="anh/11-tt-so-sanh.png"></div><figcaption>Hình 12. So sánh trước – sau: đang nhập số Trước của 1 chỉ số</figcaption></figure>
+
+<h2>4. Xuất Excel minh chứng</h2>
+<p>Bấm <span class="nut">⬇ Xuất Excel</span> (góc trên bên phải). Tệp có 7 trang: <i>So sánh trước – sau, Tổng quan, Mượn theo tháng, Theo lớp,
+Top 10 sách, Chủ đề yêu thích, Sách nằm im</i>; tên tệp ghi khoảng ngày. Tệp <b>không có tên học sinh</b> nên dùng làm minh chứng được ngay.
+Nên chụp thêm màn hình trang Thống kê để đưa vào hồ sơ sáng kiến.</p>
+
+<h1 class="ngat">V. Ai xem được gì (quyền riêng tư)</h1>
+<table>
+  <tr><th style="width:40%">Nội dung</th><th>Học sinh</th><th>GVCN lớp em</th><th>Thủ thư, quản trị</th></tr>
+  <tr><td>Hộ chiếu (tem, ngày, cuốn)</td><td>của em</td><td>chỉ số tem</td><td>chỉ số tem</td></tr>
+  <tr><td>Bài giới thiệu đã duyệt</td><td colspan="3" style="text-align:center">mọi người đã đăng nhập (tên rút gọn hoặc ẩn tên)</td></tr>
+  <tr><td>Bài chờ duyệt / không duyệt</td><td>của em</td><td>—</td><td>✓ (để duyệt)</td></tr>
+  <tr><td>Thử thách lớp</td><td>số của em + số bạn đạt</td><td>số ngày từng em</td><td>số ngày từng em</td></tr>
+  <tr><td>Trang Thống kê, tệp Excel</td><td>—</td><td>—</td><td>✓ (không tên học sinh)</td></tr>
+</table>
+<p><b>Bảo mật đã kiểm tra (tháng 11/2026):</b> mọi quyền trên đều do <b>máy chủ</b> kiểm, không phụ thuộc giao diện. Đã thử bằng tài khoản thật:
+người lạ, học sinh, giáo viên cố gọi thẳng máy chủ để xem thống kê, duyệt bài, đặt thử thách lớp khác, tự cộng tem — đều bị chặn.
+Danh sách tài khoản và mật khẩu không nằm trên mạng.</p>
+<div class="luu-y"><b>Mới:</b> nếu học sinh báo <i>"Lớp em tạm khoá đăng nhập hôm nay"</i> (có người cố nhập sai PIN rất nhiều lần),
+vào <b>Mã lớp &amp; PIN</b> → bấm <span class="nut">Đổi mã lớp (khi bị lộ / cả lớp bị khoá)</span> rồi phát mã mới: lớp mở khoá ngay, PIN của các em giữ nguyên.</div>
+
+<h1 class="ngat">VI. Phiếu dùng thử</h1>
+<p>Dùng <b>lớp thử 3THU</b>: 1 máy tính (thủ thư hoặc giáo viên) và 1 điện thoại (học sinh thử). Đánh dấu ✓ ở cột "Được", hoặc ghi rõ ở cột "Ghi chú"
+nếu thấy khó dùng, báo sai hay chậm. Phần <b>B</b> là thử <b>chặn quyền</b>: kết quả đúng là <b>không làm được</b>.</p>
+<p style="page-break-after:avoid"><b>A. Thử chức năng</b></p>
+<table>
+  <tr><th style="width:6%">TT</th><th>Việc cần thử</th><th>Kết quả đúng</th><th class="o">Được</th><th style="width:20%">Ghi chú</th></tr>
+  <tr><td>1</td><td>Danh mục: gắn chủ đề cho 6–8 cuốn (mỗi cuốn 1–2 chủ đề)</td><td>Lưu được</td><td></td><td></td></tr>
+  <tr><td>2</td><td>Điện thoại (HS thử): mở <b>Hộ chiếu</b></td><td>Thấy đủ chủ đề, tem xám, có gợi ý 1–2 cuốn và nút Đặt trước</td><td></td><td></td></tr>
+  <tr><td>3</td><td>Thủ thư cho em mượn 1 cuốn có chủ đề; em ghi nhật ký 1 lần rồi bấm <b>Em đọc xong rồi</b>, viết giới thiệu ≥ 10 ký tự</td>
+    <td>Chúc mừng có dòng "Em nhận tem …" và "Bài giới thiệu đã gửi cô thư viện"</td><td></td><td></td></tr>
+  <tr><td>4</td><td>Mở lại Hộ chiếu</td><td>Tem chủ đề đó có màu, ghi ngày và tên cuốn</td><td></td><td></td></tr>
+  <tr><td>5</td><td>Mở trang cuốn đó, mục Các bạn nói gì</td><td>Bài của em "đang chờ cô duyệt"</td><td></td><td></td></tr>
+  <tr><td>6</td><td>Máy tính: Mượn – trả → Review chờ duyệt → <b>Không duyệt</b>, chọn "Quá ngắn, em viết thêm nhé"</td><td>Bài biến khỏi hàng chờ</td><td></td><td></td></tr>
+  <tr><td>7</td><td>Điện thoại: mở lại trang cuốn sách, sửa bài, gửi</td><td>Thấy lý do; sửa xong lại "đang chờ duyệt"</td><td></td><td></td></tr>
+  <tr><td>8</td><td>Máy tính: <b>Duyệt</b> bài</td><td>Trang sách hiện bài, tên rút gọn (hoặc "Một bạn lớp …" nếu em ẩn tên)</td><td></td><td></td></tr>
+  <tr><td>9</td><td>Đăng nhập HS thử thứ 2, mở trang cuốn đó</td><td>Thấy bài của bạn, không thấy bài chưa duyệt</td><td></td><td></td></tr>
+  <tr><td>10</td><td>GVCN (hoặc thủ thư → Lớp học → 3THU): đặt thử thách 2 tuần, mỗi em 3 ngày</td><td>Hiện khung thử thách và cột "Thử thách"</td><td></td><td></td></tr>
+  <tr><td>11</td><td>Điện thoại: mở trang chủ; ghi nhật ký 1 câu ngắn</td><td>Thẻ thử thách tăng 1 ngày; "Cả lớp: X/3 bạn đã đạt"</td><td></td><td></td></tr>
+  <tr><td>12</td><td>Thử đặt thêm 1 thử thách nữa khi đang có</td><td>Báo phải kết thúc thử thách đang có</td><td></td><td></td></tr>
+  <tr><td>13</td><td>Bấm Kết thúc sớm</td><td>Thử thách vào mục "Thử thách đã xong"</td><td></td><td></td></tr>
+  <tr><td>14</td><td>Tài khoản: gắn ★ cho lớp thí điểm</td><td>Tên lớp có ★</td><td></td><td></td></tr>
+  <tr><td>15</td><td>Thống kê → phạm vi Một lớp → 3THU → Xem</td><td>Số lượt mượn, nhật ký, đọc xong khớp với việc vừa làm</td><td></td><td></td></tr>
+  <tr><td>16</td><td>So sánh trước – sau: nhập số Trước cho 2 chỉ số, Sau cho "Thời gian làm báo cáo"</td><td>Hiện chênh lệch và %</td><td></td><td></td></tr>
+  <tr><td>17</td><td>Bấm Xuất Excel, mở tệp</td><td>7 trang, không có tên học sinh</td><td></td><td></td></tr>
+</table>
+<p style="page-break-after:avoid"><b>B. Thử chặn quyền</b> (kết quả đúng là bị chặn / không thấy)</p>
+<table>
+  <tr><th style="width:6%">TT</th><th>Việc cần thử</th><th>Kết quả đúng</th><th class="o">Được</th><th style="width:20%">Ghi chú</th></tr>
+  <tr><td>18</td><td>Đăng nhập học sinh, gõ thẳng địa chỉ <b>…/thu-vien/thong-ke</b></td><td>Không vào được (về trang của em)</td><td></td><td></td></tr>
+  <tr><td>19</td><td>Đăng nhập giáo viên, gõ thẳng <b>…/thu-vien/thong-ke</b> và <b>…/thu-vien</b></td><td>Không vào được</td><td></td><td></td></tr>
+  <tr><td>20</td><td>Học sinh mở trang một cuốn em <b>chưa đọc xong</b></td><td>Không có ô viết giới thiệu</td><td></td><td></td></tr>
+  <tr><td>21</td><td>Học sinh thử 2 xem trang chủ khi có thử thách</td><td>Chỉ thấy số của mình và "X/3 bạn đạt", không thấy tên bạn</td><td></td><td></td></tr>
+  <tr><td>22</td><td>Giáo viên xem Lớp của tôi</td><td>Chỉ lớp mình; cột tem / thử thách chỉ là con số</td><td></td><td></td></tr>
+</table>
+<p><b>Góp ý thêm</b> (câu chữ có dễ hiểu với học sinh lớp 3 không? lý do không duyệt có đủ chưa? số liệu nào cần thêm cho sáng kiến?):</p>
+<p style="line-height:2">…………………………………………………………………………………………………………………………<br>
+…………………………………………………………………………………………………………………………<br>
+…………………………………………………………………………………………………………………………</p>
+
+<h1>VII. Khi gặp sự cố</h1>
+<ul>
+  <li><b>Hộ chiếu trống:</b> thư viện chưa có chủ đề, hoặc sách chưa gắn chủ đề (Danh mục sách → mở sách → Sửa).</li>
+  <li><b>Không thấy ô viết giới thiệu:</b> em chưa bấm "Em đọc xong rồi" cuốn đó (cần ghi nhật ký ít nhất 1 lần trước).</li>
+  <li><b>Thống kê ra 0:</b> chưa gắn ★ lớp thí điểm, hoặc khoảng ngày chưa có lượt mượn. Thử phạm vi "Toàn trường".</li>
+  <li><b>Lần mở đầu tiên trong ngày hơi chậm:</b> máy chủ miễn phí "ngủ" khi không ai dùng. Bình thường.</li>
+  <li><b>Thấy sai hoặc lỗi:</b> chụp màn hình, ghi lại vừa bấm gì, gửi cho thầy Phương (Zalo).</li>
+  <li><b>Dữ liệu dùng thử</b> của lớp 3THU (nhật ký, mượn, review, thử thách) có thể bị xoá khi thầy Phương chạy kiểm tra tự động.
+    Số liệu "Trước / Sau" đã nhập ở trang Thống kê được giữ lại.</li>
+</ul>
+
+</body>
+</html>

@@ -4,6 +4,47 @@ Ghi mới nhất ở trên. Mỗi phiên thêm 1 mục: đã làm, kiểm tra g�
 
 ---
 
+## 19/11/2026 (khuya) — Rà soát bảo mật + hiệu năng, tách mã, Hướng dẫn tập 3
+
+### Rà soát (hỏi thẳng Neon, không chỉ đọc mã)
+- 17 bảng đều RLS; 6 bảng không cấp quyền gì (chỉ qua hàm): pin_hs, lop_sai_pin, review, thu_gui_minh, thu_thach_lop, so_lieu_sang_kien.
+  `lop.ma_lop` không đọc thẳng được (quyền theo cột). Mọi hàm security definer gọi được từ app đều có kiểm vai trò; hàm nội bộ đã thu quyền.
+  Hàm gọi được mà không kiểm quyền chỉ là hàm thuần: `bo_dau`, `so_chu`, `tao_ma_lop`, `ten_hien` (không đọc dữ liệu).
+- Supabase: **tắt tự đăng ký**. Edge Function kiểm người gọi bằng thẻ thật + vai trò ở Neon. Chưa có `api/` (Gemini chưa dùng → không gửi tên HS).
+- Git (kho công khai): quét toàn bộ lịch sử — không có khoá, chuỗi kết nối, mật khẩu. Bảng tài khoản cũ (trước 102d8d6) chỉ có
+  tên đăng nhập + email quản trị, KHÔNG có mật khẩu → rủi ro thấp (mật khẩu quản trị phải mạnh).
+- Giao diện: không innerHTML / eval, không tải lại cả trang, không hỏi định kỳ. Lưu xong đều cập nhật tại chỗ; sửa `useTuSach.sauDocXong`
+  (bỏ tải lại cả danh sách mượn sau khi đọc xong).
+- Thêm `src/danhMucHam.test.js`: mọi hàm xuất ở domain / data / lib / scripts + mọi hàm SQL phải có tên trong ARCHITECTURE.md
+  (thiếu → `npm test` đỏ). Đã bổ sung các tên còn thiếu; ghi rõ hàm đã bỏ (`chuoi_cua`, `dat_muc_tieu`).
+- `vercel.json`: thêm X-Frame-Options, nosniff, Referrer-Policy, Permissions-Policy (chưa CSP — cần thử kỹ vì Supabase / Neon / Cloudinary).
+- PIN: cả lớp sai 60 lần/ngày → khoá lớp (1 em nghịch làm được). "Đổi mã lớp" xoá bộ đếm → đã ghi rõ trên trang Mã lớp & PIN.
+
+### Dữ liệu gấp 10 lần (1.200 HS, 3.000 sách, 30.000 lượt mượn, 120.000 lần ghi — trong giao dịch rồi ROLLBACK)
+- `thong_ke` toàn trường **5,4 s → 0,26 s** (sách nằm im dò từng cuốn → gộp 1 lần; lọc theo mốc giờ dùng chỉ mục; theo lớp / chủ đề / tem
+  gộp bằng group by). Các hàm khác ≤ 0,12 s (Lớp của tôi 0,06 s, hộ chiếu 0,1 s, tìm sách 0,04 s).
+
+### Tách mã (giảm tải cho điện thoại)
+- Mọi trang tải khi mở tới (`Trang` trong App.jsx); thư viện tách `react` / `supabase` (vite.config.js manualChunks).
+  Mã app 604 kB → 38 kB (gzip 15 kB); thư viện được trình duyệt giữ lại qua các lần đưa bản mới. Đã thử bản build thật (vite preview): mọi trang 3 vai trò mở được.
+
+### Sao lưu
+- `npm run sao-luu` → `SaoLuu/neon_2026-11-19_2221`; chạy thử khôi phục (không --that-su) vào Neon chính: 17 bảng khớp số dòng, rollback. ĐÃ THỬ ĐƯỢC.
+
+### Hướng dẫn tập 3
+- `docs/huong-dan-thu-thu-3/` (html + PDF 13 trang + 12 ảnh): review, hộ chiếu, thử thách lớp, thống kê, ai xem được gì,
+  phiếu dùng thử 22 việc (A. chức năng 17, B. chặn quyền 5). Ảnh chụp từ dữ liệu dựng tạm ở lớp 3THU, đã dọn.
+
+### Kiểm tra
+- `npm test` 74/74 · `npm run test:quyen` 63/63 · eslint · build.
+
+### Còn dở
+- [ ] Gắn ★ lớp thí điểm; thủ thư nhập số Trước; nhập danh mục thật có chủ đề.
+- [ ] Ảnh bìa Cloudinary: KHÔNG dùng upload preset không ký từ trình duyệt (ai cũng tải lên được) → cần hàm máy chủ ký (secret API Cloudinary).
+- [ ] Xuất nhật ký tiêu biểu che tên (thầy để sau). CSP. Rủi ro thấp còn lại: HS tự khai nguồn "gợi ý" khi đặt trước; đọc xong không cần đã mượn.
+
+---
+
 ## 19/11/2026 (khuya) — Thống kê sáng kiến
 
 - Thầy duyệt: số Trước **gộp các lớp thí điểm**; GVCN **không** xem trang Thống kê; xuất nhật ký tiêu biểu che tên **để sau**.

@@ -55,38 +55,42 @@ end $$;
 -- Sách nằm im: tính toàn trường (sách không ẩn, còn bản, không ai mượn trong khoảng) — chỉ số của cả thư viện.
 create or replace function public.thong_ke(p_tu date, p_den date, p_pham_vi text default 'thi_diem', p_lop_id bigint default null)
 returns jsonb language plpgsql stable security definer set search_path = public as $$
-declare d date := public.hom_nay();
+declare d date := public.hom_nay(); v_tu timestamptz; v_den timestamptz;
 begin
   if not public.la_nhan_vien() then raise exception 'forbidden'; end if;
   if p_tu is null or p_den is null or p_den < p_tu or p_den - p_tu > 400 then raise exception 'sai_ngay'; end if;
   if p_pham_vi is null or p_pham_vi not in ('thi_diem', 'toan_truong', 'lop') or (p_pham_vi = 'lop' and p_lop_id is null) then
     raise exception 'sai_pham_vi';
   end if;
+  v_tu := p_tu::timestamp at time zone 'Asia/Ho_Chi_Minh';
+  v_den := (p_den + 1)::timestamp at time zone 'Asia/Ho_Chi_Minh';
   return (
     with hs as (
       select h.id, h.lop_id from public.ho_so h join public.lop l on l.id = h.lop_id
       where h.vai_tro = 'hoc_sinh' and h.hoat_dong
         and case p_pham_vi when 'thi_diem' then l.thi_diem when 'lop' then l.id = p_lop_id else true end),
-    lm as (   -- mọi lượt (kể cả đặt) của các em trong phạm vi, kèm ngày giao / ngày đặt theo giờ VN
-      select x.id, x.sach_id, x.hoc_sinh_id, x.trang_thai, x.nguon, x.han_tra, hs.lop_id,
-             (x.ngay_muon at time zone 'Asia/Ho_Chi_Minh')::date ngay_muon,
-             (x.ngay_dat at time zone 'Asia/Ho_Chi_Minh')::date ngay_dat,
-             (x.ngay_xong at time zone 'Asia/Ho_Chi_Minh')::date ngay_xong
-      from public.luot_muon x join hs on hs.id = x.hoc_sinh_id),
-    m as (select * from lm where trang_thai in ('dang_muon', 'da_tra', 'mat') and ngay_muon between p_tu and p_den),
+    -- Lọc theo khoảng bằng mốc giờ (dùng được chỉ mục luot_muon(ngay_muon)); v_tu / v_den = 0 giờ VN của ngày đầu / ngày sau cuối.
+    m as (select x.sach_id, x.hoc_sinh_id, x.trang_thai, x.han_tra, hs.lop_id,
+                 (x.ngay_muon at time zone 'Asia/Ho_Chi_Minh')::date ngay_muon, (x.ngay_xong at time zone 'Asia/Ho_Chi_Minh')::date ngay_xong
+          from public.luot_muon x join hs on hs.id = x.hoc_sinh_id
+          where x.ngay_muon >= v_tu and x.ngay_muon < v_den and x.trang_thai in ('dang_muon', 'da_tra', 'mat')),
+    dat as (select x.nguon from public.luot_muon x join hs on hs.id = x.hoc_sinh_id where x.ngay_dat >= v_tu and x.ngay_dat < v_den),
     nk as (select n.hoc_sinh_id, n.tinh_chuoi, n.cung_bo_me, n.bo_me_viet
            from public.nhat_ky n join hs on hs.id = n.hoc_sinh_id where n.ngay between p_tu and p_den),
     dx as (select x.hoc_sinh_id, x.sach_id, x.muc_thich
            from public.doc_xong x join hs on hs.id = x.hoc_sinh_id where x.ngay between p_tu and p_den),
+    sach_co_muon as (select distinct sach_id from public.luot_muon where ngay_muon >= v_tu and ngay_muon < v_den),   -- toàn trường
     sach_im as (select s.ma_sach, s.ten from public.sach s
-                where not s.an and s.so_ban > 0
-                  and not exists (select 1 from public.luot_muon x where x.sach_id = s.id and x.ngay_muon is not null
-                                  and (x.ngay_muon at time zone 'Asia/Ho_Chi_Minh')::date between p_tu and p_den)),
-    cd as (select c.ten,
-             (select count(*) from m join public.sach_chu_de sc on sc.sach_id = m.sach_id where sc.chu_de_id = c.id) so_muon,
-             (select count(*) from dx join public.sach_chu_de sc on sc.sach_id = dx.sach_id where sc.chu_de_id = c.id) so_doc_xong,
-             (select round(avg(dx.muc_thich), 1) from dx join public.sach_chu_de sc on sc.sach_id = dx.sach_id where sc.chu_de_id = c.id) thich_tb
-           from public.chu_de c)
+                where not s.an and s.so_ban > 0 and not exists (select 1 from sach_co_muon c where c.sach_id = s.id)),
+    theo_lop as (select l.ten, l.khoi, si.n si_so, coalesce(ml.so_luot, 0) so_luot, coalesce(ml.so_hs, 0) so_hs
+                 from (select lop_id, count(*) n from hs group by lop_id) si join public.lop l on l.id = si.lop_id
+                 left join (select lop_id, count(*) so_luot, count(distinct hoc_sinh_id) so_hs from m group by lop_id) ml on ml.lop_id = si.lop_id),
+    cd_muon as (select sc.chu_de_id, count(*) n from m join public.sach_chu_de sc on sc.sach_id = m.sach_id group by 1),
+    cd_doc as (select sc.chu_de_id, count(*) n, round(avg(dx.muc_thich), 1) thich from dx join public.sach_chu_de sc on sc.sach_id = dx.sach_id group by 1),
+    cd as (select c.ten, coalesce(a.n, 0) so_muon, coalesce(b.n, 0) so_doc_xong, b.thich thich_tb
+           from public.chu_de c left join cd_muon a on a.chu_de_id = c.id left join cd_doc b on b.chu_de_id = c.id),
+    tem as (select hs.id, count(distinct sc.chu_de_id) n     -- như tem_cua(hs), tính gộp 1 lần
+            from hs left join public.doc_xong d on d.hoc_sinh_id = hs.id left join public.sach_chu_de sc on sc.sach_id = d.sach_id group by hs.id)
     select jsonb_build_object(
       'tu', p_tu, 'den', p_den, 'so_ngay', p_den - p_tu + 1, 'pham_vi', p_pham_vi,
       'si_so', (select count(*) from hs),
@@ -95,19 +99,16 @@ begin
         'so_hs', (select count(distinct hoc_sinh_id) from m),
         'theo_thang', coalesce((select jsonb_agg(jsonb_build_object('thang', t, 'so', n) order by t)
                                 from (select to_char(ngay_muon, 'YYYY-MM') t, count(*) n from m group by 1) x), '[]'::jsonb),
-        'theo_lop', coalesce((select jsonb_agg(jsonb_build_object('lop', l.ten, 'khoi', l.khoi,
-                                'si_so', (select count(*) from hs where hs.lop_id = l.id),
-                                'so_luot', (select count(*) from m where m.lop_id = l.id),
-                                'so_hs', (select count(distinct m.hoc_sinh_id) from m where m.lop_id = l.id)) order by l.khoi, l.ten)
-                              from public.lop l where l.id in (select lop_id from hs)), '[]'::jsonb),
+        'theo_lop', coalesce((select jsonb_agg(jsonb_build_object('lop', ten, 'khoi', khoi, 'si_so', si_so, 'so_luot', so_luot, 'so_hs', so_hs)
+                                               order by khoi, ten) from theo_lop), '[]'::jsonb),
         'top', coalesce((select jsonb_agg(jsonb_build_object('ma_sach', s.ma_sach, 'ten', s.ten, 'so', x.n) order by x.n desc, s.ten)
                          from (select sach_id, count(*) n from m group by sach_id order by count(*) desc, sach_id limit 10) x
                          join public.sach s on s.id = x.sach_id), '[]'::jsonb),
         'tre', (select count(*) from m where m.han_tra is not null
                 and ((m.trang_thai = 'da_tra' and m.ngay_xong > m.han_tra) or (m.trang_thai = 'dang_muon' and m.han_tra < d))),
         'mat', (select count(*) from m where m.trang_thai = 'mat'),
-        'dat_app', (select count(*) from lm where lm.ngay_dat between p_tu and p_den),
-        'dat_goi_y', (select count(*) from lm where lm.ngay_dat between p_tu and p_den and lm.nguon = 'goi_y')),
+        'dat_app', (select count(*) from dat),
+        'dat_goi_y', (select count(*) from dat where nguon = 'goi_y')),
       'nam_im', jsonb_build_object(
         'so', (select count(*) from sach_im),
         'tong_sach', (select count(*) from public.sach where not an and so_ban > 0),
@@ -122,10 +123,10 @@ begin
         'doc_xong', (select count(*) from dx),
         'so_hs_doc_xong', (select count(distinct hoc_sinh_id) from dx),
         'review_duyet', (select count(*) from public.review r join hs on hs.id = r.hoc_sinh_id
-                         where r.trang_thai = 'da_duyet' and (r.duyet_luc at time zone 'Asia/Ho_Chi_Minh')::date between p_tu and p_den),
+                         where r.trang_thai = 'da_duyet' and r.duyet_luc >= v_tu and r.duyet_luc < v_den),
         'thu_thach_dat', (select count(*) from public.moc_dat md join hs on hs.id = md.hoc_sinh_id
-                          where md.ma = 'thu_thach' and (md.dat_luc at time zone 'Asia/Ho_Chi_Minh')::date between p_tu and p_den),
-        'tem_tb', (select round(avg(cardinality(public.tem_cua(hs.id))), 1) from hs),
+                          where md.ma = 'thu_thach' and md.dat_luc >= v_tu and md.dat_luc < v_den),
+        'tem_tb', (select round(avg(n), 1) from tem),
         'chu_de', coalesce((select jsonb_agg(jsonb_build_object('ten', ten, 'so_muon', so_muon, 'so_doc_xong', so_doc_xong, 'thich_tb', thich_tb)
                                              order by so_muon + so_doc_xong desc, ten)
                             from (select * from cd where so_muon + so_doc_xong > 0 order by so_muon + so_doc_xong desc, ten limit 10) x), '[]'::jsonb))

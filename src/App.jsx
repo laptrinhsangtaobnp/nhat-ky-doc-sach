@@ -5,24 +5,32 @@ import { AuthProvider, useAuth } from './context/AuthContext'
 import ChoVaiTro, { ManChoTai } from './components/ui/ChoVaiTro'
 import KhungTrang from './components/ui/KhungTrang'
 import DangNhap from './pages/DangNhap'
-import TimSachPage from './pages/sach/TimSachPage'
-import ChiTietSachPage from './pages/sach/ChiTietSachPage'
-import TuSachPage from './pages/hocSinh/TuSachPage'
-import GhiNhatKyPage from './pages/hocSinh/GhiNhatKyPage'
-import NhatKyCuaEmPage from './pages/hocSinh/NhatKyCuaEmPage'
-import NhinLaiPage from './pages/hocSinh/NhinLaiPage'
 import { trangChu } from './domain/taiKhoan'
 import { THIEU_CAU_HINH } from './data/cauHinh'
 
-// Trang nhân viên tải riêng (kèm thư viện đọc Excel) → học sinh mở app nhẹ hơn
+// Mỗi trang tải riêng khi mở tới (trang đăng nhập + khung có sẵn) → mở app nhanh trên điện thoại; trang nhân viên kèm thư viện Excel
+const TimSachPage = lazy(() => import('./pages/sach/TimSachPage'))
+const ChiTietSachPage = lazy(() => import('./pages/sach/ChiTietSachPage'))
+const TuSachPage = lazy(() => import('./pages/hocSinh/TuSachPage'))
+const GhiNhatKyPage = lazy(() => import('./pages/hocSinh/GhiNhatKyPage'))
+const NhatKyCuaEmPage = lazy(() => import('./pages/hocSinh/NhatKyCuaEmPage'))
+const NhinLaiPage = lazy(() => import('./pages/hocSinh/NhinLaiPage'))
+const HoChieuPage = lazy(() => import('./pages/hocSinh/HoChieuPage'))
 const TaiKhoanPage = lazy(() => import('./pages/quanTri/TaiKhoanPage'))
 const MuonTraPage = lazy(() => import('./pages/thuThu/MuonTraPage'))
-const LopCuaToiPage = lazy(() => import('./pages/giaoVien/LopCuaToiPage'))
 const ThongKePage = lazy(() => import('./pages/thuThu/ThongKePage'))
+const LopCuaToiPage = lazy(() => import('./pages/giaoVien/LopCuaToiPage'))
 const MaLopPinPage = lazy(() => import('./pages/giaoVien/MaLopPinPage'))
-const HoChieuPage = lazy(() => import('./pages/hocSinh/HoChieuPage'))
 
 const NHAN_VIEN = ['quan_tri', 'thu_thu']
+const HS = ['hoc_sinh']
+const GV_NV = ['giao_vien', ...NHAN_VIEN]
+
+/** Trang có kiểm vai trò (vaiTro null = mọi người đã đăng nhập) + màn chờ khi đang tải phần mã của trang. */
+function Trang({ vaiTro, children }) {
+  const t = <Suspense fallback={<ManChoTai />}>{children}</Suspense>
+  return vaiTro ? <ChoVaiTro vaiTro={vaiTro}>{t}</ChoVaiTro> : t
+}
 
 function VeTrangChu() {
   const { hoSo, dangTai } = useAuth()
@@ -41,21 +49,21 @@ export default function App() {
         <Routes>
           <Route path="/dang-nhap" element={<DangNhap />} />
           <Route element={<ChoVaiTro><KhungTrang /></ChoVaiTro>}>
-            <Route path="/hoc-sinh" element={<ChoVaiTro vaiTro={['hoc_sinh']}><TuSachPage /></ChoVaiTro>} />
-            <Route path="/giao-vien" element={<ChoVaiTro vaiTro={['giao_vien']}><Suspense fallback={<ManChoTai />}><LopCuaToiPage /></Suspense></ChoVaiTro>} />
-            <Route path="/thu-vien/thong-ke" element={<ChoVaiTro vaiTro={NHAN_VIEN}><Suspense fallback={<ManChoTai />}><ThongKePage /></Suspense></ChoVaiTro>} />
-            <Route path="/thu-vien/lop" element={<ChoVaiTro vaiTro={NHAN_VIEN}><Suspense fallback={<ManChoTai />}><LopCuaToiPage /></Suspense></ChoVaiTro>} />
-            <Route path="/lop/ma-pin" element={<ChoVaiTro vaiTro={['giao_vien', ...NHAN_VIEN]}><Suspense fallback={<ManChoTai />}><MaLopPinPage /></Suspense></ChoVaiTro>} />
-            <Route path="/lop/hs/:hsId" element={<ChoVaiTro vaiTro={['giao_vien', ...NHAN_VIEN]}><NhinLaiPage /></ChoVaiTro>} />
-            <Route path="/nhat-ky" element={<ChoVaiTro vaiTro={['hoc_sinh']}><NhatKyCuaEmPage /></ChoVaiTro>} />
-            <Route path="/nhat-ky/ghi" element={<ChoVaiTro vaiTro={['hoc_sinh']}><GhiNhatKyPage /></ChoVaiTro>} />
-            <Route path="/nhat-ky/:id/sua" element={<ChoVaiTro vaiTro={['hoc_sinh']}><GhiNhatKyPage /></ChoVaiTro>} />
-            <Route path="/nhin-lai" element={<ChoVaiTro vaiTro={['hoc_sinh']}><NhinLaiPage /></ChoVaiTro>} />
-            <Route path="/ho-chieu" element={<ChoVaiTro vaiTro={['hoc_sinh']}><Suspense fallback={<ManChoTai />}><HoChieuPage /></Suspense></ChoVaiTro>} />
-            <Route path="/thu-vien" element={<ChoVaiTro vaiTro={NHAN_VIEN}><Suspense fallback={<ManChoTai />}><MuonTraPage /></Suspense></ChoVaiTro>} />
-            <Route path="/sach" element={<TimSachPage />} />
-            <Route path="/sach/:id" element={<ChiTietSachPage />} />
-            <Route path="/thu-vien/tai-khoan" element={<ChoVaiTro vaiTro={NHAN_VIEN}><Suspense fallback={<ManChoTai />}><TaiKhoanPage /></Suspense></ChoVaiTro>} />
+            <Route path="/hoc-sinh" element={<Trang vaiTro={HS}><TuSachPage /></Trang>} />
+            <Route path="/nhat-ky" element={<Trang vaiTro={HS}><NhatKyCuaEmPage /></Trang>} />
+            <Route path="/nhat-ky/ghi" element={<Trang vaiTro={HS}><GhiNhatKyPage /></Trang>} />
+            <Route path="/nhat-ky/:id/sua" element={<Trang vaiTro={HS}><GhiNhatKyPage /></Trang>} />
+            <Route path="/nhin-lai" element={<Trang vaiTro={HS}><NhinLaiPage /></Trang>} />
+            <Route path="/ho-chieu" element={<Trang vaiTro={HS}><HoChieuPage /></Trang>} />
+            <Route path="/giao-vien" element={<Trang vaiTro={['giao_vien']}><LopCuaToiPage /></Trang>} />
+            <Route path="/lop/ma-pin" element={<Trang vaiTro={GV_NV}><MaLopPinPage /></Trang>} />
+            <Route path="/lop/hs/:hsId" element={<Trang vaiTro={GV_NV}><NhinLaiPage /></Trang>} />
+            <Route path="/thu-vien" element={<Trang vaiTro={NHAN_VIEN}><MuonTraPage /></Trang>} />
+            <Route path="/thu-vien/lop" element={<Trang vaiTro={NHAN_VIEN}><LopCuaToiPage /></Trang>} />
+            <Route path="/thu-vien/thong-ke" element={<Trang vaiTro={NHAN_VIEN}><ThongKePage /></Trang>} />
+            <Route path="/thu-vien/tai-khoan" element={<Trang vaiTro={NHAN_VIEN}><TaiKhoanPage /></Trang>} />
+            <Route path="/sach" element={<Trang><TimSachPage /></Trang>} />
+            <Route path="/sach/:id" element={<Trang><ChiTietSachPage /></Trang>} />
           </Route>
           <Route path="*" element={<VeTrangChu />} />
         </Routes>
