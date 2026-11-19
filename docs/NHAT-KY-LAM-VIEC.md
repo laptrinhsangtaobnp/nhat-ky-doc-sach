@@ -31,6 +31,9 @@ Ghi mới nhất ở trên. Mỗi phiên thêm 1 mục: đã làm, kiểm tra g�
 - Nhập Excel có cột Số trang, Câu hỏi (`sql/2026-11-19_nhap_so_trang.sql` đã chạy; tệp mẫu `public/mau-danh-muc-sach.xlsx` có 2 cột mới).
 - Tạo tài khoản GVCN thử (xem docs/TAI-KHOAN.local.md, lớp 3THU, `THU_GV` trong .env) — tạo bằng thủ thư thử qua `tao-tai-khoan` (vai trò HS) rồi đổi
   vai trò bằng SQL chủ (PAT không đọc được khoá quản trị Supabase). `tests/that/giaoVien.test.js` 5/5; tổng test thật 40/40.
+- **Vercel chặn deploy ("Blocked")** vì email commit `laptrinhsangtao@gmail.com` không gắn với GitHub `laptrinhsangtaobnp`.
+  Đã đặt `git config user.email` (CHỈ trong dự án này) = email noreply GitHub của `laptrinhsangtaobnp`. Kho đã chuyển Public.
+  Commit trong dự án này: KHÔNG thêm dòng Co-Authored-By (thầy chốt khi sửa lỗi Vercel). Danh sách tài khoản: docs/TAI-KHOAN.local.md.
 - **Link thật có "Vercel Security Checkpoint" (chống bot)** → curl / Chrome tự động không vào được; phải nhờ thầy mở bằng điện thoại để kiểm.
 
 ### Còn dở
