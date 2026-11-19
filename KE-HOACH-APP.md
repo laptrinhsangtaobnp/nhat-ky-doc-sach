@@ -175,6 +175,12 @@ So sánh cũ / mới đã trình thầy; thầy đồng ý theo đề xuất c�
 - Trang **Hộ chiếu** (menu HS): tem có màu + ngày + cuốn; tem chưa có: gợi ý ≤ 2 cuốn cùng thể loại (đúng khối, còn trên kệ) + Đặt trước.
 - Mốc **Nhà thám hiểm** (5 tem) và **Hộ chiếu đầy** (đủ tem, khi thư viện có ≥ 5 chủ đề). GVCN / thủ thư: cột "Tem thể loại" (chỉ số).
 
+### Thử thách lớp — thầy duyệt 19/11/2026 (đã làm, `sql/2026-11-19_thu_thach_lop.sql`)
+- GVCN đặt cho lớp mình (thủ thư / quản trị: lớp nào cũng được): tên, từ – đến ngày (≤ 62 ngày), **mỗi em cần N ngày ghi**
+  (ngày cây lớn, 1 ngày tính 1 lần, máy chủ đếm). Mỗi lớp 1 thử thách chưa xong; kết thúc sớm được.
+- HS (trang chủ): số ngày của em + "X/Y bạn đã đạt" — không tên bạn, không xếp hạng. GVCN: tiến độ + cột "Thử thách" (chỉ số).
+- Em đạt → mốc 🏅 **Hoàn thành thử thách lớp** (nhận 1 lần). **Để sau:** điều kiện theo thể loại ("đọc 1 cuốn cổ tích").
+
 ### Review bạn bè — thầy duyệt 19/11/2026 (đã làm, `sql/2026-11-19_review.sql`)
 - Em **đã đọc xong** mới viết "Giới thiệu sách cho bạn" (10–300 ký tự): ở hộp "Em đọc xong rồi" hoặc trang cuốn sách. Tách riêng
   cảm nhận / thư (chỉ em xem). Mỗi em 1 bài / cuốn; tối đa 5 bài viết mới / ngày.

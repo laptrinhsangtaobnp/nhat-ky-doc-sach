@@ -14,6 +14,7 @@ import KhungThoiQuen from '../../components/nhatKy/KhungThoiQuen'
 import DocXongModal from '../../components/nhatKy/DocXongModal'
 import GocBoMe from '../../components/nhatKy/GocBoMe'
 import ThuModal from '../../components/nhatKy/ThuModal'
+import TheThuThachEm from '../../components/thuThach/TheThuThachEm'
 
 function TheLuot({ l, homNay, onHuy, children }) {
   return (
@@ -73,6 +74,7 @@ export default function TuSachPage() {
       </div>
 
       {ts.tq && <KhungThoiQuen tq={ts.tq} homNay={homNay} onMoThu={setThu} />}
+      <TheThuThachEm homNay={homNay} />
 
       {ts.dangTai ? <p className="text-stone-500" role="status">Đang tải…</p> : <>
         <Phan tieuDe="Em đang mượn" ds={ts.dangMuon} trong="Em chưa mượn cuốn nào."

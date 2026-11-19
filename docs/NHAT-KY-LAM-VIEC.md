@@ -4,6 +4,23 @@ Ghi mới nhất ở trên. Mỗi phiên thêm 1 mục: đã làm, kiểm tra g�
 
 ---
 
+## 19/11/2026 (khuya) — Thử thách lớp theo số ngày ghi
+
+- Commit hộ chiếu đã đẩy là `00d6508` nhưng **lời commit bị sai** (dùng nhầm tệp lời cũ "Giai đoạn 3…"). Thầy chọn để nguyên.
+  → Viết lời commit bằng tệp mới mỗi lần, không dùng lại `msg.txt` cũ trong scratchpad.
+- Thầy duyệt: (a) mỗi em đạt N ngày, lớp đếm "X/Y bạn đạt"; điều kiện thể loại **để sau**; có mốc 🏅 `thu_thach`.
+- `sql/2026-11-19_thu_thach_lop.sql` đã chạy Neon 2 lần (bảng mới, không cần Refresh lần này). Dùng lại `quan_ly_lop` của tệp PIN.
+- Giao diện: `components/thuThach/` — `TheThuThachEm` (trang chủ HS), `ThuThachLop` + `FormThuThach` (Lớp của tôi, cột "Thử thách").
+- Kiểm tra: `npm test` 66/66 · `npm run test:quyen` 58/58 (`thuThach.test.js` 6) · eslint sạch. Thử Chrome: GVCN đặt thử thách
+  trên giao diện → bảng hiện 1/3, 3/3 🏅, 0/3; HS thấy "Em 1/3 ngày · Cả lớp 1/3 bạn đã đạt" (1200px + 390px). Đã dọn.
+- Lưu ý: PowerShell `Get-Content | Set-Content` làm **hỏng chữ tiếng Việt** (đọc sai bảng mã) — sửa tệp bằng Edit / sed / python.
+
+### Còn dở
+- [ ] Thống kê sáng kiến (số liệu trước – sau, xuất Excel). Hướng dẫn thủ thư: duyệt review, nhập chủ đề, thử thách lớp (cho GVCN).
+- [ ] Menu HS trên điện thoại 5 mục (vuốt ngang mới thấy "Tìm sách").
+
+---
+
 ## 19/11/2026 (tối) — Hộ chiếu thể loại
 
 - Thầy duyệt: tem = chủ đề, có 2 mốc. `sql/2026-11-19_ho_chieu.sql` đã chạy Neon 2 lần (thay 3 hàm của tệp cay_doc_sach).

@@ -60,6 +60,8 @@ Có rồi thì dùng lại; thấy 2 hàm cùng việc thì gộp. Thêm / đổ
 | | `conSuaDuoc(ngay, homNay)` | trong 7 ngày (máy chủ cũng chặn) |
 | | `loiNhac(lanGhiCuoi, homNay)` | dòng nhắc trang chủ |
 | | `camXucNhieuNhat(dem)`, `chuThang(thang)`, `loiNhatKy(loi)` | Nhìn lại; "T11"; lỗi máy chủ → câu dễ hiểu |
+| `thuThach.js` | `congNgay(ngay, n)`, `doDai(tu, den)`, `thuThachMau(homNay)`, `kiemThuThach(f, homNay)` | ngày; form mặc định 4 tuần / 12 ngày; kiểm trước như máy chủ |
+| | `tinhTrangThuThach(tt, homNay)`, `phanTramEm`, `loiEm`, `loiThuThach(loi)` | sắp / đang / xong + chữ; câu cho em; lỗi máy chủ → câu dễ hiểu |
 | `hoChieu.js` | `mauTem(i)`, `tienDoHoChieu(tem)`, `loiHoChieu(td)` | màu tem; { co, tong, conLai }; câu khích lệ |
 | `review.js` | `REVIEW_TOI_THIEU`, `REVIEW_TOI_DA`, `LY_DO_KHONG_DUYET`, `TRANG_THAI_REVIEW` | 10–300 ký tự; lý do không duyệt; nhãn trạng thái |
 | | `kiemReview(noiDung)`, `tenNguoiViet({ten, lop})`, `chuDaDoc({da_doc, cung_lop, lop})`, `loiReview(loi)` | kiểm trước khi gửi; "Lan N.T. – lớp 3A" / "Một bạn lớp 3A"; "12 bạn đã đọc · 5 bạn lớp 3A"; lỗi máy chủ |
@@ -85,6 +87,7 @@ Có rồi thì dùng lại; thấy 2 hàm cùng việc thì gộp. Thêm / đổ
 | `caiDat.js` | `layCaiDat()`, `suaCaiDat({...})` | quy tắc mượn (bảng `cai_dat`) |
 | `nhatKy.js` | `ghiNhatKy(sachId, nd)`, `suaNhatKy(id, nd)`, `xoaNhatKy(id)`, `doiChoCoXem(id, cho)`, `danhDauDocXong(sachId, mucThich, camNhan, thu)`, `moThu(sachId)` | HS ghi (rpc, ném lỗi) |
 | | `layHoChieu()` | hộ chiếu thể loại (rpc `ho_chieu_cua_toi`) |
+| `thuThach.js` | `layThuThachCuaToi()`, `layThuThachLop(lopId)`, `taoThuThach(lopId, f)`, `ketThucThuThach(id)` | thử thách lớp (rpc, ném lỗi) |
 | | `layTongQuan()`, `layGoiYDocTiep(sachId)`, `layNhinLai(hsId)`, `layLopTongQuan(lopId)` | rpc đọc (máy chủ tính cây / mốc / thống kê; người khác chỉ nhận con số) |
 | | `layNhatKy({hsId, sachId, camXuc, tuKhoa, trang})`, `layMotNhatKy(id)` | bảng `nhat_ky` (RLS: em hết; GVCN / nhân viên chỉ lần "Cho cô xem"), 30 dòng/trang |
 | `review.js` | `vietReview(sachId, noiDung, anTen)`, `xoaReview(sachId)`, `layReviewSach(sachId)` | HS viết / sửa (→ chờ duyệt lại) / xoá; trang sách (rpc) |
@@ -119,6 +122,9 @@ Nhật ký: HS `ghi_nhat_ky`, `sua_nhat_ky` / `xoa_nhat_ky` (7 ngày), `doi_cho_
 Hộ chiếu (`sql/2026-11-19_ho_chieu.sql`, **thay** `cap_nhat_moc`, `danh_dau_doc_xong` (+ `tem_moi`), `lop_tong_quan` (+ `so_tem`, `tong_chu_de`)):
 HS `ho_chieu_cua_toi` (tem theo chủ đề + ≤ 2 gợi ý cho tem chưa có); nội bộ `tem_cua(hs)` (chủ đề đã có tem, tính từ doc_xong + sach_chu_de).
 Mốc `tham_hiem` (5 tem), `ho_chieu_day` (đủ tem, thư viện ≥ 5 chủ đề).
+Thử thách lớp (`sql/2026-11-19_thu_thach_lop.sql`, **thay** `cap_nhat_moc` (+ mốc `thu_thach`)): GVCN lớp mình / nhân viên `tao_thu_thach`
+(≤ 62 ngày, 1 thử thách chưa xong / lớp, không chồng thời gian), `ket_thuc_thu_thach` (đến = hôm qua; chưa bắt đầu → xoá), `thu_thach_lop(lop)`
+(số ngày từng em); HS `thu_thach_cua_toi` (em + X/Y bạn đạt, không tên). Nội bộ `ngay_ghi_trong(hs, tu, den)`, `tom_tat_thu_thach(id, tung_em)`; quyền: `quan_ly_lop`.
 Review (`sql/2026-11-19_review.sql`): HS `viet_review` (đã đọc xong, ≤ 5 bài / ngày, sửa → chờ duyệt lại), `xoa_review`;
 mọi người đã đăng nhập `review_cua_sach` (con số + 30 bài đã duyệt, ẩn tên thì không gửi tên; HS: bài của em); nhân viên `review_cho_duyet`,
 `duyet_review(id, duyet, ly_do, sua_luc)`.
@@ -133,7 +139,7 @@ Mã lớp + PIN (`sql/2026-11-19_dang_nhap_pin.sql`): `quan_ly_lop(lop)`, `lay_m
 `tao_pin(lop, hs?)` (PIN rõ chỉ trả lúc tạo, lưu bcrypt) — nhân viên / GVCN lớp mình. Chỉ vai trò `dang_nhap_pin`: `ds_ten_theo_ma(ma)`
 (tên rút gọn `ten_hien`), `kiem_pin(ma, hs, pin)` (sai 5 liền → khoá 15 phút; 15 / ngày → hết ngày; cả lớp 60 / ngày → khoá lớp).
 
-## Cơ sở dữ liệu (Neon) — `sql/2026-11-17_khoi_tao.sql`, `sql/2026-11-18_danh_muc_sach.sql`, `sql/2026-11-18_muon_tra.sql`, `sql/2026-11-18_nhat_ky.sql`, `sql/2026-11-19_cay_doc_sach.sql`, `sql/2026-11-19_review.sql`
+## Cơ sở dữ liệu (Neon) — `sql/2026-11-17_khoi_tao.sql`, `sql/2026-11-18_danh_muc_sach.sql`, `sql/2026-11-18_muon_tra.sql`, `sql/2026-11-18_nhat_ky.sql`, `sql/2026-11-19_cay_doc_sach.sql`, `sql/2026-11-19_review.sql`, `sql/2026-11-19_ho_chieu.sql`, `sql/2026-11-19_thu_thach_lop.sql`
 | Bảng | Ai đọc | Ai ghi |
 |---|---|---|
 | `ho_so` | tự mình; nhân viên: tất cả; GVCN: HS lớp mình | chỉ qua hàm `tao_ho_so` / `sua_ho_so` (nhân viên; thủ thư chỉ với HS) / `xoa_ho_so` (quản trị) |
@@ -150,6 +156,7 @@ Mã lớp + PIN (`sql/2026-11-19_dang_nhap_pin.sql`): `quan_ly_lop(lop)`, `lay_m
 | `moc_dat` (mốc) | em; GVCN lớp em; nhân viên | chỉ qua hàm |
 | `thu_gui_minh` (thư gửi chính mình, `mo_ngay`, `da_mo_luc`) | **không ai đọc thẳng** — em mở qua `mo_thu` khi đến ngày | chỉ qua `danh_dau_doc_xong` |
 | `review` (bài giới thiệu sách cho bạn: 1 / em / cuốn, `an_ten`, `trang_thai` cho_duyet → da_duyet / khong_duyet + `ly_do`) | **không ai đọc thẳng** — qua `review_cua_sach` (bài đã duyệt) / `review_cho_duyet` (nhân viên) | chỉ qua hàm review |
+| `thu_thach_lop` (tên, từ – đến ngày, số ngày cần ghi; lớp) | **không ai đọc thẳng** — qua `thu_thach_cua_toi` / `thu_thach_lop` | chỉ qua `tao_thu_thach` / `ket_thuc_thu_thach` |
 | `tuy_chon_hs` (mục tiêu tháng — **bỏ từ 19/11**, giữ bảng) | em | không còn hàm ghi |
 
 Hàm hỏi quyền: `vai_tro_cua_toi()`, `lop_cua_toi()`, `la_nhan_vien()` — STABLE, security definer, gọi trong RLS dạng
@@ -167,5 +174,7 @@ Hàm hỏi quyền: `vai_tro_cua_toi()`, `lop_cua_toi()`, `la_nhan_vien()` — S
   HS, GVCN bị chặn; duyệt cần đúng bản; ẩn tên không lộ tên; sửa → duyệt lại; sách ẩn; ≤ 5 bài / ngày),
   `hoChieu.test.js` hộ chiếu (chỉ HS, không gọi hàm nội bộ; 2 chủ đề → 2 tem; không tem lại; gợi ý không có sách ẩn;
   mốc 5 tem / đầy; GVCN / nhân viên chỉ con số so_tem),
+  `thuThach.test.js` thử thách lớp (không ai đọc / ghi thẳng bảng; HS không đặt / kết thúc; GVCN chỉ lớp mình; máy chủ kiểm ngày;
+  máy chủ đếm ngày cây lớn trong khoảng; HS chỉ con số; đạt → mốc; kết thúc sớm),
   `pin.test.js` mã lớp + PIN (HS không xem mã / tạo PIN / gọi kiem_pin; vai trò PIN chỉ gọi 2 hàm; khoá khi sai; đổi mã; Edge Function)
   — người lạ, HS, thủ thư thật trên Neon / Edge Function. Chạy lần lượt từng tệp; dọn dữ liệu thử bằng `sqlChu` (quyền chủ CSDL).

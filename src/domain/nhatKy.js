@@ -47,6 +47,7 @@ export const MOC = {
   ngay_100: { hinh: '🍎', ten: '100 ngày ghi nhật ký', moTa: 'Cây của em đã ra quả sau 100 ngày. Tuyệt vời!' },
   gia_dinh: { hinh: '👨‍👩‍👧', ten: 'Gia đình đọc sách', moTa: 'Em và bố mẹ đã cùng đọc, cùng ghi 5 lần!' },
   tham_hiem: { hinh: '🧭', ten: 'Nhà thám hiểm', moTa: 'Hộ chiếu của em đã có 5 con tem thể loại khác nhau!' },
+  thu_thach: { hinh: '🏅', ten: 'Hoàn thành thử thách lớp', moTa: 'Em đã ghi đủ số ngày của thử thách lớp!' },
   ho_chieu_day: { hinh: '🌏', ten: 'Hộ chiếu đầy', moTa: 'Em đã đọc đủ mọi thể loại của thư viện. Tuyệt vời!' },
   cuon_1: { hinh: '🌱', ten: 'Cuốn sách đầu tiên', moTa: 'Em đã đọc xong cuốn sách đầu tiên!' },
   cuon_5: { hinh: '📚', ten: '5 cuốn sách', moTa: 'Em đã đọc xong 5 cuốn sách!' },
