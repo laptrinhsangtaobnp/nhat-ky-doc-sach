@@ -1,9 +1,10 @@
-// Nhật ký, đọc xong, mốc, Nhìn lại, Lớp của tôi (Neon). Đọc: bảng nhat_ky (RLS: em, GVCN, nhân viên).
+// Nhật ký, đọc xong, thư gửi chính mình, Nhìn lại, Lớp của tôi (Neon). Đọc: bảng nhat_ky (RLS: em đọc hết của mình;
+// GVCN lớp em / nhân viên CHỈ đọc lần ghi em bấm "Cho cô xem").
 // Ghi: chỉ qua hàm máy chủ (máy chủ đặt ngày, tính chuỗi, mốc). Hàm thao tác ném lỗi → giao diện dùng loiNhatKy(loi).
 import { supabase } from '../lib/supabase'
 
 export const NHAT_KY_MOI_TRANG = 30
-const COT = 'id, sach_id, ngay, doan_nho, trang, cam_xuc, em_nghi, cung_bo_me, tinh_chuoi, sach(id, ma_sach, ten, tac_gia, anh_bia)'
+const COT = 'id, sach_id, ngay, doan_nho, trang, cam_xuc, em_nghi, cung_bo_me, bo_me_viet, cho_co_xem, tinh_chuoi, sach(id, ma_sach, ten, tac_gia, anh_bia)'
 
 async function goi(ham, thamSo) {
   const { data, error } = await supabase.rpc(ham, thamSo)
@@ -11,19 +12,27 @@ async function goi(ham, thamSo) {
   return data
 }
 
-const thamSoGhi = ({ camXuc, doanNho, emNghi, trang, cungBoMe }) =>
-  ({ p_cam_xuc: camXuc, p_doan_nho: doanNho || null, p_em_nghi: emNghi || null, p_trang: trang || null, p_cung_bo_me: !!cungBoMe })
+const thamSoGhi = ({ camXuc, doanNho, emNghi, trang, cungBoMe, boMeViet, choCoXem }) => ({
+  p_cam_xuc: camXuc, p_doan_nho: doanNho || null, p_em_nghi: emNghi || null, p_trang: trang || null, p_cung_bo_me: !!cungBoMe,
+  p_bo_me_viet: boMeViet || null, p_cho_co_xem: !!choCoXem,
+})
 
-/** Ghi 1 lần nhật ký. Trả { id, tinh_chuoi, chuoi, moc_moi }. */
+/** Ghi 1 lần nhật ký. Trả { id, tinh_chuoi, cay, moc_moi }. */
 export const ghiNhatKy = (sachId, nd) => goi('ghi_nhat_ky', { p_sach_id: sachId, ...thamSoGhi(nd) })
-/** Sửa (trong 7 ngày). Trả { tinh_chuoi, chuoi }. */
+/** Sửa (trong 7 ngày). Trả { tinh_chuoi, cay }. */
 export const suaNhatKy = (id, nd) => goi('sua_nhat_ky', { p_id: id, ...thamSoGhi(nd) })
 export const xoaNhatKy = id => goi('xoa_nhat_ky', { p_id: id })
-/** Em đọc xong (cần đã ghi ≥ 1 lần). Trả { moc_moi }. */
-export const danhDauDocXong = (sachId, mucThich, camNhan) =>
-  goi('danh_dau_doc_xong', { p_sach_id: sachId, p_muc_thich: mucThich, p_cam_nhan: camNhan || null })
-export const datMucTieu = so => goi('dat_muc_tieu', { p_so: so })
-/** Trang chủ HS: { chuoi, doc_xong_thang, muc_tieu, lan_ghi_cuoi, so_chu_tinh_chuoi, doc_xong: [sach_id] }. */
+/** Bật / tắt "Cho cô xem" 1 lần ghi của em (lúc nào cũng được). */
+export const doiChoCoXem = (id, cho) => goi('doi_cho_co_xem', { p_id: id, p_cho: cho })
+/** Em đọc xong (cần đã ghi ≥ 1 lần); thu = thư gửi chính mình (mở lại sau 90 ngày). Trả { moc_moi }. */
+export const danhDauDocXong = (sachId, mucThich, camNhan, thu) =>
+  goi('danh_dau_doc_xong', { p_sach_id: sachId, p_muc_thich: mucThich, p_cam_nhan: camNhan || null, p_thu: thu || null })
+/** Mở 1 lá thư đã đến ngày: { sach_id, ten, noi_dung, viet_ngay }. */
+export const moThu = sachId => goi('mo_thu', { p_sach_id: sachId })
+/**
+ * Trang chủ HS: { cay: { so_ngay, tuan_nay, hom_nay }, lan_ghi_cuoi, so_chu_tinh_chuoi, doc_xong: [sach_id],
+ *   dang_doc: [sách + trang_cuoi], tuan: { so_lan, bo_me, cam_xuc }, thu_den_han: [...], thu_cho: ngày mở thư gần nhất }.
+ */
 export const layTongQuan = () => goi('tong_quan_cua_toi')
 /** 3 cuốn gợi ý đọc tiếp sau 1 cuốn. */
 export const layGoiYDocTiep = sachId => goi('goi_y_doc_tiep', { p_sach_id: sachId })

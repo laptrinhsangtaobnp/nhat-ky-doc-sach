@@ -1,16 +1,18 @@
-// Thử quyền THẬT cho nhật ký (Neon): HS không đọc / sửa nhật ký của bạn, không ghi thẳng bảng; máy chủ tự tính "tính chuỗi",
-// chuỗi tuần, mốc; sửa / xoá chỉ trong 7 ngày; đọc xong cần đã ghi nhật ký; nhân viên xem được; Nhìn lại / Lớp kiểm quyền.
-// Tạo sách "THU-NK-*" rồi dọn. LƯU Ý: xoá nhật ký / đọc xong / mốc / mục tiêu của 2 tài khoản thử THU_HS1, THU_HS2.
+// Thử quyền THẬT cho nhật ký (Neon): HS không đọc / sửa nhật ký của bạn, không ghi thẳng bảng; máy chủ tự tính lần ghi được
+// tính cho cây (≥ 3 chữ, 1 lần / ngày), số ngày cây lớn, mốc; sửa / xoá chỉ trong 7 ngày; đọc xong cần đã ghi nhật ký;
+// RIÊNG TƯ: nhân viên / GVCN chỉ đọc chữ ở lần ghi em "Cho cô xem", không đọc cảm nhận / thư gửi chính mình;
+// thư chỉ mở khi đến ngày. Tạo sách "THU-NK-*" rồi dọn. LƯU Ý: xoá dữ liệu đọc sách của 2 tài khoản thử THU_HS1, THU_HS2.
 import { describe, it, expect, beforeAll, afterAll } from 'vitest'
 import { DU, nguoiLa, sqlChu, vao } from './_chung.js'
 
 const TIEN_TO = 'THU-NK-'
-const DAI = Array.from({ length: 25 }, (_, i) => `chữ${i}`).join(' ')     // 25 chữ → đủ tính chuỗi (ngưỡng mặc định 20)
+const CAU = 'Dế Mèn rất dũng cảm'        // 5 chữ → đủ tính cho cây (ngưỡng 3)
 
 async function don(ids) {
-  for (const b of ['nhat_ky', 'doc_xong', 'moc_dat', 'tuy_chon_hs']) await sqlChu(`delete from public.${b} where hoc_sinh_id = any($1::uuid[])`, [ids])
-  await sqlChu(`delete from public.nhat_ky where sach_id in (select id from public.sach where ma_sach like $1)`, [TIEN_TO + '%'])
-  await sqlChu(`delete from public.doc_xong where sach_id in (select id from public.sach where ma_sach like $1)`, [TIEN_TO + '%'])
+  for (const b of ['nhat_ky', 'doc_xong', 'moc_dat', 'tuy_chon_hs', 'thu_gui_minh']) await sqlChu(`delete from public.${b} where hoc_sinh_id = any($1::uuid[])`, [ids])
+  for (const b of ['nhat_ky', 'doc_xong', 'thu_gui_minh']) {
+    await sqlChu(`delete from public.${b} where sach_id in (select id from public.sach where ma_sach like $1)`, [TIEN_TO + '%'])
+  }
   await sqlChu('delete from public.sach where ma_sach like $1', [TIEN_TO + '%'])
 }
 
@@ -27,6 +29,7 @@ describe.skipIf(!DU)('quyền nhật ký thật', () => {
     if (error) throw new Error(error.message)
     for (const r of (await tt.db.from('sach').select('id, ma_sach').like('ma_sach', TIEN_TO + '%')).data) sach[r.ma_sach.slice(TIEN_TO.length)] = r.id
     await tt.db.from('sach').update({ an: true }).eq('id', sach.AN)
+    expect((await tt.db.from('sach').update({ so_trang: 120, cau_hoi: 'Câu hỏi thử?' }).eq('id', sach['02']).select('so_trang')).data).toEqual([{ so_trang: 120 }])
   })
   afterAll(async () => { if (hs1 && hs2) await don([hs1.id, hs2.id]) })
 
@@ -35,15 +38,17 @@ describe.skipIf(!DU)('quyền nhật ký thật', () => {
     expect((await la.rpc('ghi_nhat_ky', { p_sach_id: sach['01'], p_cam_xuc: 'vui', p_em_nghi: 'x' })).error).toBeTruthy()
   })
 
-  it('máy chủ tự tính "tính chuỗi": ngắn không tính, dài tính, lần dài thứ 2 trong ngày không tính', async () => {
+  it('máy chủ tự tính cho cây: 2 chữ không tính, 1 câu tính, lần thứ 2 trong ngày không tính', async () => {
     const r1 = await ghi(hs1, sach['01'], { p_em_nghi: 'Hay quá' })
     expect(r1.error).toBeNull()
     expect(r1.data.tinh_chuoi).toBe(false)
-    const r2 = await ghi(hs1, sach['01'], { p_doan_nho: DAI, p_trang: 12, p_cung_bo_me: true })
+    expect(r1.data.cay).toMatchObject({ so_ngay: 0, hom_nay: false })
+    const r2 = await ghi(hs1, sach['01'], { p_doan_nho: CAU, p_trang: 12 })
     expect(r2.data.tinh_chuoi).toBe(true)
-    expect(r2.data.chuoi.tuan_nay).toBe(1)
-    const r3 = await ghi(hs1, sach['01'], { p_em_nghi: DAI })
+    expect(r2.data.cay).toMatchObject({ so_ngay: 1, tuan_nay: 1, hom_nay: true })
+    const r3 = await ghi(hs1, sach['01'], { p_em_nghi: CAU })
     expect(r3.data.tinh_chuoi).toBe(false)
+    expect(r3.data.cay.so_ngay).toBe(1)
     Object.assign(nk, { ngan: r1.data.id, dai: r2.data.id, dai2: r3.data.id })
     expect(loi(await ghi(hs1, sach['01'], {}))).toBeTruthy()                         // không có nội dung → bị chặn
     expect(loi(await ghi(hs1, sach.AN, { p_em_nghi: 'x' }))).toBe('khong_co_sach')  // sách ẩn
@@ -54,17 +59,20 @@ describe.skipIf(!DU)('quyền nhật ký thật', () => {
     expect((await hs1.db.from('nhat_ky').select('tinh_chuoi').eq('id', nk.dai2).single()).data.tinh_chuoi).toBe(true)
   })
 
-  it('bạn khác không đọc / sửa / xoá được; HS không ghi thẳng bảng', async () => {
+  it('bạn khác không đọc / sửa / xoá được; HS không ghi thẳng bảng, không đọc thẳng bảng thư', async () => {
     expect((await hs2.db.from('nhat_ky').select('id').eq('id', nk.ngan)).data).toEqual([])
     expect(loi(await hs2.db.rpc('sua_nhat_ky', { p_id: nk.ngan, p_cam_xuc: 'buon', p_em_nghi: 'sửa bậy' }))).toBe('forbidden')
     expect(loi(await hs2.db.rpc('xoa_nhat_ky', { p_id: nk.ngan }))).toBe('forbidden')
+    expect(loi(await hs2.db.rpc('doi_cho_co_xem', { p_id: nk.ngan, p_cho: true }))).toBe('forbidden')
     expect(loi(await hs2.db.rpc('nhin_lai_nam', { p_hs: hs1.id }))).toBe('forbidden')
     expect(loi(await hs2.db.rpc('lop_tong_quan', {}))).toBe('forbidden')
     expect((await hs1.db.from('nhat_ky').insert({ hoc_sinh_id: hs1.id, sach_id: sach['01'], ngay: '2026-01-01', cam_xuc: 'vui', em_nghi: 'x', tinh_chuoi: true }).select()).error).toBeTruthy()
-    const { data: sua } = await hs1.db.from('nhat_ky').update({ tinh_chuoi: true }).eq('id', nk.ngan).select()
+    const { data: sua } = await hs1.db.from('nhat_ky').update({ tinh_chuoi: true, cho_co_xem: true }).eq('id', nk.ngan).select()
     expect(sua ?? []).toEqual([])
     expect((await hs1.db.from('doc_xong').insert({ hoc_sinh_id: hs1.id, sach_id: sach['02'], muc_thich: 5, ngay: '2026-11-01' }).select()).error).toBeTruthy()
-    expect((await hs1.db.from('moc_dat').insert({ hoc_sinh_id: hs1.id, ma: 'cuon_20' }).select()).error).toBeTruthy()
+    expect((await hs1.db.from('moc_dat').insert({ hoc_sinh_id: hs1.id, ma: 'ngay_100' }).select()).error).toBeTruthy()
+    expect((await hs1.db.from('thu_gui_minh').insert({ hoc_sinh_id: hs1.id, sach_id: sach['01'], noi_dung: 'x', viet_ngay: '2026-01-01', mo_ngay: '2026-01-01' })).error).toBeTruthy()
+    expect((await hs1.db.from('thu_gui_minh').select('noi_dung')).error).toBeTruthy()
   })
 
   it('sửa được trong 7 ngày, quá 7 ngày bị chặn', async () => {
@@ -74,40 +82,68 @@ describe.skipIf(!DU)('quyền nhật ký thật', () => {
     expect(loi(await hs1.db.rpc('xoa_nhat_ky', { p_id: nk.ngan }))).toBe('het_han_sua')
   })
 
-  it('đọc xong cần đã ghi nhật ký; đạt mốc cuốn đầu tiên 1 lần', async () => {
-    expect(loi(await hs1.db.rpc('danh_dau_doc_xong', { p_sach_id: sach['02'], p_muc_thich: 5 }))).toBe('chua_ghi_nhat_ky')
-    const r = await hs1.db.rpc('danh_dau_doc_xong', { p_sach_id: sach['01'], p_muc_thich: 4, p_cam_nhan: 'Hay' })
+  it('riêng tư: nhân viên chỉ đọc chữ ở lần em "Cho cô xem"; bật / tắt lúc nào cũng được (kể cả quá 7 ngày)', async () => {
+    const tuDoc = async () => (await tt.db.from('nhat_ky').select('id, doan_nho, em_nghi').eq('hoc_sinh_id', hs1.id)).data
+    expect(await tuDoc()).toEqual([])
+    expect((await hs1.db.rpc('doi_cho_co_xem', { p_id: nk.ngan, p_cho: true })).error).toBeNull()
+    expect((await tuDoc()).map(x => x.id)).toEqual([nk.ngan])
+    const r = await ghi(hs1, sach['02'], { p_doan_nho: CAU, p_cho_co_xem: true, p_trang: 30 })
+    expect((await tuDoc()).map(x => x.id).sort()).toEqual([nk.ngan, r.data.id].sort())
+    expect((await hs1.db.rpc('doi_cho_co_xem', { p_id: nk.ngan, p_cho: false })).error).toBeNull()
+    expect((await tuDoc()).map(x => x.id)).toEqual([r.data.id])
+    expect((await hs1.db.from('nhat_ky').select('id').eq('hoc_sinh_id', hs1.id)).data.length).toBe(3)   // em vẫn thấy hết
+  })
+
+  it('đọc xong cần đã ghi nhật ký; cảm nhận + thư chỉ em xem; thư chỉ mở khi đến ngày', async () => {
+    expect(loi(await hs1.db.rpc('danh_dau_doc_xong', { p_sach_id: sach.AN, p_muc_thich: 5 }))).toBe('chua_ghi_nhat_ky')
+    const r = await hs1.db.rpc('danh_dau_doc_xong', { p_sach_id: sach['01'], p_muc_thich: 4, p_cam_nhan: 'Cảm nhận riêng', p_thu: 'Thư bí mật' })
     expect(r.error).toBeNull()
-    expect(r.data.moc_moi).toEqual(['cuon_1'])
-    expect((await hs1.db.rpc('danh_dau_doc_xong', { p_sach_id: sach['01'], p_muc_thich: 5 })).data.moc_moi).toEqual([])
     expect(loi(await hs1.db.rpc('danh_dau_doc_xong', { p_sach_id: sach['01'], p_muc_thich: 9 }))).toBeTruthy()
-  })
-
-  it('chuỗi tuần: 4 tuần trước đều đủ 3 lần → chuỗi 4, đạt mốc chuỗi 4 tuần', async () => {
-    for (let tuan = 1; tuan <= 4; tuan++) {
-      for (let k = 0; k < 3; k++) {
-        await sqlChu(`insert into public.nhat_ky (hoc_sinh_id, sach_id, ngay, cam_xuc, em_nghi, tinh_chuoi)
-          values ($1, $2, date_trunc('week', public.hom_nay())::date - $3::int * 7 + $4::int, 'vui', $5, true)`, [hs1.id, sach['01'], tuan, k, DAI])
-      }
-    }
-    const tq = (await hs1.db.rpc('tong_quan_cua_toi')).data
-    expect(tq.chuoi).toMatchObject({ chuoi: 4, dai_nhat: 4, can: 3 })
-    expect(tq.doc_xong).toContain(sach['01'])
-    const r = await ghi(hs1, sach['02'], { p_em_nghi: 'Thêm một lần' })
-    expect(r.data.moc_moi).toContain('chuoi_4')
-  })
-
-  it('mục tiêu tháng 1–3; nhân viên xem được nhật ký, Nhìn lại, Lớp', async () => {
-    expect((await hs1.db.rpc('dat_muc_tieu', { p_so: 3 })).error).toBeNull()
-    expect((await hs1.db.rpc('dat_muc_tieu', { p_so: 5 })).error).toBeTruthy()
-    expect((await hs1.db.rpc('tong_quan_cua_toi')).data.muc_tieu).toBe(3)
-    expect((await tt.db.from('nhat_ky').select('id').eq('hoc_sinh_id', hs1.id)).data.length).toBeGreaterThan(5)
+    expect(loi(await hs1.db.rpc('mo_thu', { p_sach_id: sach['01'] }))).toBe('chua_den_ngay')
+    expect((await hs1.db.rpc('tong_quan_cua_toi')).data).toMatchObject({ thu_den_han: [] })
+    expect((await hs1.db.rpc('tong_quan_cua_toi')).data.thu_cho).toBeTruthy()
+    await sqlChu('update public.thu_gui_minh set mo_ngay = mo_ngay - 90 where hoc_sinh_id = $1', [hs1.id])
+    expect((await hs1.db.rpc('tong_quan_cua_toi')).data.thu_den_han).toHaveLength(1)
+    expect(loi(await hs2.db.rpc('mo_thu', { p_sach_id: sach['01'] }))).toBe('chua_den_ngay')          // bạn khác không mở được
+    expect(loi(await tt.db.rpc('mo_thu', { p_sach_id: sach['01'] }))).toBe('forbidden')
+    expect((await hs1.db.rpc('mo_thu', { p_sach_id: sach['01'] })).data).toMatchObject({ noi_dung: 'Thư bí mật' })
+    expect((await hs1.db.rpc('tong_quan_cua_toi')).data.thu_den_han).toEqual([])
+    expect((await hs1.db.rpc('nhin_lai_nam')).data).toMatchObject({ la_em: true, thu: [{ noi_dung: 'Thư bí mật' }] })
+    // nhân viên: không đọc bảng doc_xong / thư; Nhìn lại không có cảm nhận / thư
+    expect((await tt.db.from('doc_xong').select('cam_nhan').eq('hoc_sinh_id', hs1.id)).data).toEqual([])
     const nl = (await tt.db.rpc('nhin_lai_nam', { p_hs: hs1.id })).data
-    expect(nl).toMatchObject({ so_cuon: 1, so_lan_bo_me: 0 })
-    expect(nl.so_lan_ghi).toBeGreaterThan(0)
+    expect(nl).toMatchObject({ la_em: false, thu: [], so_cuon: 1, so_chia_se: 1 })
+    expect(nl.sach.every(s => s.cam_nhan === null)).toBe(true)
+    expect(JSON.stringify(nl)).not.toContain('Cảm nhận riêng')
+    expect(JSON.stringify(nl)).not.toContain('Dế Mèn')
+  })
+
+  it('cây + mốc theo số ngày; bố mẹ viết → Gia đình đọc sách; đọc tiếp có trang', async () => {
+    for (let k = 1; k <= 6; k++) {
+      await sqlChu(`insert into public.nhat_ky (hoc_sinh_id, sach_id, ngay, cam_xuc, em_nghi, tinh_chuoi)
+        values ($1, $2, public.hom_nay() - $3::int, 'vui', $4, true)`, [hs1.id, sach['01'], k + 10, CAU])
+    }
+    for (let k = 0; k < 4; k++) {
+      await sqlChu(`insert into public.nhat_ky (hoc_sinh_id, sach_id, ngay, cam_xuc, em_nghi, cung_bo_me)
+        values ($1, $2, public.hom_nay() - 30, 'vui', 'x', true)`, [hs1.id, sach['01']])
+    }
+    const r = await ghi(hs1, sach['02'], { p_doan_nho: 'Mẹ con cùng đọc', p_bo_me_viet: 'Mẹ rất vui', p_trang: 45 })
+    expect(r.data.moc_moi.sort()).toEqual(['gia_dinh', 'ngay_7'])
+    expect((await hs1.db.from('nhat_ky').select('cung_bo_me, bo_me_viet').eq('id', r.data.id).single()).data)
+      .toEqual({ cung_bo_me: true, bo_me_viet: 'Mẹ rất vui' })
+    const tq = (await hs1.db.rpc('tong_quan_cua_toi')).data
+    expect(tq.cay.so_ngay).toBe(7)
+    expect(tq.dang_doc[0]).toMatchObject({ id: sach['02'], trang_cuoi: 45, so_trang: 120 })
+    expect(tq.dang_doc.some(s => s.id === sach['01'])).toBe(false)                // đã đọc xong → không ở "đọc tiếp"
+    expect(tq.tuan.bo_me).toBeGreaterThanOrEqual(1)
+  })
+
+  it('Lớp: nhân viên xem con số (cây, số lần cho cô xem), không có chữ; HS bị chặn', async () => {
     const lop = (await sqlChu('select lop_id from public.ho_so where id = $1', [hs1.id]))[0].lop_id
     const lq = (await tt.db.rpc('lop_tong_quan', { p_lop_id: lop })).data
-    expect(lq.hoc_sinh.find(h => h.id === hs1.id)).toMatchObject({ so_cuon_nam: 1 })
+    const em = lq.hoc_sinh.find(h => h.id === hs1.id)
+    expect(em).toMatchObject({ so_cuon_nam: 1, so_chia_se: 1, cay: { so_ngay: 7 } })
+    expect(Object.keys(em).sort()).toEqual(['cay', 'ho_ten', 'id', 'lan_ghi_cuoi', 'so_chia_se', 'so_cuon_nam'])
     expect(loi(await hs1.db.rpc('lop_tong_quan', { p_lop_id: lop }))).toBe('forbidden')
   })
 })

@@ -1,12 +1,11 @@
 // Tải + thao tác trang chủ học sinh (Tủ sách của em): lượt mượn (máy chủ trả sẵn hàng chờ, số bản), quy tắc mượn,
-// tổng quan thói quen (chuỗi tuần, mục tiêu tháng, sách đã đọc xong — máy chủ tính).
+// tổng quan thói quen (cây đọc sách, đọc tiếp, thư đến hạn, tuần này cho Góc bố mẹ, sách đã đọc xong — máy chủ tính).
 import { useCallback, useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
 import { huyDatTruoc, layMuonCuaToi } from '../data/muonTra'
 import { layCaiDat } from '../data/caiDat'
-import { datMucTieu, layTongQuan } from '../data/nhatKy'
+import { layTongQuan } from '../data/nhatKy'
 import { DANG_DUNG, loiMuonTra } from '../domain/muonTra'
-import { loiNhatKy } from '../domain/nhatKy'
 
 export function useTuSach() {
   const [ds, setDs] = useState(null)              // null = đang tải
@@ -36,15 +35,6 @@ export function useTuSach() {
     }
   }
 
-  async function doiMucTieu(so) {
-    try {
-      await datMucTieu(so)
-      setTq(t => ({ ...t, muc_tieu: so }))
-    } catch (loi) {
-      toast.error(loiNhatKy(loi))
-    }
-  }
-
   const lay = (...tt) => (ds ?? []).filter(l => tt.includes(l.trang_thai))
   return {
     dangTai: ds === null,
@@ -54,7 +44,8 @@ export function useTuSach() {
     dangGiu: lay(...DANG_DUNG).length,
     toiDa, tq,
     daDocXong: id => Boolean(tq?.doc_xong?.includes(id)),
-    huy, doiMucTieu,
+    huy,
     sauDocXong: () => { taiTongQuan(); tai() },
+    taiTongQuan,
   }
 }

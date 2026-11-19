@@ -1,7 +1,7 @@
 # Nhật ký đọc sách — sáng kiến thư viện 2026
 
 App thư viện trường tiểu học: danh mục sách, mượn – trả, nhật ký đọc, review, gợi ý sách, thống kê trước – sau cho sáng kiến.
-Người dùng: thủ thư, giáo viên Tin (quản trị), GVCN lớp thí điểm, **học sinh khối 3–4 (trẻ em)**. Chưa có tài khoản phụ huynh.
+Người dùng: thủ thư, giáo viên Tin (quản trị), GVCN lớp thí điểm, **học sinh khối 3–5 (trẻ em)**. Chưa có tài khoản phụ huynh.
 HS dùng PC, laptop hoặc điện thoại ở nhà → giao diện phải dùng tốt trên điện thoại.
 **Đầu mỗi phiên đọc `docs/NHAT-KY-LAM-VIEC.md`** (đã làm gì, đang dở gì, điều cần nhớ); cuối phiên ghi thêm 1 mục.
 Kế hoạch & các quyết định: `KE-HOACH-APP.md`. Yêu cầu nghiệp vụ gốc: tài liệu thư viện (link trong kế hoạch).

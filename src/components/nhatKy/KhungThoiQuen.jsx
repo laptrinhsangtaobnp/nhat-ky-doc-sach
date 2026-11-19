@@ -1,10 +1,33 @@
-// Đầu trang chủ học sinh: nút Ghi nhật ký, chuỗi tuần, mục tiêu tháng, dòng nhắc. Số liệu do máy chủ tính (tong_quan_cua_toi).
+// Đầu trang chủ học sinh: nút Ghi nhật ký, dòng nhắc, thư gửi chính mình đến hạn, cây đọc sách, đọc tiếp.
+// Số liệu do máy chủ tính (tong_quan_cua_toi). Cây lớn theo số ngày có ghi; bỏ lỡ thì ngừng lớn, không héo.
 import { Link } from 'react-router-dom'
 import { PenLine } from 'lucide-react'
-import { chuChuoi, loiNhac } from '../../domain/nhatKy'
+import { chuCay, giaiDoanCay, loiNhac } from '../../domain/nhatKy'
+import { chuNgay } from '../../domain/ngay'
+import BiaSach from '../sach/BiaSach'
 
-export default function KhungThoiQuen({ tq, homNay, onMucTieu }) {
-  const c = chuChuoi(tq.chuoi)
+function CayDocSach({ cay }) {
+  const gd = giaiDoanCay(cay.so_ngay)
+  const c = chuCay(cay)
+  return (
+    <div className="flex items-center gap-4 rounded-xl bg-gradient-to-b from-sky-50 to-emerald-50 p-4 shadow-sm">
+      <div className="text-6xl leading-none" aria-hidden>{gd.hinh}</div>
+      <div className="min-w-0 flex-1 space-y-1">
+        <p className="text-lg font-bold">Cây của em: {gd.ten}</p>
+        <p className="text-sm text-stone-700">Đã lớn <b>{cay.so_ngay}</b> ngày · {c.tuan}</p>
+        {gd.sau && <>
+          <div className="h-2.5 overflow-hidden rounded-full bg-white" role="progressbar" aria-valuenow={gd.phanTram} aria-valuemin={0} aria-valuemax={100}>
+            <div className="h-full rounded-full bg-emerald-500" style={{ width: `${gd.phanTram}%` }} />
+          </div>
+          <p className="text-xs text-stone-600">Còn {gd.conLai} ngày nữa thành {gd.sau.hinh} {gd.sau.ten}</p>
+        </>}
+        <p className={`text-sm ${cay.hom_nay ? 'text-emerald-700' : 'text-amber-800'}`}>{c.homNay}</p>
+      </div>
+    </div>
+  )
+}
+
+export default function KhungThoiQuen({ tq, homNay, onMoThu }) {
   const nhac = loiNhac(tq.lan_ghi_cuoi, homNay)
   return (
     <section className="space-y-3">
@@ -12,31 +35,31 @@ export default function KhungThoiQuen({ tq, homNay, onMucTieu }) {
         <PenLine size={24} aria-hidden /> Ghi nhật ký
       </Link>
       {nhac && <p className="rounded-xl bg-amber-50 px-4 py-2 text-amber-900">⏰ {nhac}</p>}
-      <div className="grid gap-3 sm:grid-cols-2">
-        <div className="rounded-xl bg-white p-4 shadow-sm">
-          <p className="text-lg font-bold">{c.chuoi}</p>
-          <div className="my-2 flex gap-1.5" aria-label={`Tuần này ${tq.chuoi.tuan_nay} trên ${tq.chuoi.can} lần`}>
-            {Array.from({ length: tq.chuoi.can }, (_, i) => (
-              <span key={i} className={`flex size-8 items-center justify-center rounded-full text-sm ${i < tq.chuoi.tuan_nay ? 'bg-emerald-500 text-white' : 'bg-stone-100 text-stone-400'}`}>
-                {i < tq.chuoi.tuan_nay ? '✓' : i + 1}
-              </span>
+      {tq.thu_den_han?.map(t => (
+        <button key={t.sach_id} onClick={() => onMoThu(t.sach_id)} className="w-full rounded-xl bg-rose-50 px-4 py-3 text-left text-rose-900 shadow-sm hover:bg-rose-100">
+          💌 Em có thư từ chính mình! Em viết ngày {chuNgay(t.viet_ngay, homNay)} khi đọc xong <b>{t.ten}</b>. Bấm để mở.
+        </button>
+      ))}
+      <CayDocSach cay={tq.cay} />
+      {tq.dang_doc?.length > 0 && (
+        <div className="space-y-2">
+          <h2 className="text-lg font-semibold">📖 Đọc tiếp</h2>
+          <ul className="space-y-2">
+            {tq.dang_doc.map(s => (
+              <li key={s.id}>
+                <Link to={`/nhat-ky/ghi?sach=${s.id}`} className="flex items-center gap-3 rounded-xl bg-white p-3 shadow-sm hover:bg-emerald-50">
+                  <div className="w-10 shrink-0"><BiaSach sach={s} /></div>
+                  <div className="min-w-0 flex-1">
+                    <p className="truncate font-semibold">{s.ten}</p>
+                    <p className="text-sm text-stone-600">{s.trang_cuoi ? `Em đọc đến trang ${s.trang_cuoi}${s.so_trang ? ` / ${s.so_trang}` : ''}` : 'Em đang đọc'}</p>
+                  </div>
+                  <span className="shrink-0 rounded-lg bg-emerald-600 px-3 py-1.5 text-sm font-semibold text-white">Ghi tiếp</span>
+                </Link>
+              </li>
             ))}
-          </div>
-          <p className="text-sm text-stone-600">{c.tuan}</p>
-          {tq.chuoi.dai_nhat > 0 && <p className="text-xs text-stone-400">Chuỗi dài nhất: {tq.chuoi.dai_nhat} tuần</p>}
+          </ul>
         </div>
-        <div className="rounded-xl bg-white p-4 shadow-sm">
-          <p className="text-lg font-bold">📖 Tháng này: {tq.doc_xong_thang}/{tq.muc_tieu} cuốn</p>
-          <div className="my-2 h-3 overflow-hidden rounded-full bg-stone-100">
-            <div className="h-full rounded-full bg-emerald-500" style={{ width: `${Math.min(100, (tq.doc_xong_thang / tq.muc_tieu) * 100)}%` }} />
-          </div>
-          <label className="text-sm text-stone-600">Mục tiêu của em: đọc xong{' '}
-            <select value={tq.muc_tieu} onChange={e => onMucTieu(Number(e.target.value))} className="rounded border border-stone-300 px-1 py-0.5">
-              {[1, 2, 3].map(n => <option key={n} value={n}>{n}</option>)}
-            </select> cuốn / tháng
-          </label>
-        </div>
-      </div>
+      )}
     </section>
   )
 }

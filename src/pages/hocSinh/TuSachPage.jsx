@@ -1,4 +1,5 @@
-// Trang chủ học sinh — Tủ sách của em: Ghi nhật ký + chuỗi tuần + mục tiêu tháng; sách đã đặt, đang mượn, đã mượn.
+// Trang chủ học sinh — Tủ sách của em: Ghi nhật ký + cây đọc sách + đọc tiếp + thư đến hạn; sách đã đặt, đang mượn, đã mượn;
+// cuối trang: Góc bố mẹ (tổng kết tuần).
 // Sách đang mượn / đã mượn có nút Ghi nhật ký và Em đọc xong rồi.
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
@@ -11,6 +12,8 @@ import BiaSach from '../../components/sach/BiaSach'
 import HopTrangThai from '../../components/muonTra/HopTrangThai'
 import KhungThoiQuen from '../../components/nhatKy/KhungThoiQuen'
 import DocXongModal from '../../components/nhatKy/DocXongModal'
+import GocBoMe from '../../components/nhatKy/GocBoMe'
+import ThuModal from '../../components/nhatKy/ThuModal'
 
 function TheLuot({ l, homNay, onHuy, children }) {
   return (
@@ -45,6 +48,7 @@ export default function TuSachPage() {
   const { hoSo } = useAuth()
   const ts = useTuSach()
   const [docXong, setDocXong] = useState(null)       // sách đang mở hộp "Em đọc xong rồi"
+  const [thu, setThu] = useState(null)               // id sách của lá thư đang mở
   const homNay = ngayVN()
 
   const nutDoc = l => (
@@ -68,7 +72,7 @@ export default function TuSachPage() {
         </Link>
       </div>
 
-      {ts.tq && <KhungThoiQuen tq={ts.tq} homNay={homNay} onMucTieu={ts.doiMucTieu} />}
+      {ts.tq && <KhungThoiQuen tq={ts.tq} homNay={homNay} onMoThu={setThu} />}
 
       {ts.dangTai ? <p className="text-stone-500" role="status">Đang tải…</p> : <>
         <Phan tieuDe="Em đang mượn" ds={ts.dangMuon} trong="Em chưa mượn cuốn nào."
@@ -80,6 +84,9 @@ export default function TuSachPage() {
           veThe={l => <TheLuot key={l.id} l={l} homNay={homNay}>{nutDoc(l)}</TheLuot>} />}
       </>}
 
+      {ts.tq && <GocBoMe tq={ts.tq} />}
+
+      {thu && <ThuModal sachId={thu} onDong={() => { setThu(null); ts.taiTongQuan() }} />}
       {docXong && <DocXongModal sach={docXong} onDong={daXong => { setDocXong(null); if (daXong) ts.sauDocXong() }} />}
     </div>
   )

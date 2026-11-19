@@ -1,5 +1,6 @@
-// Nhìn lại năm đọc sách: số cuốn, số lần ghi, chuỗi, cảm xúc, theo tháng, dòng thời gian từng cuốn (bấm → các đoạn em ghi), mốc.
-// /nhin-lai: học sinh xem của mình · /lop/hs/:hsId: GVCN / nhân viên xem của 1 em (máy chủ kiểm quyền). Có nút In sổ.
+// Nhìn lại năm đọc sách: số cuốn, số ngày ghi (cây), cảm xúc, theo tháng, kệ sách theo tháng (bấm 1 cuốn → hành trình cảm xúc +
+// các lần ghi), thư gửi chính mình đã mở, mốc. /nhin-lai: học sinh xem của mình · /lop/hs/:hsId: GVCN / nhân viên xem 1 em —
+// máy chủ chỉ trả con số + cảm xúc; chữ em viết chỉ hiện ở lần em cho cô xem. Có nút In sổ.
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { ArrowLeft, Printer } from 'lucide-react'
@@ -8,6 +9,7 @@ import { camXucNhieuNhat, chuThang, MOC, MUC_THICH } from '../../domain/nhatKy'
 import { chuNgay } from '../../domain/ngay'
 import BiaSach from '../../components/sach/BiaSach'
 import DsNhatKy from '../../components/nhatKy/DsNhatKy'
+import HanhTrinhCamXuc from '../../components/nhatKy/HanhTrinhCamXuc'
 import { BieuDoCamXuc, BieuDoThang } from '../../components/nhatKy/BieuDoNhinLai'
 import { useAuth } from '../../context/AuthContext'
 
@@ -47,9 +49,10 @@ export default function NhinLaiPage() {
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
         <So so={nl.so_cuon} nhan="cuốn đọc xong" />
         <So so={nl.so_lan_ghi} nhan="lần ghi nhật ký" />
-        <So so={nl.chuoi.dai_nhat} nhan="tuần — chuỗi dài nhất" />
+        <So so={nl.so_ngay} nhan="ngày ghi nhật ký" />
         <So so={cx ? cx.hinh : '—'} nhan={cx ? `em thấy ${cx.ten.toLowerCase()} nhiều nhất` : 'cảm xúc'} />
       </div>
+      {!nl.la_em && <p className="rounded-xl bg-violet-50 px-4 py-2 text-violet-900 print:hidden">🔒 Thầy cô chỉ xem con số và cảm xúc. Chữ em viết chỉ hiện ở những lần em bấm “Cho cô xem” ({nl.so_chia_se} lần trong năm học).</p>}
       {nl.so_lan_bo_me > 0 && <p className="rounded-xl bg-sky-50 px-4 py-2 text-sky-900">👨‍👩‍👧 Em đã đọc cùng bố mẹ {nl.so_lan_bo_me} lần.</p>}
 
       <div className="grid gap-4 md:grid-cols-2">
@@ -58,7 +61,7 @@ export default function NhinLaiPage() {
       </div>
 
       <section className="space-y-4">
-        <h2 className="text-lg font-semibold">Những cuốn em đã đọc</h2>
+        <h2 className="text-lg font-semibold">📚 Kệ sách của em</h2>
         {nl.sach.length === 0 && <p className="text-stone-500">Chưa có cuốn nào trong năm học này.</p>}
         {theoThang.map(([thang, ds]) => (
           <div key={thang} className="space-y-2 break-inside-avoid">
@@ -79,8 +82,10 @@ export default function NhinLaiPage() {
               return (
                 <div className="space-y-2 rounded-xl bg-stone-50 p-3">
                   <p className="font-semibold">{s.ten}{s.ngay_xong && <span className="font-normal text-stone-500"> — đọc xong {chuNgay(s.ngay_xong)}</span>}</p>
+                  <HanhTrinhCamXuc ds={s.hanh_trinh} soTrang={s.so_trang} />
                   {s.cam_nhan && <p className="italic">“{s.cam_nhan}”</p>}
-                  <DsNhatKy hsId={hsId ?? hoSo?.id} sachId={s.id} coLoc={false} />
+                  <DsNhatKy hsId={hsId ?? hoSo?.id} sachId={s.id} coLoc={false} choSua={nl.la_em}
+                    trong={nl.la_em ? 'Chưa có lần ghi nào.' : 'Em chưa cho cô xem lần ghi nào của cuốn này.'} />
                 </div>
               )
             })()}
@@ -88,6 +93,19 @@ export default function NhinLaiPage() {
         ))}
       </section>
 
+      {nl.thu.length > 0 && (
+        <section className="space-y-2">
+          <h2 className="text-lg font-semibold">💌 Thư em gửi chính mình</h2>
+          <ul className="space-y-2">
+            {nl.thu.map(t => (
+              <li key={t.ten + t.viet_ngay} className="rounded-xl bg-rose-50 p-3 text-rose-950">
+                <p className="text-sm text-rose-800">{chuNgay(t.viet_ngay)} · {t.ten}</p>
+                <p className="whitespace-pre-line">{t.noi_dung}</p>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
       {nl.moc.length > 0 && (
         <section className="space-y-2">
           <h2 className="text-lg font-semibold">Mốc đã đạt</h2>
@@ -98,8 +116,8 @@ export default function NhinLaiPage() {
       )}
       {hsId && (
         <section className="space-y-2 print:hidden">
-          <h2 className="text-lg font-semibold">Tất cả nhật ký của em</h2>
-          <DsNhatKy hsId={hsId} />
+          <h2 className="text-lg font-semibold">Những lần em cho cô xem</h2>
+          <DsNhatKy hsId={hsId} trong="Em chưa cho cô xem lần ghi nào." />
         </section>
       )}
     </div>

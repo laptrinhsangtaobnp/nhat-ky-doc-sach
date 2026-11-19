@@ -154,6 +154,21 @@ tự đổi trạng thái mượn, gọi thống kê → phải bị chặn), c�
   chuỗi tuần, mục tiêu tháng, nhắc), Ghi nhật ký, Đọc xong (🎉 + gợi ý 3 cuốn + mốc), Nhật ký của em, Nhìn lại năm (in sổ);
   GVCN: Lớp của tôi (em lâu chưa ghi tô đỏ) + xem nhật ký em; nhân viên: Lớp học. Test quyền thật nhật ký 8/8.
 
+## 11. Đặc tả mới — thầy chốt 19/11/2026 (thay phần tương ứng ở mục 8, 9, 10)
+So sánh cũ / mới đã trình thầy; thầy đồng ý theo đề xuất của Claude:
+- **Cây đọc sách** thay chuỗi tuần: cây lớn mỗi ngày có ghi (tối đa 1 ngày tính 1 lần); bỏ lỡ thì **ngừng lớn, không héo**.
+  Bỏ điều kiện 20 chữ → **1 câu ngắn (≥ 3 chữ)**. Mốc theo **số ngày cây lớn (7 / 30 / 100)**, bỏ mốc số cuốn / chuỗi tuần;
+  huy hiệu **Gia đình đọc sách** (5 lần ghi có bố mẹ). Bỏ mục tiêu tháng.
+- **Riêng tư (mục F):** GVCN / nhân viên **chỉ xem con số**; đọc chữ em viết **chỉ khi em bấm "Cho cô xem"** ở lần ghi đó.
+  "Thư gửi chính mình", cảm nhận khi đọc xong: chỉ em xem.
+- **Ghi nhanh < 30 giây:** kéo chọn trang → cảm xúc → 1 câu; ô khác gập lại. Câu gợi ý đổi theo ngày + câu theo sách (thủ thư nhập).
+- **Đọc tiếp** trên trang chủ; **Hành trình cảm xúc** từng cuốn; **Thư gửi chính mình** (mở lại sau 90 ngày);
+  **5 phút trò chuyện** + **bố mẹ viết 1 dòng**; **Góc bố mẹ** (tổng kết tuần) trong tài khoản con — chưa tạo tài khoản phụ huynh.
+- **PWA** (thêm vào màn hình chính). Khối 3–5.
+- Đợt sau: **đăng nhập mã lớp + chọn tên + PIN** (máy nhớ nhiều con, khoá sau 5 lần sai, QR lớp); review bạn bè (thủ thư duyệt,
+  chỉ hiện số "X bạn lớp Y đã đọc"); hộ chiếu thể loại (8–10 thể loại); thử thách lớp **theo số ngày ghi**, không theo trang;
+  thống kê. **Hoãn:** ghi âm (dữ liệu trẻ em, ~5 GB/năm), nhắc giờ bằng thông báo đẩy. Khảo sát phụ huynh: Google Forms.
+
 ## 10. Thiết kế chức năng người dùng — thầy chốt 17/11/2026 (thay phần tương ứng ở mục 1, 5, 6)
 
 **Cốt lõi** (lấy từ app mẫu `E:\UNG DUNG\NHAT-KY-DOC-SACH`): HS ghi **nhật ký đọc sách** để **sau 1 năm xem lại** mình đọc

@@ -8,6 +8,24 @@ export async function dangNhap(tenDangNhap, matKhau) {
   if (error) throw error
 }
 
+async function goiPin(body) {
+  const { data, error } = await supabase.functions.invoke('dang-nhap-pin', { body })
+  if (error) throw error
+  return data
+}
+
+/** Mã lớp → { lop, hoc_sinh: [{ id, ten }] } hoặc { loi: 'ma_sai' }. */
+export const layTenTheoMaLop = ma => goiPin({ ma })
+
+/** Đăng nhập học sinh bằng mã lớp + PIN. Trả null nếu vào được, ngược lại { loi, con?, den? } từ máy chủ. */
+export async function dangNhapPin(ma, hsId, pin) {
+  const kq = await goiPin({ ma, hs: hsId, pin })
+  if (!kq?.access_token) return kq ?? { loi: 'khac' }
+  const { error } = await supabase.auth.setSession({ access_token: kq.access_token, refresh_token: kq.refresh_token })
+  if (error) throw error
+  return null
+}
+
 /** Đăng xuất. */
 export const dangXuat = () => supabase.auth.signOut()
 

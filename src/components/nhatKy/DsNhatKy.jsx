@@ -1,11 +1,12 @@
-// Danh sách các lần ghi nhật ký của 1 em, lọc cảm xúc / tìm chữ. choSua = em tự xem (sửa / xoá trong 7 ngày).
+// Danh sách các lần ghi nhật ký của 1 em, lọc cảm xúc / tìm chữ. choSua = em tự xem (sửa / xoá trong 7 ngày,
+// bật / tắt "Cho cô xem" lúc nào cũng được). GVCN / nhân viên chỉ nhận được lần ghi em cho xem (máy chủ lọc).
 // Dùng ở: Nhật ký của em, Nhìn lại (bấm 1 cuốn), GVCN / nhân viên xem nhật ký học sinh.
 import { Link } from 'react-router-dom'
 import { useDsNhatKy } from '../../hooks/useDsNhatKy'
 import { CAM_XUC, camXuc, conSuaDuoc } from '../../domain/nhatKy'
 import { chuNgay, ngayVN } from '../../domain/ngay'
 
-function TheNhatKy({ x, homNay, choSua, anSach, onXoa }) {
+function TheNhatKy({ x, homNay, choSua, anSach, onXoa, onDoiXem }) {
   const c = camXuc(x.cam_xuc)
   return (
     <li className="space-y-2 rounded-xl bg-white p-4 shadow-sm">
@@ -15,14 +16,19 @@ function TheNhatKy({ x, homNay, choSua, anSach, onXoa }) {
         <span>{chuNgay(x.ngay, homNay)}{x.trang && ` · trang ${x.trang}`}</span>
         {!anSach && <Link to={`/sach/${x.sach.id}`} className="font-medium text-emerald-700 hover:underline">{x.sach.ten}</Link>}
         {x.cung_bo_me && <span className="rounded bg-sky-50 px-1.5 text-sky-800">👨‍👩‍👧 cùng bố mẹ</span>}
-        {x.tinh_chuoi && <span className="rounded bg-emerald-50 px-1.5 text-emerald-800">✓ tính chuỗi</span>}
+        {x.tinh_chuoi && <span className="rounded bg-emerald-50 px-1.5 text-emerald-800">🌱 cây lớn</span>}
+        {choSua && x.cho_co_xem && <span className="rounded bg-violet-50 px-1.5 text-violet-800">👀 cô xem được</span>}
       </div>
       {x.doan_nho && <blockquote className="whitespace-pre-line border-l-4 border-amber-300 pl-3 italic text-stone-800">{x.doan_nho}</blockquote>}
       {x.em_nghi && <p className="whitespace-pre-line text-stone-800">{x.em_nghi}</p>}
-      {choSua && conSuaDuoc(x.ngay, homNay) && (
-        <div className="flex gap-3 text-sm">
-          <Link to={`/nhat-ky/${x.id}/sua`} className="underline">Sửa</Link>
-          <button onClick={() => confirm('Xoá lần ghi này?') && onXoa(x.id)} className="text-rose-700 underline">Xoá</button>
+      {x.bo_me_viet && <p className="rounded-lg bg-sky-50 px-3 py-1.5 text-sky-900">👨‍👩‍👧 Bố mẹ viết: {x.bo_me_viet}</p>}
+      {choSua && (
+        <div className="flex flex-wrap gap-3 text-sm">
+          {conSuaDuoc(x.ngay, homNay) && <>
+            <Link to={`/nhat-ky/${x.id}/sua`} className="underline">Sửa</Link>
+            <button onClick={() => confirm('Xoá lần ghi này?') && onXoa(x.id)} className="text-rose-700 underline">Xoá</button>
+          </>}
+          <button onClick={() => onDoiXem(x.id, !x.cho_co_xem)} className="text-violet-700 underline">{x.cho_co_xem ? 'Thôi cho cô xem' : 'Cho cô xem'}</button>
         </div>
       )}
     </li>
@@ -50,7 +56,7 @@ export default function DsNhatKy({ hsId, sachId = null, choSua = false, coLoc = 
       {d.dangTai && d.ds.length === 0 && <p className="text-stone-500" role="status">Đang tải…</p>}
       {!d.dangTai && d.ds.length === 0 && <p className="rounded-xl bg-white p-5 text-center text-stone-500">{trong}</p>}
       <ul className="space-y-3">
-        {d.ds.map(x => <TheNhatKy key={x.id} x={x} homNay={homNay} choSua={choSua} anSach={Boolean(sachId)} onXoa={d.xoa} />)}
+        {d.ds.map(x => <TheNhatKy key={x.id} x={x} homNay={homNay} choSua={choSua} anSach={Boolean(sachId)} onXoa={d.xoa} onDoiXem={d.doiXem} />)}
       </ul>
       {d.conNua && <div className="text-center"><button onClick={d.xemThem} disabled={d.dangTai} className="rounded-lg border border-stone-300 bg-white px-4 py-2 text-sm">Xem thêm</button></div>}
     </div>

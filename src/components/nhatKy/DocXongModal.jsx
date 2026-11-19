@@ -1,4 +1,4 @@
-// Em đọc xong 1 cuốn: chọn mức thích + cảm nhận cuối → 🎉 (mốc mới nếu có) → gợi ý 3 cuốn đọc tiếp, đặt trước luôn.
+// Em đọc xong 1 cuốn: chọn mức thích + cảm nhận cuối + thư gửi chính mình (mở lại sau 90 ngày; chỉ em xem) → 🎉 (mốc mới nếu có) → gợi ý 3 cuốn đọc tiếp, đặt trước luôn.
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import toast from 'react-hot-toast'
@@ -12,6 +12,7 @@ import { loiMuonTra } from '../../domain/muonTra'
 export default function DocXongModal({ sach, onDong }) {
   const [mucThich, setMucThich] = useState(null)
   const [camNhan, setCamNhan] = useState('')
+  const [thu, setThu] = useState('')
   const [xong, setXong] = useState(null)          // { moc_moi, goiY }
   const [dangGui, setDangGui] = useState(false)
   const [daDat, setDaDat] = useState([])
@@ -19,7 +20,7 @@ export default function DocXongModal({ sach, onDong }) {
   async function luu() {
     setDangGui(true)
     try {
-      const kq = await danhDauDocXong(sach.id, mucThich, camNhan)
+      const kq = await danhDauDocXong(sach.id, mucThich, camNhan, thu)
       const goiY = await layGoiYDocTiep(sach.id).catch(() => [])
       setXong({ ...kq, goiY })
     } catch (loi) {
@@ -43,6 +44,7 @@ export default function DocXongModal({ sach, onDong }) {
     return (
       <HopThoai tieuDe="🎉 Chúc mừng em!" onDong={() => onDong(true)} rong="max-w-lg">
         <p className="text-center text-lg">Em đã đọc xong <b>{sach.ten}</b>!</p>
+        {thu.trim() && <p className="rounded-lg bg-rose-50 p-2 text-center text-rose-900">💌 Thư của em đã được cất. Khoảng 3 tháng nữa app sẽ mở lại cho em đọc!</p>}
         {xong.moc_moi?.map(m => (
           <p key={m} className="rounded-lg bg-amber-50 p-2 text-center text-amber-900">{MOC[m]?.hinh} Em đạt mốc <b>{MOC[m]?.ten}</b></p>
         ))}
@@ -78,9 +80,15 @@ export default function DocXongModal({ sach, onDong }) {
         ))}
       </div>
       <label className="block">
-        <span className="font-medium">Cảm nhận cuối của em (không bắt buộc)</span>
+        <span className="font-medium">Cảm nhận cuối của em (không bắt buộc, chỉ em xem)</span>
         <textarea rows={3} maxLength={1000} value={camNhan} onChange={e => setCamNhan(e.target.value)}
           placeholder="Cả cuốn sách làm em nhớ nhất điều gì?" className="mt-1 w-full rounded-lg border border-stone-300 px-3 py-2 text-base" />
+      </label>
+      <label className="block rounded-xl bg-rose-50 p-3">
+        <span className="font-medium">💌 Thư gửi chính em (không bắt buộc)</span>
+        <span className="block text-sm text-stone-600">Viết 1 lời nhắn cho em của 3 tháng sau. Chỉ em đọc được, app sẽ mở lại khi đến ngày.</span>
+        <textarea rows={2} maxLength={500} value={thu} onChange={e => setThu(e.target.value)}
+          placeholder="Ví dụ: Nhớ nhé, Dế Mèn đã học được bài học…" className="mt-1 w-full rounded-lg border border-rose-200 bg-white px-3 py-2 text-base" />
       </label>
       <button disabled={!mucThich || dangGui} onClick={luu} className="w-full rounded-lg bg-emerald-600 py-2.5 font-semibold text-white disabled:opacity-50">
         {dangGui ? 'Đang lưu…' : 'Lưu'}

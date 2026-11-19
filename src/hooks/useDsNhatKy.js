@@ -1,7 +1,8 @@
-// Danh sách nhật ký của 1 em (em tự xem, GVCN / nhân viên xem — RLS lọc), lọc cảm xúc / chữ, "Xem thêm", xoá tại chỗ.
+// Danh sách nhật ký của 1 em (em xem hết; GVCN / nhân viên chỉ thấy lần ghi em cho cô xem — RLS lọc), lọc cảm xúc / chữ,
+// "Xem thêm", xoá / bật tắt "Cho cô xem" tại chỗ.
 import { useCallback, useEffect, useRef, useState } from 'react'
 import toast from 'react-hot-toast'
-import { layNhatKy, NHAT_KY_MOI_TRANG, xoaNhatKy } from '../data/nhatKy'
+import { doiChoCoXem, layNhatKy, NHAT_KY_MOI_TRANG, xoaNhatKy } from '../data/nhatKy'
 import { loiNhatKy } from '../domain/nhatKy'
 
 export function useDsNhatKy({ hsId, sachId = null }) {
@@ -40,5 +41,15 @@ export function useDsNhatKy({ hsId, sachId = null }) {
     }
   }
 
-  return { ds, loc, datLoc: t => setLoc(l => ({ ...l, ...t })), dangTai, conNua, xemThem: () => tai(trang + 1), xoa }
+  async function doiXem(id, cho) {
+    try {
+      await doiChoCoXem(id, cho)
+      setDs(d => d.map(x => (x.id === id ? { ...x, cho_co_xem: cho } : x)))
+      toast.success(cho ? 'Cô sẽ xem được lần ghi này' : 'Chỉ em xem được lần ghi này')
+    } catch (loi) {
+      toast.error(loiNhatKy(loi))
+    }
+  }
+
+  return { doiXem, ds, loc, datLoc: t => setLoc(l => ({ ...l, ...t })), dangTai, conNua, xemThem: () => tai(trang + 1), xoa }
 }

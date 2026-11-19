@@ -5,7 +5,7 @@ import { mauTim } from '../domain/danhMuc'
 
 export const SACH_MOI_TRANG = 30
 const COT_DS = 'id, ma_sach, ten, tac_gia, khoi_tu, khoi_den, so_ban, anh_bia, an'
-const COT_CT = 'id, ma_sach, ten, tac_gia, nxb, nam, khoi_tu, khoi_den, so_ban, vi_tri, gioi_thieu, anh_bia, an, sach_chu_de(chu_de_id)'
+const COT_CT = 'id, ma_sach, ten, tac_gia, nxb, nam, khoi_tu, khoi_den, so_ban, vi_tri, gioi_thieu, anh_bia, an, so_trang, cau_hoi, sach_chu_de(chu_de_id)'
 
 /** Tìm sách (không cần gõ dấu), lọc chủ đề / khối, 30 cuốn mỗi trang; trả { data, count }. */
 export function timSach({ tuKhoa = '', chuDeId = null, khoi = null, trang = 0 } = {}) {
@@ -38,9 +38,9 @@ export async function nhapDanhMuc(ds, moiLan = () => {}) {
 }
 
 /** Sửa thông tin 1 cuốn (chỉ các cột được phép) rồi đặt lại chủ đề; trả bản ghi mới. */
-export async function suaSach(id, { ten, tac_gia, nxb, nam, khoi_tu, khoi_den, so_ban, vi_tri, gioi_thieu, an, chuDeIds }) {
+export async function suaSach(id, { ten, tac_gia, nxb, nam, khoi_tu, khoi_den, so_ban, vi_tri, gioi_thieu, an, so_trang, cau_hoi, chuDeIds }) {
   const { data, error } = await supabase.from('sach')
-    .update({ ten, tac_gia, nxb, nam, khoi_tu, khoi_den, so_ban, vi_tri, gioi_thieu, an, sua_luc: new Date().toISOString() })
+    .update({ ten, tac_gia, nxb, nam, khoi_tu, khoi_den, so_ban, vi_tri, gioi_thieu, an, so_trang, cau_hoi, sua_luc: new Date().toISOString() })
     .eq('id', id).select(COT_CT).single()
   if (error) throw error
   if (chuDeIds) {

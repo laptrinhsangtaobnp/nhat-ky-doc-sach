@@ -1,4 +1,4 @@
-// Sửa 1 cuốn sách (nhân viên): thông tin, khối, số bản, chủ đề (≤ 2), ẩn / hiện, xoá. Máy chủ kiểm quyền + ràng buộc.
+// Sửa 1 cuốn sách (nhân viên): thông tin, khối, số bản, số trang, chủ đề (≤ 2), câu hỏi trò chuyện theo sách, ẩn / hiện, xoá. Máy chủ kiểm quyền + ràng buộc.
 import { useState } from 'react'
 import toast from 'react-hot-toast'
 import HopThoai from '../ui/HopThoai'
@@ -11,6 +11,7 @@ export default function SuaSachModal({ sach, chuDe, onDong }) {
   const [f, setF] = useState({
     ten: sach.ten, tac_gia: sach.tac_gia ?? '', nxb: sach.nxb ?? '', nam: sach.nam ?? '', khoi_tu: sach.khoi_tu, khoi_den: sach.khoi_den,
     so_ban: sach.so_ban, vi_tri: sach.vi_tri ?? '', gioi_thieu: sach.gioi_thieu ?? '', an: sach.an,
+    so_trang: sach.so_trang ?? '', cau_hoi: sach.cau_hoi ?? '',
   })
   const [cd, setCd] = useState(sach.sach_chu_de.map(x => x.chu_de_id))
   const [dangLuu, setDangLuu] = useState(false)
@@ -27,6 +28,7 @@ export default function SuaSachModal({ sach, chuDe, onDong }) {
       const moi = await suaSach(sach.id, {
         ten: f.ten.trim(), tac_gia: rong(f.tac_gia), nxb: rong(f.nxb), nam: f.nam === '' ? null : Number(f.nam),
         khoi_tu, khoi_den, so_ban: Number(f.so_ban), vi_tri: rong(f.vi_tri), gioi_thieu: rong(f.gioi_thieu), an: f.an, chuDeIds: cd,
+        so_trang: f.so_trang === '' ? null : Number(f.so_trang), cau_hoi: rong(f.cau_hoi),
       })
       toast.success('Đã lưu')
       onDong(moi)
@@ -53,6 +55,7 @@ export default function SuaSachModal({ sach, chuDe, onDong }) {
           <label className="block text-sm">Vị trí (kệ)<input maxLength={50} value={f.vi_tri} onChange={dat('vi_tri')} className={o} /></label>
           <label className="block text-sm">Nhà xuất bản<input maxLength={100} value={f.nxb} onChange={dat('nxb')} className={o} /></label>
           <label className="block text-sm">Năm<input type="number" min={1900} max={2100} value={f.nam} onChange={dat('nam')} className={o} /></label>
+          <label className="block text-sm">Số trang (cho thanh kéo trang khi HS ghi)<input type="number" min={1} max={3000} value={f.so_trang} onChange={dat('so_trang')} className={o} /></label>
         </div>
         <div className="grid grid-cols-3 gap-3">
           <label className="block text-sm">Từ khối<select value={f.khoi_tu} onChange={dat('khoi_tu')} className={o}>{[1, 2, 3, 4, 5].map(k => <option key={k}>{k}</option>)}</select></label>
@@ -70,6 +73,9 @@ export default function SuaSachModal({ sach, chuDe, onDong }) {
         </fieldset>
         <label className="block text-sm">Giới thiệu ngắn (1–3 câu cho học sinh)
           <textarea rows={3} maxLength={600} value={f.gioi_thieu} onChange={dat('gioi_thieu')} className={o} />
+        </label>
+        <label className="block text-sm">Câu hỏi trò chuyện theo sách (bố mẹ hỏi con — mỗi dòng 1 câu, không bắt buộc)
+          <textarea rows={3} maxLength={1000} value={f.cau_hoi} onChange={dat('cau_hoi')} placeholder="Vì sao Dế Mèn hối hận?" className={o} />
         </label>
         <label className="flex items-center gap-2 text-sm"><input type="checkbox" checked={f.an} onChange={dat('an')} /> Ẩn với học sinh (sách hỏng, chưa lên kệ…)</label>
         <div className="flex items-center gap-2 pt-1">

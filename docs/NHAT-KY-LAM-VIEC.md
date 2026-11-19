@@ -4,13 +4,44 @@ Ghi mới nhất ở trên. Mỗi phiên thêm 1 mục: đã làm, kiểm tra g�
 
 ---
 
+## 19/11/2026 — Đặc tả mới: cây đọc sách, ghi nhanh, riêng tư, thư gửi chính mình, Góc bố mẹ, PWA
+
+### Trạng thái
+- Thầy gửi đặc tả mới → so sánh cũ / mới → thầy chốt (KE-HOACH-APP.md mục 11).
+- `sql/2026-11-19_cay_doc_sach.sql` đã chạy trên Neon (2 lần), thầy đã Refresh schema cache.
+- Test: `npm test` 50/50 · `npm run test:quyen` 29/29 · eslint sạch · build OK. Thử Chrome 390px: trang chủ (cây, đọc tiếp,
+  Góc bố mẹ) → ghi nhanh (kéo trang, 5 phút trò chuyện, bố mẹ viết, cho cô xem) → Nhìn lại (hành trình cảm xúc) → thủ thư xem 1 em
+  (chỉ thấy lần cho cô xem). Dữ liệu thử đã dọn.
+- **Chưa commit / đẩy.** Bản Vercel hiện tại đọc `tq.chuoi` (đã bỏ ở máy chủ) → trang chủ HS / Lớp trên link thật **hỏng đến khi đẩy bản mới**.
+
+### Điều cần nhớ
+- Riêng tư: RLS `nhat_ky` cho GVCN / nhân viên chỉ dòng `cho_co_xem`; `doc_xong` chỉ em; `thu_gui_minh` không ai đọc thẳng
+  (chỉ `mo_thu` khi đến ngày). Hàm cho người khác (`nhin_lai_nam`, `lop_tong_quan`) không trả chữ em viết.
+- Chạy lại `2026-11-18_nhat_ky.sql` thì phải chạy lại `2026-11-19_cay_doc_sach.sql` (tệp 19/11 thay hàm, bỏ `chuoi_cua`, `dat_muc_tieu`).
+- Lần thử đầu sau khi Neon nghỉ có vài lỗi 400 (đoán là `chua_nhan_dien` được gọi lại — các lần sau không còn).
+
+### Đăng nhập mã lớp + PIN (19/11, chiều)
+- Đã làm: `sql/2026-11-19_dang_nhap_pin.sql` (đã chạy Neon 2 lần), vai trò Neon `dang_nhap_pin` + `scripts/dat-vai-tro-pin.mjs`
+  (đã chạy, NEON_PIN_URL trong .env), Edge Function `supabase/functions/dang-nhap-pin`, màn đăng nhập "Học sinh / Thầy cô",
+  trang `/lop/ma-pin` (mã lớp + QR, tạo / đặt lại PIN, in phiếu). Test nhanh 53/53; `tests/that/pin.test.js` viết xong.
+- Thầy đã Refresh + cho phép: đã đặt secret NEON_PIN_URL, deploy `dang-nhap-pin --no-verify-jwt`. `npm run test:quyen` 34/34.
+  Thử Chrome 390px: thủ thư tạo PIN lớp 3THU → in phiếu (QR) → HS mở link ?lop= → chọn tên → PIN sai báo "còn 4 lần" → PIN đúng
+  vào /hoc-sinh → thoát → "Ai đang đọc sách?" nhớ em. PIN thử đã xoá. Lỗi 400 lúc thử = `chua_nhan_dien` được gọi lại (đã đo).
+- Chưa commit / đẩy (chờ thầy).
+
+### Còn dở
+- [ ] Nhập số trang / câu hỏi theo sách bằng Excel (hiện chỉ sửa từng cuốn).
+- [ ] Review bạn bè (thủ thư duyệt), hộ chiếu thể loại, thử thách lớp theo số ngày ghi, thống kê. Hoãn: ghi âm, nhắc giờ.
+
+---
+
 ## 18/11/2026 (chiều) — Tài liệu thủ thư, Giai đoạn 3 (nhật ký + Nhìn lại), sửa lỗi Neon mất danh tính
 
 ### Trạng thái
 - Neon đã chạy lại cả 4 tệp SQL (đổi `auth.uid()` → `public.toi()`), có thêm `2026-11-18_nhat_ky.sql`.
 - Test: `npm test` 45/45 · `npm run test:quyen` 28/28 (8 tài khoản + 6 sách + 6 mượn – trả + 8 nhật ký) · eslint sạch · build OK.
 - Đã thử trên Chrome (điện thoại 390px): ghi nhật ký → đọc xong (🎉 + mốc + gợi ý) → Nhìn lại → Lớp học. Dữ liệu thử đã dọn.
-- **Chưa commit / đẩy giai đoạn 3** (chờ thầy cho phép). **Chưa deploy lại 3 Edge Function** (CLI đòi thầy xác nhận).
+- 19/11: đã commit `26e25ea` + đẩy GitHub (Vercel tự cập nhật); đã deploy lại 3 Edge Function (có gọi lại); test thật 28/28 sau deploy.
 
 ### Đã làm
 - Tài liệu hướng dẫn thủ thư `docs/huong-dan-thu-thu/` (PDF 15 trang, 22 ảnh chụp app thật, phiếu dùng thử 18 việc).
@@ -27,7 +58,8 @@ Ghi mới nhất ở trên. Mỗi phiên thêm 1 mục: đã làm, kiểm tra g�
 - **Viết SQL mới: KHÔNG dùng `auth.uid()`, dùng `public.toi()`.**
 
 ### Còn dở
-- [ ] Thầy cho phép → commit + đẩy giai đoạn 3; deploy lại 3 Edge Function (`--yes`).
+- [x] Commit + đẩy giai đoạn 3; deploy lại 3 Edge Function (19/11).
+- [ ] 19/11 thầy gửi ĐẶC TẢ mới (PIN, phụ huynh, cây đọc sách, ghi âm, review, hộ chiếu thể loại…) → đang thảo luận, chưa code.
 - [ ] Chưa có tài khoản GVCN thử → chưa test quyền thật cho vai trò giao_vien (đã thử bằng nhân viên + HS).
 - [ ] Gợi ý theo sở thích (giai đoạn sau; hiện: cùng chủ đề + hợp khối), thống kê thói quen toàn trường (giai đoạn 4),
       in sổ có che tên, GVCN viết lời khen (để sau).

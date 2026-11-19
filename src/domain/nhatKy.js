@@ -1,5 +1,5 @@
-// Nhật ký đọc sách: cảm xúc, câu hỏi gợi ý, mốc, chữ hiển thị. Chuỗi / mốc / "tính chuỗi" thật do máy chủ tính —
-// các hàm ở đây chỉ để hiển thị và nhắc em trước khi lưu.
+// Nhật ký đọc sách: cảm xúc, câu hỏi gợi ý / trò chuyện, cây, mốc, hành trình cảm xúc, chữ hiển thị.
+// Số ngày cây lớn / mốc / "tính chuỗi" (lần ghi được tính cho cây) thật do máy chủ tính — ở đây chỉ để hiển thị và nhắc em.
 import { soNgayDen } from './ngay'
 
 export const CAM_XUC = [
@@ -29,7 +29,23 @@ export const CAU_GOI_Y = [
   'Em có muốn giới thiệu cuốn này cho bạn không? Vì sao?',
 ]
 
+// Câu bố mẹ hỏi con ("5 phút trò chuyện") — dùng kèm câu riêng theo sách do thủ thư nhập (sach.cau_hoi).
+export const CAU_TRO_CHUYEN = [
+  'Hôm nay con đọc đến đoạn nào rồi? Kể bố mẹ nghe với!',
+  'Trong đoạn hôm nay, nhân vật nào làm con chú ý nhất?',
+  'Có chỗ nào làm con bật cười hoặc thấy buồn không?',
+  'Nếu con được đặt tên khác cho cuốn sách, con đặt là gì?',
+  'Con đoán đoạn sau sẽ có chuyện gì?',
+  'Có từ nào trong sách con chưa hiểu không? Mình cùng tìm hiểu nhé.',
+  'Nhân vật trong sách có giống ai mà con biết không?',
+]
+
+// Mốc: theo số ngày cây lớn + Gia đình đọc sách (19/11). Các mã cũ (cuon_*, chuoi_*) giữ để hiện mốc đã đạt trước đó.
 export const MOC = {
+  ngay_7: { hinh: '🌿', ten: '7 ngày ghi nhật ký', moTa: 'Cây của em đã lớn 7 ngày rồi!' },
+  ngay_30: { hinh: '🌳', ten: '30 ngày ghi nhật ký', moTa: 'Cây của em đã lớn 30 ngày. Giỏi quá!' },
+  ngay_100: { hinh: '🍎', ten: '100 ngày ghi nhật ký', moTa: 'Cây của em đã ra quả sau 100 ngày. Tuyệt vời!' },
+  gia_dinh: { hinh: '👨‍👩‍👧', ten: 'Gia đình đọc sách', moTa: 'Em và bố mẹ đã cùng đọc, cùng ghi 5 lần!' },
   cuon_1: { hinh: '🌱', ten: 'Cuốn sách đầu tiên', moTa: 'Em đã đọc xong cuốn sách đầu tiên!' },
   cuon_5: { hinh: '📚', ten: '5 cuốn sách', moTa: 'Em đã đọc xong 5 cuốn sách!' },
   cuon_10: { hinh: '🌟', ten: '10 cuốn sách', moTa: 'Em đã đọc xong 10 cuốn sách!' },
@@ -57,12 +73,71 @@ export function loiNhac(lanGhiCuoi, homNay) {
   return n >= 3 ? `Đã ${n} ngày em chưa ghi nhật ký. Hôm nay em đọc gì?` : null
 }
 
-/** Chữ về chuỗi tuần cho học sinh. */
-export function chuChuoi({ tuan_nay: nay, can, chuoi }) {
-  const conLai = Math.max(can - nay, 0)
-  const tuan = conLai === 0 ? 'Tuần này em đã đủ — giữ được chuỗi!' : `Tuần này em ghi ${nay}/${can} lần, còn ${conLai} lần nữa.`
-  return { tuan, chuoi: chuoi > 0 ? `Chuỗi ${chuoi} tuần 🔥` : 'Bắt đầu chuỗi tuần đầu tiên nào!' }
+// Cây đọc sách: lớn theo SỐ NGÀY có ghi (máy chủ đếm, cay_cua). Bỏ lỡ thì ngừng lớn, không bao giờ héo.
+export const GIAI_DOAN_CAY = [
+  { tu: 0, hinh: '🌰', ten: 'Hạt mầm' },
+  { tu: 1, hinh: '🌱', ten: 'Mầm non' },
+  { tu: 3, hinh: '🌿', ten: 'Cây con' },
+  { tu: 7, hinh: '🌲', ten: 'Cây nhỏ' },
+  { tu: 15, hinh: '🌳', ten: 'Cây lớn' },
+  { tu: 30, hinh: '🌸', ten: 'Cây ra hoa' },
+  { tu: 60, hinh: '🍎', ten: 'Cây ra quả' },
+  { tu: 100, hinh: '🏞️', ten: 'Khu vườn đọc sách' },
+]
+
+/** Giai đoạn cây theo số ngày: { hinh, ten, tu, sau (giai đoạn kế, null nếu cuối), conLai (số ngày tới giai đoạn kế), phanTram }. */
+export function giaiDoanCay(soNgay) {
+  const n = Math.max(0, Number(soNgay) || 0)
+  const i = GIAI_DOAN_CAY.reduce((k, g, j) => (n >= g.tu ? j : k), 0)   // không dùng findLastIndex (iPhone cũ)
+  const gd = GIAI_DOAN_CAY[i], sau = GIAI_DOAN_CAY[i + 1] ?? null
+  return {
+    ...gd, sau,
+    conLai: sau ? sau.tu - n : 0,
+    phanTram: sau ? Math.round(((n - gd.tu) / (sau.tu - gd.tu)) * 100) : 100,
+  }
 }
+
+/** Câu cho học sinh về cây hôm nay. */
+export function chuCay({ hom_nay: daGhi, tuan_nay: tuanNay }) {
+  return {
+    homNay: daGhi ? 'Hôm nay em đã tưới cây rồi 💧' : 'Ghi nhật ký hôm nay để cây lớn thêm nhé!',
+    tuan: `Tuần này em ghi ${tuanNay} ngày.`,
+  }
+}
+
+/** Số thứ tự ngày (để đổi câu gợi ý mỗi ngày, ai cũng thấy cùng câu trong 1 ngày). */
+const soNgayTuyetDoi = ngay => Math.floor(Date.parse(`${ngay}T00:00:00Z`) / 86400000)
+
+/** Câu hỏi gợi ý của ngày, lệch thêm `buoc` câu khi em bấm "Câu khác". */
+export const cauHoiHomNay = (ngay, buoc = 0) => CAU_GOI_Y[(soNgayTuyetDoi(ngay) + buoc) % CAU_GOI_Y.length]
+
+/** Tách câu hỏi theo sách (mỗi dòng 1 câu) do thủ thư nhập. */
+export const tachCauHoi = cauHoi => String(cauHoi ?? '').split('\n').map(c => c.trim()).filter(Boolean)
+
+/** 3 câu "5 phút trò chuyện": câu riêng của sách trước (đổi theo ngày), thêm câu chung cho đủ. */
+export function cauTroChuyen(ngay, cauHoiSach, so = 3) {
+  const n = soNgayTuyetDoi(ngay)
+  const xoay = ds => ds.map((_, i) => ds[(n + i) % ds.length])
+  const rieng = tachCauHoi(cauHoiSach)
+  return [...(rieng.length ? xoay(rieng).slice(0, 2) : []), ...xoay(CAU_TRO_CHUYEN)].slice(0, so)
+}
+
+/**
+ * Hành trình cảm xúc 1 cuốn: [{ trang, cam_xuc, ngay }] (theo thứ tự ghi) → [{ cam_xuc, trang, viTri (0–100) }].
+ * Có số trang thì đặt theo trang / tổng trang; lần ghi không có trang thì đặt theo thứ tự ghi.
+ */
+export function viTriHanhTrinh(ds, soTrang) {
+  const ds2 = ds ?? []
+  const tong = soTrang || Math.max(0, ...ds2.map(x => x.trang ?? 0))
+  return ds2.map((x, i) => ({
+    cam_xuc: x.cam_xuc, trang: x.trang ?? null,
+    viTri: x.trang && tong ? Math.min(100, Math.round((x.trang / tong) * 100))
+      : ds2.length === 1 ? 50 : Math.round((i / (ds2.length - 1)) * 100),
+  }))
+}
+
+/** Giá trị lớn nhất cho thanh kéo trang: số trang của sách, nếu chưa có thì đủ rộng hơn trang em đã ghi. */
+export const trangToiDa = (soTrang, trangCuoi) => soTrang || Math.max(200, Math.ceil(((trangCuoi ?? 0) + 50) / 50) * 50)
 
 /** Cảm xúc xuất hiện nhiều nhất trong { vui: 3, buon: 1 } → mục CAM_XUC (null nếu chưa có). */
 export function camXucNhieuNhat(dem) {
@@ -80,6 +155,7 @@ export function loiNhatKy(loi) {
   if (m.includes('het_han_sua')) return 'Nhật ký đã quá 7 ngày nên không sửa / xoá được nữa.'
   if (m.includes('qua_nhieu_lan')) return 'Hôm nay em đã ghi rất nhiều rồi, mai ghi tiếp nhé!'
   if (m.includes('khong_co_sach')) return 'Không tìm thấy sách này.'
+  if (m.includes('chua_den_ngay')) return 'Lá thư này chưa đến ngày mở đâu, em chờ thêm nhé!'
   if (m.includes('forbidden')) return 'Bạn không có quyền làm việc này.'
   if (loi?.code === '23514') return 'Có ô chưa hợp lệ (quá dài hoặc chưa chọn cảm xúc).'
   if (!loi?.code && /fetch|network/i.test(m)) return 'Mất kết nối mạng, thử lại nhé. Chữ em viết vẫn còn trên màn hình.'

@@ -14,3 +14,5 @@
 | `2026-11-18_danh_muc_sach.sql` | chu_de, sach, sach_chu_de, RLS, nhap_danh_muc, tìm không dấu | 17/11 trên Neon (đặt tên ngày 18 để xếp sau tệp khởi tạo) |
 | `2026-11-18_muon_tra.sql` | luot_muon, cai_dat.so_ngay_giu, RLS, hàm đặt trước / soạn / cho mượn / trả / báo mất / danh sách / đếm | 18/11 trên Neon |
 | `2026-11-18_nhat_ky.sql` | nhat_ky, doc_xong, moc_dat, tuy_chon_hs, cai_dat (ngưỡng chuỗi), RLS, hàm ghi / chuỗi / mốc / Nhìn lại / Lớp | 18/11 trên Neon |
+| `2026-11-19_cay_doc_sach.sql` | cây đọc sách thay chuỗi tuần (ngưỡng 3 chữ), mốc ngày / gia đình, riêng tư "Cho cô xem", bố mẹ viết, thư gửi chính mình (`thu_gui_minh`), sach.so_trang / cau_hoi, đọc tiếp. **Thay một số hàm của tệp 18/11** → chạy lại tệp 18/11 thì chạy lại tệp này | 19/11 trên Neon (chạy 2 lần) |
+| `2026-11-19_dang_nhap_pin.sql` | mã lớp (`lop.ma_lop`, ẩn cột với người dùng), `pin_hs`, `lop_sai_pin`, hàm PIN, vai trò `dang_nhap_pin` (mật khẩu đặt bằng `scripts/dat-vai-tro-pin.mjs`). **Chạy lại tệp 17/11 thì chạy lại tệp này** (tệp 17/11 cấp lại quyền xem cả bảng lop) | 19/11 trên Neon (chạy 2 lần) |
