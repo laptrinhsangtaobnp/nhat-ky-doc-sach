@@ -4,6 +4,36 @@ Ghi mới nhất ở trên. Mỗi phiên thêm 1 mục: đã làm, kiểm tra g�
 
 ---
 
+## 18/11/2026 (chiều) — Tài liệu thủ thư, Giai đoạn 3 (nhật ký + Nhìn lại), sửa lỗi Neon mất danh tính
+
+### Trạng thái
+- Neon đã chạy lại cả 4 tệp SQL (đổi `auth.uid()` → `public.toi()`), có thêm `2026-11-18_nhat_ky.sql`.
+- Test: `npm test` 45/45 · `npm run test:quyen` 28/28 (8 tài khoản + 6 sách + 6 mượn – trả + 8 nhật ký) · eslint sạch · build OK.
+- Đã thử trên Chrome (điện thoại 390px): ghi nhật ký → đọc xong (🎉 + mốc + gợi ý) → Nhìn lại → Lớp học. Dữ liệu thử đã dọn.
+- **Chưa commit / đẩy giai đoạn 3** (chờ thầy cho phép). **Chưa deploy lại 3 Edge Function** (CLI đòi thầy xác nhận).
+
+### Đã làm
+- Tài liệu hướng dẫn thủ thư `docs/huong-dan-thu-thu/` (PDF 15 trang, 22 ảnh chụp app thật, phiếu dùng thử 18 việc).
+- Thầy duyệt "đồng ý hết" 7 đề xuất giai đoạn 3 (xem KE-HOACH-APP.md mục 9). Làm: bảng `nhat_ky`, `doc_xong`, `moc_dat`, `tuy_chon_hs`;
+  HS: trang chủ (Ghi nhật ký, chuỗi tuần, mục tiêu tháng, nhắc), `/nhat-ky/ghi`, `/nhat-ky`, `/nhin-lai` (in sổ), Đọc xong;
+  GVCN `/giao-vien` Lớp của tôi; nhân viên `/thu-vien/lop`; GVCN / nhân viên xem 1 em `/lop/hs/:id`.
+
+### PHÁT HIỆN QUAN TRỌNG: Neon đôi khi không nhận thẻ đăng nhập
+- Đo 18/11: lần gọi đầu trên kết nối Neon mới (lúc vừa thức dậy / nhiều người vào cùng lúc) mất danh tính tới ~44%
+  (`auth.uid()` = null, không có cả `request.jwt.claims`). Lúc Neon đã chạy: ~0%. Chưa lần nào nhầm sang người khác.
+  Trước khi sửa: người dùng thấy danh sách trống / "không có quyền" / bị đăng xuất ngay khi đăng nhập (test đỏ chập chờn là vì vậy).
+- Sửa: mọi SQL dùng `public.toi()` (báo lỗi `chua_nhan_dien` khi null, thay vì âm thầm "không có gì");
+  app gọi lại tối đa 5 lần (`src/lib/goiLai.js`, gắn vào client Neon + test thật); Edge Function `neon()` cũng gọi lại.
+- **Viết SQL mới: KHÔNG dùng `auth.uid()`, dùng `public.toi()`.**
+
+### Còn dở
+- [ ] Thầy cho phép → commit + đẩy giai đoạn 3; deploy lại 3 Edge Function (`--yes`).
+- [ ] Chưa có tài khoản GVCN thử → chưa test quyền thật cho vai trò giao_vien (đã thử bằng nhân viên + HS).
+- [ ] Gợi ý theo sở thích (giai đoạn sau; hiện: cùng chủ đề + hợp khối), thống kê thói quen toàn trường (giai đoạn 4),
+      in sổ có che tên, GVCN viết lời khen (để sau).
+
+---
+
 ## 18/11/2026 — Thầy duyệt lọc chức năng + Giai đoạn 2 (mượn – trả)
 
 ### Trạng thái

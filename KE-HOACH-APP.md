@@ -147,6 +147,12 @@ tự đổi trạng thái mượn, gọi thống kê → phải bị chặn), c�
   giữ sách đã soạn 3 ngày, hết bản → hàng chờ, em tự huỷ khi chưa soạn.
 - 18/11: Giai đoạn 2 mượn – trả — bảng `luot_muon` + hàm máy chủ; HS: đặt trước ở trang sách, Tủ sách của em;
   thủ thư: Mượn – trả (Cần soạn / Chờ em đến nhận / Đang mượn / Lịch sử), cho mượn tại chỗ, quy tắc mượn. Test quyền thật 6/6.
+- 18/11: Thầy duyệt thiết kế giai đoạn 3 (đồng ý hết 7 đề xuất): ghi nhật ký cho mọi sách trong danh mục; tính chuỗi khi
+  ≥ 20 chữ ở "đoạn em nhớ" hoặc "em nghĩ gì", tối đa 1 lần / ngày, tuần đạt khi ≥ 3 lần; "đọc xong" em tự bấm (cần ≥ 1 lần ghi);
+  sửa / xoá trong 7 ngày; GVCN chỉ xem (lời khen để sau); năm học từ 1/9; mục tiêu tháng em chọn 1–3 cuốn (mặc định 2).
+- 18/11: Giai đoạn 3 phần chính — bảng nhat_ky, doc_xong, moc_dat, tuy_chon_hs + hàm máy chủ; HS: trang chủ (Ghi nhật ký,
+  chuỗi tuần, mục tiêu tháng, nhắc), Ghi nhật ký, Đọc xong (🎉 + gợi ý 3 cuốn + mốc), Nhật ký của em, Nhìn lại năm (in sổ);
+  GVCN: Lớp của tôi (em lâu chưa ghi tô đỏ) + xem nhật ký em; nhân viên: Lớp học. Test quyền thật nhật ký 8/8.
 
 ## 10. Thiết kế chức năng người dùng — thầy chốt 17/11/2026 (thay phần tương ứng ở mục 1, 5, 6)
 

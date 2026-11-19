@@ -1,6 +1,7 @@
 // Kết nối: đăng nhập ở Supabase, dữ liệu ở Neon (Neon Data API nhận thẻ đăng nhập của Supabase).
 // CHỈ src/data/ được dùng from() / rpc() / functions — trang và thành phần gọi hàm có tên trong src/data/.
 import { createClient } from '@supabase/supabase-js'
+import { fetchGoiLai } from './goiLai'
 
 const url = import.meta.env.VITE_SUPABASE_URL
 const khoa = import.meta.env.VITE_SUPABASE_ANON_KEY
@@ -11,6 +12,7 @@ export const THIEU_CAU_HINH = !url || !khoa || !neonUrl
 const sb = createClient(url || 'http://chua-cau-hinh.local', khoa || 'x')
 const neon = createClient(neonUrl || 'http://chua-cau-hinh.local', khoa || 'x', {
   accessToken: async () => (await sb.auth.getSession()).data.session?.access_token ?? null,
+  global: { fetch: fetchGoiLai() },        // Neon đôi khi chưa nhận thẻ đăng nhập → gọi lại
 })
 
 export const supabase = {

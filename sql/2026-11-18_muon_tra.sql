@@ -79,14 +79,14 @@ alter table public.luot_muon enable row level security;
 drop policy if exists luot_muon_xem on public.luot_muon;
 create policy luot_muon_xem on public.luot_muon for select to authenticated using (
   (select public.la_nhan_vien())
-  or (hoc_sinh_id = (select auth.uid()) and (select public.vai_tro_cua_toi()) is not null)
+  or (hoc_sinh_id = (select public.toi()) and (select public.vai_tro_cua_toi()) is not null)
 );
 
 -- ───────────── Học sinh ─────────────
 -- Đặt trước 1 cuốn. p_nguon: 'tim_sach' | 'goi_y'. Trả { id }.
 create or replace function public.dat_truoc(p_sach_id bigint, p_nguon text default 'tim_sach')
 returns jsonb language plpgsql security definer set search_path = public as $$
-declare toi uuid := auth.uid(); v_id bigint; v_so_ban int; v_an boolean;
+declare toi uuid := public.toi(); v_id bigint; v_so_ban int; v_an boolean;
 begin
   if public.vai_tro_cua_toi() is distinct from 'hoc_sinh' then raise exception 'forbidden'; end if;
   perform 1 from public.ho_so where id = toi for update;          -- 2 lần bấm cùng lúc → chạy lần lượt
@@ -109,9 +109,9 @@ begin
   if not found then raise exception 'khong_co'; end if;
   if public.la_nhan_vien() then
     if r.trang_thai not in ('dat_truoc', 'da_soan') then raise exception 'sai_trang_thai'; end if;
-    update public.luot_muon set trang_thai = 'huy', ngay_xong = now(), ly_do_huy = 'thu_thu_huy', nguoi_xu_ly = auth.uid()
+    update public.luot_muon set trang_thai = 'huy', ngay_xong = now(), ly_do_huy = 'thu_thu_huy', nguoi_xu_ly = public.toi()
     where id = p_id;
-  elsif r.hoc_sinh_id = auth.uid() and public.vai_tro_cua_toi() = 'hoc_sinh' then
+  elsif r.hoc_sinh_id = public.toi() and public.vai_tro_cua_toi() = 'hoc_sinh' then
     if r.trang_thai = 'da_soan' then raise exception 'da_soan_roi'; end if;
     if r.trang_thai <> 'dat_truoc' then raise exception 'sai_trang_thai'; end if;
     update public.luot_muon set trang_thai = 'huy', ngay_xong = now(), ly_do_huy = 'hoc_sinh_huy' where id = p_id;
@@ -131,7 +131,7 @@ returns jsonb language sql stable security definer set search_path = public as $
         'con_ban', case when l.trang_thai = 'dat_truoc' then public.ban_ranh(l.sach_id) end,
         'sach', jsonb_build_object('id', s.id, 'ma_sach', s.ma_sach, 'ten', s.ten, 'tac_gia', s.tac_gia, 'anh_bia', s.anh_bia, 'vi_tri', s.vi_tri)) as j
     from public.luot_muon l join public.sach s on s.id = l.sach_id
-    where l.hoc_sinh_id = auth.uid() and public.vai_tro_cua_toi() is not null
+    where l.hoc_sinh_id = public.toi() and public.vai_tro_cua_toi() is not null
     order by 1 desc, 2 desc
     limit 50
   ) x
@@ -148,12 +148,12 @@ begin
   select jsonb_build_object('id', id, 'trang_thai', trang_thai, 'han_giu', han_giu, 'han_tra', han_tra,
       'thu_tu_cho', case when trang_thai = 'dat_truoc' then public.thu_tu_cho(id) end)
     into v_cua_em from public.luot_muon
-  where sach_id = p_sach_id and hoc_sinh_id = auth.uid() and trang_thai in ('dat_truoc', 'da_soan', 'dang_muon');
+  where sach_id = p_sach_id and hoc_sinh_id = public.toi() and trang_thai in ('dat_truoc', 'da_soan', 'dang_muon');
   return jsonb_build_object(
     'so_ban', v_so_ban,
     'con_ban', public.ban_ranh(p_sach_id),
     'hang_cho', (select count(*) from public.luot_muon where sach_id = p_sach_id and trang_thai = 'dat_truoc'),
-    'em_dang_giu', (select count(*) from public.luot_muon where hoc_sinh_id = auth.uid()
+    'em_dang_giu', (select count(*) from public.luot_muon where hoc_sinh_id = public.toi()
                     and trang_thai in ('dat_truoc', 'da_soan', 'dang_muon')),
     'toi_da', (select so_sach_toi_da from public.cai_dat where id = 1),
     'cua_em', v_cua_em);
@@ -171,7 +171,7 @@ begin
   if r.trang_thai <> 'dat_truoc' then raise exception 'sai_trang_thai'; end if;
   perform 1 from public.sach where id = r.sach_id for update;      -- 2 người soạn cùng lúc bản cuối → 1 người lỗi
   if public.ban_ranh(r.sach_id) <= 0 then raise exception 'het_ban'; end if;
-  update public.luot_muon set trang_thai = 'da_soan', ngay_soan = now(), nguoi_xu_ly = auth.uid(),
+  update public.luot_muon set trang_thai = 'da_soan', ngay_soan = now(), nguoi_xu_ly = public.toi(),
     han_giu = public.hom_nay() + (select so_ngay_giu from public.cai_dat where id = 1)
   where id = p_id;
 end $$;
@@ -189,7 +189,7 @@ begin
     perform 1 from public.sach where id = r.sach_id for update;
     if public.ban_ranh(r.sach_id) <= 0 then raise exception 'het_ban'; end if;
   end if;
-  update public.luot_muon set trang_thai = 'dang_muon', ngay_muon = now(), nguoi_xu_ly = auth.uid(),
+  update public.luot_muon set trang_thai = 'dang_muon', ngay_muon = now(), nguoi_xu_ly = public.toi(),
     han_tra = public.hom_nay() + (select so_ngay_muon from public.cai_dat where id = 1)
   where id = p_id;
 end $$;
@@ -208,7 +208,7 @@ begin
   if public.ban_ranh(p_sach_id) <= 0 then raise exception 'het_ban'; end if;
   insert into public.luot_muon (sach_id, hoc_sinh_id, trang_thai, nguon, ngay_muon, han_tra, nguoi_xu_ly)
   values (p_sach_id, p_hoc_sinh_id, 'dang_muon', 'truc_tiep', now(),
-    public.hom_nay() + (select so_ngay_muon from public.cai_dat where id = 1), auth.uid())
+    public.hom_nay() + (select so_ngay_muon from public.cai_dat where id = 1), public.toi())
   returning id into v_id;
   return jsonb_build_object('id', v_id);
 end $$;
@@ -218,7 +218,7 @@ create or replace function public.ghi_tra(p_id bigint)
 returns void language plpgsql security definer set search_path = public as $$
 begin
   if not public.la_nhan_vien() then raise exception 'forbidden'; end if;
-  update public.luot_muon set trang_thai = 'da_tra', ngay_xong = now(), nguoi_xu_ly = auth.uid()
+  update public.luot_muon set trang_thai = 'da_tra', ngay_xong = now(), nguoi_xu_ly = public.toi()
   where id = p_id and trang_thai = 'dang_muon';
   if not found then raise exception 'sai_trang_thai'; end if;
 end $$;
@@ -229,7 +229,7 @@ returns void language plpgsql security definer set search_path = public as $$
 declare v_sach bigint;
 begin
   if not public.la_nhan_vien() then raise exception 'forbidden'; end if;
-  update public.luot_muon set trang_thai = 'mat', ngay_xong = now(), nguoi_xu_ly = auth.uid()
+  update public.luot_muon set trang_thai = 'mat', ngay_xong = now(), nguoi_xu_ly = public.toi()
   where id = p_id and trang_thai = 'dang_muon' returning sach_id into v_sach;
   if not found then raise exception 'sai_trang_thai'; end if;
   update public.sach set so_ban = greatest(so_ban - 1, 0), sua_luc = now() where id = v_sach;

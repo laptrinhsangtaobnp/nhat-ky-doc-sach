@@ -18,12 +18,18 @@ export const quanTriSupabase = () =>
     auth: { autoRefreshToken: false, persistSession: false },
   })
 
+// Neon đôi khi chưa nhận thẻ ở lần gọi đầu trên kết nối mới → máy chủ báo 'chua_nhan_dien' → gọi lại (giống src/lib/goiLai.js).
 export async function neon(duong: string, token: string, init: RequestInit = {}) {
-  const r = await fetch(`${NEON}/rest/v1/${duong}`, {
-    ...init,
-    headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json', ...(init.headers ?? {}) },
-  })
-  const t = await r.text()
+  let r!: Response, t = ''
+  for (let lan = 1; ; lan++) {
+    r = await fetch(`${NEON}/rest/v1/${duong}`, {
+      ...init,
+      headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json', ...(init.headers ?? {}) },
+    })
+    t = await r.text()
+    if (r.ok || lan >= 5 || !t.includes('chua_nhan_dien')) break
+    await new Promise(xong => setTimeout(xong, 150 * lan))
+  }
   if (!r.ok) throw new Error(t.includes('forbidden') ? 'forbidden' : `Neon ${r.status}: ${t.slice(0, 200)}`)
   return t ? JSON.parse(t) : null
 }

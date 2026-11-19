@@ -5,9 +5,9 @@ import { useAuth } from '../../context/AuthContext'
 import { laNhanVien, TEN_VAI_TRO } from '../../domain/taiKhoan'
 
 function menuTheoVaiTro(vaiTro) {
-  if (vaiTro === 'hoc_sinh') return [{ to: '/hoc-sinh', ten: 'Tủ sách của em' }, { to: '/sach', ten: 'Tìm sách' }]
+  if (vaiTro === 'hoc_sinh') return [{ to: '/hoc-sinh', ten: 'Tủ sách' }, { to: '/nhat-ky', ten: 'Nhật ký' }, { to: '/nhin-lai', ten: 'Nhìn lại' }, { to: '/sach', ten: 'Tìm sách' }]
   if (vaiTro === 'giao_vien') return [{ to: '/giao-vien', ten: 'Lớp của tôi' }, { to: '/sach', ten: 'Tìm sách' }]
-  if (laNhanVien(vaiTro)) return [{ to: '/thu-vien', ten: 'Mượn – trả' }, { to: '/sach', ten: 'Danh mục sách' }, { to: '/thu-vien/tai-khoan', ten: 'Tài khoản' }]
+  if (laNhanVien(vaiTro)) return [{ to: '/thu-vien', ten: 'Mượn – trả' }, { to: '/sach', ten: 'Danh mục sách' }, { to: '/thu-vien/lop', ten: 'Lớp học' }, { to: '/thu-vien/tai-khoan', ten: 'Tài khoản' }]
   return []
 }
 
@@ -16,7 +16,7 @@ export default function KhungTrang() {
   const menu = menuTheoVaiTro(hoSo?.vai_tro)
   return (
     <div className="min-h-screen">
-      <header className="sticky top-0 z-10 border-b border-stone-200 bg-white">
+      <header className="sticky top-0 z-10 border-b border-stone-200 bg-white print:hidden">
         <div className="mx-auto flex max-w-6xl flex-wrap items-center gap-x-4 gap-y-2 px-4 py-2">
           <div className="flex items-center gap-2 font-bold text-emerald-700">
             <BookOpen size={22} aria-hidden /> Nhật ký đọc sách

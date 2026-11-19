@@ -1,6 +1,6 @@
 -- CHẠY TRÊN NEON (Neon → SQL Editor), 17/11/2026. Chạy lại nhiều lần được (không mất dữ liệu).
 -- Giai đoạn 0: hồ sơ người dùng, lớp, cài đặt mượn sách + phân quyền theo dòng (RLS) + hàm máy chủ quản lý tài khoản.
--- Đăng nhập ở Supabase; Neon nhận thẻ đăng nhập (JWT) của Supabase → auth.uid() = id tài khoản Supabase.
+-- Đăng nhập ở Supabase; Neon nhận thẻ đăng nhập (JWT) của Supabase → public.toi() = id tài khoản Supabase.
 -- Vai trò trong Neon Data API: authenticated (đã đăng nhập), anonymous (chưa đăng nhập — không được gì).
 -- Sau khi chạy: Neon → Data API → Refresh schema cache.
 
@@ -34,21 +34,32 @@ create table if not exists public.cai_dat (
 );
 insert into public.cai_dat (id) values (1) on conflict (id) do nothing;
 
+-- Mã người gọi (thẻ đăng nhập). Neon đôi khi KHÔNG nhận thẻ ở lần gọi đầu trên kết nối mới (đo 18/11: tới ~44% lúc vừa thức
+-- dậy) → auth.uid() = null, mọi kiểm tra quyền âm thầm ra "không có gì". Báo lỗi rõ 'chua_nhan_dien' để app tự gọi lại
+-- (src/lib/goiLai.js) thay vì hiện danh sách trống / "không có quyền". Mọi hàm và RLS dùng public.toi(), không gọi auth.uid().
+create or replace function public.toi() returns uuid
+language plpgsql stable security definer set search_path = public as $$
+declare u uuid := auth.uid();
+begin
+  if u is null then raise exception 'chua_nhan_dien'; end if;
+  return u;
+end $$;
+
 -- ───────────── Hàm hỏi "tôi là ai" (STABLE + security definer: tính 1 lần mỗi câu lệnh, không vòng lặp RLS) ─────────────
 create or replace function public.vai_tro_cua_toi() returns text
 language sql stable security definer set search_path = public as $$
-  select vai_tro from public.ho_so where id = auth.uid() and hoat_dong
+  select vai_tro from public.ho_so where id = public.toi() and hoat_dong
 $$;
 
 create or replace function public.lop_cua_toi() returns bigint
 language sql stable security definer set search_path = public as $$
-  select lop_id from public.ho_so where id = auth.uid() and hoat_dong
+  select lop_id from public.ho_so where id = public.toi() and hoat_dong
 $$;
 
 -- Thủ thư hoặc quản trị
 create or replace function public.la_nhan_vien() returns boolean
 language sql stable security definer set search_path = public as $$
-  select coalesce((select vai_tro from public.ho_so where id = auth.uid() and hoat_dong) in ('quan_tri', 'thu_thu'), false)
+  select coalesce((select vai_tro from public.ho_so where id = public.toi() and hoat_dong) in ('quan_tri', 'thu_thu'), false)
 $$;
 
 -- ───────────── RLS ─────────────
@@ -59,7 +70,7 @@ alter table public.cai_dat enable row level security;
 -- Hồ sơ: tự xem mình; nhân viên xem tất cả; GVCN xem học sinh lớp mình. KHÔNG ai ghi thẳng — chỉ qua hàm bên dưới.
 drop policy if exists ho_so_xem on public.ho_so;
 create policy ho_so_xem on public.ho_so for select to authenticated using (
-  id = (select auth.uid())
+  id = (select public.toi())
   or (select public.la_nhan_vien())
   or ((select public.vai_tro_cua_toi()) = 'giao_vien' and lop_id = (select public.lop_cua_toi()) and vai_tro = 'hoc_sinh')
 );
@@ -103,7 +114,7 @@ begin
   select vai_tro into cu from public.ho_so where id = p_id;
   if cu is null then raise exception 'khong_co'; end if;
   if cu <> 'hoc_sinh' and toi <> 'quan_tri' then raise exception 'forbidden'; end if;
-  if p_id = auth.uid() and p_hoat_dong = false then raise exception 'khong_tu_khoa'; end if;
+  if p_id = public.toi() and p_hoat_dong = false then raise exception 'khong_tu_khoa'; end if;
   update public.ho_so set ho_ten = coalesce(nullif(trim(p_ho_ten), ''), ho_ten), lop_id = p_lop_id,
     hoat_dong = coalesce(p_hoat_dong, hoat_dong) where id = p_id;
 end $$;
@@ -113,7 +124,7 @@ create or replace function public.xoa_ho_so(p_id uuid)
 returns void language plpgsql security definer set search_path = public as $$
 begin
   if coalesce(public.vai_tro_cua_toi(), '') <> 'quan_tri' then raise exception 'forbidden'; end if;
-  if p_id = auth.uid() then raise exception 'khong_tu_xoa'; end if;
+  if p_id = public.toi() then raise exception 'khong_tu_xoa'; end if;
   delete from public.ho_so where id = p_id;
 end $$;
 
@@ -125,9 +136,9 @@ grant select, insert, update, delete on public.lop to authenticated;        -- R
 grant select, update on public.cai_dat to authenticated;                    -- RLS lọc
 grant usage, select on all sequences in schema public to authenticated;
 
-revoke all on function public.vai_tro_cua_toi(), public.lop_cua_toi(), public.la_nhan_vien() from public, anonymous;
+revoke all on function public.toi(), public.vai_tro_cua_toi(), public.lop_cua_toi(), public.la_nhan_vien() from public, anonymous;
 revoke all on function public.tao_ho_so(uuid, text, text, text, bigint), public.sua_ho_so(uuid, text, bigint, boolean),
   public.xoa_ho_so(uuid) from public, anonymous;
-grant execute on function public.vai_tro_cua_toi(), public.lop_cua_toi(), public.la_nhan_vien() to authenticated;
+grant execute on function public.toi(), public.vai_tro_cua_toi(), public.lop_cua_toi(), public.la_nhan_vien() to authenticated;
 grant execute on function public.tao_ho_so(uuid, text, text, text, bigint), public.sua_ho_so(uuid, text, bigint, boolean),
   public.xoa_ho_so(uuid) to authenticated;

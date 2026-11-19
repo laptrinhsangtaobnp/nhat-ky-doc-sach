@@ -2,6 +2,7 @@
 import { createClient } from '@supabase/supabase-js'
 import { emailDangNhap } from '../../src/domain/taiKhoan.js'
 import { docEnv } from '../../scripts/docEnv.mjs'
+import { fetchGoiLai } from '../../src/lib/goiLai.js'
 
 export const lay = docEnv()
 const URL_SB = lay('VITE_SUPABASE_URL'), KHOA = lay('VITE_SUPABASE_ANON_KEY'), NEON = lay('VITE_NEON_DATA_URL')
@@ -15,7 +16,7 @@ export async function vao(bien) {
   const sb = createClient(URL_SB, KHOA, { auth: { persistSession: false } })
   const { data, error } = await sb.auth.signInWithPassword({ email: emailDangNhap(v.slice(0, i)), password: v.slice(i + 1) })
   if (error) throw new Error(`${bien}: ${error.message}`)
-  const db = createClient(NEON, KHOA, { accessToken: async () => data.session.access_token })
+  const db = createClient(NEON, KHOA, { accessToken: async () => data.session.access_token, global: { fetch: fetchGoiLai() } })
   return { sb, db, id: data.user.id }
 }
 
