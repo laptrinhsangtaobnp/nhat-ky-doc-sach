@@ -4,6 +4,25 @@ Ghi mới nhất ở trên. Mỗi phiên thêm 1 mục: đã làm, kiểm tra g�
 
 ---
 
+## 19/11/2026 (khuya) — Thống kê sáng kiến
+
+- Thầy duyệt: số Trước **gộp các lớp thí điểm**; GVCN **không** xem trang Thống kê; xuất nhật ký tiêu biểu che tên **để sau**.
+- `sql/2026-11-19_thong_ke.sql` đã chạy Neon 2 lần + thầy đã Refresh schema cache (lần này BẮT BUỘC). Bảng `so_lieu_sang_kien` chỉ qua hàm.
+- Chỉ số theo tài liệu thư viện (Claude Docs "Chuẩn bị sáng kiến…", phần 2A, 3A, 3B). Sách nằm im tính **toàn trường**.
+- Giao diện: `/thu-vien/thong-ke` (menu nhân viên "Thống kê"), `hooks/useThongKe`, `components/thongKe/` (bộ lọc, số liệu, so sánh).
+  Excel: thư viện `write-excel-file@4.1.1`, tải khi bấm (`taiVeExcel` trong `data/tepExcel.js`).
+- Kiểm tra: `npm test` 72/72 · `npm run test:quyen` 63/63 (`thongKe.test.js` 5, dữ liệu dựng năm 2020) · eslint · build. Thử Chrome:
+  lớp 3THU 3 lượt → 66,7%; nhập Trước/Sau giờ báo cáo → -7,5 (-88,2%); chỉ số tự đo không có ô Sau; tải Excel 7 trang, quét
+  cả tệp không có tên / id HS; 390px không cuộn ngang. Đã dọn, trả lại số gio_bao_cao cũ.
+- **Chưa có lớp nào gắn ★ thí điểm** và kho sách thật đang trống → trang Thống kê mặc định ra 0 (đã có dòng nhắc).
+
+### Còn dở
+- [ ] Gắn ★ thí điểm cho các lớp thí điểm; thủ thư nhập số Trước (phần 2 tài liệu) trước khi HS dùng app.
+- [ ] Xuất nhật ký tiêu biểu che tên (để sau). Hướng dẫn thủ thư tập 3: duyệt review, chủ đề / hộ chiếu, thử thách lớp, thống kê.
+- [ ] Rà soát bảo mật toàn bộ + thử dữ liệu gấp 10 lần trước khi dùng thật; thử khôi phục sao lưu; ảnh bìa Cloudinary; giảm bundle (604 kB).
+
+---
+
 ## 19/11/2026 (khuya) — Thử thách lớp theo số ngày ghi
 
 - Commit hộ chiếu đã đẩy là `00d6508` nhưng **lời commit bị sai** (dùng nhầm tệp lời cũ "Giai đoạn 3…"). Thầy chọn để nguyên.

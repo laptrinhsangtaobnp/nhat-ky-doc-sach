@@ -18,6 +18,7 @@ import { THIEU_CAU_HINH } from './data/cauHinh'
 const TaiKhoanPage = lazy(() => import('./pages/quanTri/TaiKhoanPage'))
 const MuonTraPage = lazy(() => import('./pages/thuThu/MuonTraPage'))
 const LopCuaToiPage = lazy(() => import('./pages/giaoVien/LopCuaToiPage'))
+const ThongKePage = lazy(() => import('./pages/thuThu/ThongKePage'))
 const MaLopPinPage = lazy(() => import('./pages/giaoVien/MaLopPinPage'))
 const HoChieuPage = lazy(() => import('./pages/hocSinh/HoChieuPage'))
 
@@ -42,6 +43,7 @@ export default function App() {
           <Route element={<ChoVaiTro><KhungTrang /></ChoVaiTro>}>
             <Route path="/hoc-sinh" element={<ChoVaiTro vaiTro={['hoc_sinh']}><TuSachPage /></ChoVaiTro>} />
             <Route path="/giao-vien" element={<ChoVaiTro vaiTro={['giao_vien']}><Suspense fallback={<ManChoTai />}><LopCuaToiPage /></Suspense></ChoVaiTro>} />
+            <Route path="/thu-vien/thong-ke" element={<ChoVaiTro vaiTro={NHAN_VIEN}><Suspense fallback={<ManChoTai />}><ThongKePage /></Suspense></ChoVaiTro>} />
             <Route path="/thu-vien/lop" element={<ChoVaiTro vaiTro={NHAN_VIEN}><Suspense fallback={<ManChoTai />}><LopCuaToiPage /></Suspense></ChoVaiTro>} />
             <Route path="/lop/ma-pin" element={<ChoVaiTro vaiTro={['giao_vien', ...NHAN_VIEN]}><Suspense fallback={<ManChoTai />}><MaLopPinPage /></Suspense></ChoVaiTro>} />
             <Route path="/lop/hs/:hsId" element={<ChoVaiTro vaiTro={['giao_vien', ...NHAN_VIEN]}><NhinLaiPage /></ChoVaiTro>} />

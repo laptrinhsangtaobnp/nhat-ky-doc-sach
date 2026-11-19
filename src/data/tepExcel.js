@@ -8,6 +8,12 @@ export async function docTepExcel(tep) {
   return readSheet(tep)
 }
 
+/** Ghi tệp .xlsx nhiều trang ([{ sheet, data, columns }]) và tải về. Thư viện chỉ tải khi bấm (không làm nặng trang). */
+export async function taiVeExcel(cacTrang, tenTep) {
+  const { default: ghi } = await import('write-excel-file/browser')
+  await ghi(cacTrang).toFile(tenTep)
+}
+
 /** Cho người dùng tải về một tệp chữ (CSV…). */
 export function taiVeTep(noiDung, tenTep, kieu = 'text/csv;charset=utf-8') {
   const url = URL.createObjectURL(new Blob([noiDung], { type: kieu }))
