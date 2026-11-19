@@ -12,3 +12,4 @@ SaoLuu/
 .DS_Store
 
 supabase/.temp/
+*.local.md

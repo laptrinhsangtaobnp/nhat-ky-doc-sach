@@ -29,7 +29,7 @@ Ghi mới nhất ở trên. Mỗi phiên thêm 1 mục: đã làm, kiểm tra g�
   vào /hoc-sinh → thoát → "Ai đang đọc sách?" nhớ em. PIN thử đã xoá. Lỗi 400 lúc thử = `chua_nhan_dien` được gọi lại (đã đo).
 - Đã commit `15cfe47` + đẩy (thầy cho phép).
 - Nhập Excel có cột Số trang, Câu hỏi (`sql/2026-11-19_nhap_so_trang.sql` đã chạy; tệp mẫu `public/mau-danh-muc-sach.xlsx` có 2 cột mới).
-- Tạo tài khoản GVCN thử `thu.gv1` (lớp 3THU, `THU_GV` trong .env) — tạo bằng thủ thư thử qua `tao-tai-khoan` (vai trò HS) rồi đổi
+- Tạo tài khoản GVCN thử (xem docs/TAI-KHOAN.local.md, lớp 3THU, `THU_GV` trong .env) — tạo bằng thủ thư thử qua `tao-tai-khoan` (vai trò HS) rồi đổi
   vai trò bằng SQL chủ (PAT không đọc được khoá quản trị Supabase). `tests/that/giaoVien.test.js` 5/5; tổng test thật 40/40.
 - **Link thật có "Vercel Security Checkpoint" (chống bot)** → curl / Chrome tự động không vào được; phải nhờ thầy mở bằng điện thoại để kiểm.
 
@@ -101,7 +101,7 @@ Ghi mới nhất ở trên. Mỗi phiên thêm 1 mục: đã làm, kiểm tra g�
   Vercel tài khoản `phuongbui` (Hobby), link chính **https://nhat-ky-doc-sach.vercel.app** (link có mã băm / `-phuongbui` đòi đăng nhập
   Vercel — không đưa cho HS). Vercel có 3 biến VITE_; đã kiểm bản dựng chứa đúng kết nối, Neon + Supabase cho phép gọi từ domain này.
   Còn: Supabase → Authentication → URL Configuration thêm link Vercel; thầy thử đăng nhập trên điện thoại.
-- [ ] Thầy thử trên máy: HS (dùng `thu.hs3` hoặc HS thật — test xoá lượt mượn của thu.hs1/hs2) đặt trước → thủ thư soạn → cho mượn → trả.
+- [ ] Thầy thử trên máy: HS (dùng tài khoản HS thử hoặc HS thật — test xoá lượt mượn của 2 tài khoản HS thử) đặt trước → thủ thư soạn → cho mượn → trả.
 - [ ] Chưa làm (chờ thầy quyết nếu cần): gia hạn mượn; chặn đặt khi em đang quá hạn; GVCN xem lượt mượn lớp mình; tự động huỷ khi quá hạn giữ
       (hiện: thủ thư thấy "quá hạn giữ" và bấm Cất lại).
 - [ ] **Giai đoạn 3: nhật ký + Nhìn lại năm đọc sách** — bắt đầu bằng thảo luận màn hình với thầy (theo tệp lọc đã duyệt).
@@ -118,16 +118,8 @@ Ghi mới nhất ở trên. Mỗi phiên thêm 1 mục: đã làm, kiểm tra g�
 - Test: `npm test` 23/23 · `npm run test:quyen` 14/14 (8 hồ sơ/tài khoản + 6 danh mục sách) · eslint sạch.
 - Sao lưu đầu tiên OK: `SaoLuu/neon_2026-11-17_2159` (lúc đó chưa có bảng sách).
 
-### Tài khoản trên Supabase (dự án NHAT_KY_DOC_SACH, ref kfwcjkmghfahsbbcctdt)
-| Đăng nhập | Vai trò (ở Neon `ho_so`) | Ghi chú |
-|---|---|---|
-| `phuongtt179@gmail.com` | quan_tri (ten_dang_nhap `phuongtt179`) | email thật → phải gõ **email đầy đủ** khi đăng nhập |
-| `thu.hs1@gmail.com`, `thu.hs2@gmail.com`, `thu.hs3@gmail.com` | hoc_sinh, lớp `3THU` (2026-2027) | tài khoản thử; tạo nhầm đuôi @gmail |
-| `thu.thu_thu@gmail.com` | thu_thu | tài khoản thử |
-| (3 HS thầy nhập thử từ Excel) | hoc_sinh | đuôi `@school.local`, gõ tên ngắn |
-
-`.env` có `THU_HS1`, `THU_HS2`, `THU_THU_THU` dạng `email:matkhau` cho test quyền thật.
-Nên dọn sau: tạo lại 4 tài khoản thử với `@school.local` (thầy phải làm trên Supabase, rồi gắn lại `ho_so`).
+### Tài khoản
+Danh sách tài khoản (quản trị, tài khoản thử) để ở `docs/TAI-KHOAN.local.md` — chỉ trên máy, không lên Git (kho công khai).
 
 ### Đã làm trong phiên
 1. Deploy 3 Edge Function (`tao-tai-khoan`, `sua-tai-khoan`, `xoa-tai-khoan`), secret `NEON_DATA_URL`.

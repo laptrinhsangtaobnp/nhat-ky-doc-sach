@@ -4,7 +4,7 @@ App thư viện trường tiểu học: danh mục sách, mượn – trả, nh�
 Người dùng: thủ thư, giáo viên Tin (quản trị), GVCN lớp thí điểm, **học sinh khối 3–5 (trẻ em)**. Chưa có tài khoản phụ huynh.
 HS dùng PC, laptop hoặc điện thoại ở nhà → giao diện phải dùng tốt trên điện thoại.
 **Đầu mỗi phiên đọc `docs/NHAT-KY-LAM-VIEC.md`** (đã làm gì, đang dở gì, điều cần nhớ); cuối phiên ghi thêm 1 mục.
-Kế hoạch & các quyết định: `KE-HOACH-APP.md`. Yêu cầu nghiệp vụ gốc: tài liệu thư viện (link trong kế hoạch).
+Kế hoạch & các quyết định: `KE-HOACH-APP.md`. Danh sách tài khoản: `docs/TAI-KHOAN.local.md` (chỉ trên máy, không lên Git — kho công khai). Yêu cầu nghiệp vụ gốc: tài liệu thư viện (link trong kế hoạch).
 
 ## Stack
 React 19 + Vite 7 + Tailwind 4 · Supabase **chỉ đăng nhập** + Edge Function tài khoản · Neon **dữ liệu** (Data API + RLS,
