@@ -1,6 +1,7 @@
 // Đọc danh mục sách từ bảng Excel (mảng dòng, mỗi dòng mảng ô) — hàm thuần, không đọc tệp, không gọi mạng.
 // Cột cần: "Mã sách", "Tên sách". Tuỳ chọn: Tác giả, NXB (hoặc "NXB - năm" gộp), Năm, Chủ đề (≤ 2, cách nhau ; hoặc ,),
-// Khối ("3", "3-4", "3, 4"), Số bản, Vị trí, Giới thiệu. Máy chủ (nhap_danh_muc) kiểm lại lần nữa.
+// Khối ("3", "3-4", "3, 4"), Số bản, Vị trí, Giới thiệu, Số trang, Câu hỏi (trò chuyện theo sách — nhiều câu: xuống dòng
+// trong ô (Alt+Enter) hoặc cách nhau bằng dấu ;). Máy chủ (nhap_danh_muc) kiểm lại lần nữa.
 import { boDau } from './taiKhoan.js'
 
 export const MA_SACH_HOP_LE = /^[A-Z0-9._-]{1,30}$/
@@ -33,6 +34,9 @@ export function docKhoi(s) {
   return { khoi_tu: Math.min(...ds), khoi_den: Math.max(...ds) }
 }
 
+/** Ô "Câu hỏi" → các câu, mỗi câu 1 dòng (tách theo xuống dòng hoặc ;). Trống → ''. */
+export const tachCauHoiExcel = s => String(s ?? '').split(/[\n;]+/).map(x => x.trim().replace(/\s+/g, ' ')).filter(Boolean).join('\n')
+
 /** "Cổ tích; Khoa học" → ["Cổ tích", "Khoa học"] (bỏ trùng, giữ chữ hoa như đã gõ). */
 export function tachChuDe(s) {
   const ds = String(s ?? '').split(/[;,/|\n]+/).map(x => x.trim().replace(/\s+/g, ' ')).filter(Boolean)
@@ -55,6 +59,8 @@ function timCot(dong) {
     soBan: vt(/^(so ban|so luong|sl)$/),
     viTri: vt(/^(vi tri|ke|vi tri ke)$/),
     gioiThieu: vt(/^(gioi thieu|tom tat|gioi thieu ngan|noi dung)$/),
+    soTrang: vt(/^(so trang|trang)$/),
+    cauHoi: vt(/^(cau hoi|cau hoi tro chuyen|cau hoi theo sach)$/),
   }
 }
 
@@ -103,12 +109,19 @@ export function docBangSach(dongs, chuDeCo = []) {
     const tacGia = o('tacGia'), viTri = o('viTri'), gioiThieu = o('gioiThieu')
     if (tacGia.length > 150 || (nxb ?? '').length > 100 || viTri.length > 50) { bao('Tác giả / NXB / vị trí quá dài'); continue }
     if (gioiThieu.length > 600) { bao('Giới thiệu quá dài (> 600 ký tự)'); continue }
+    let soTrang = null
+    if (o('soTrang')) {
+      soTrang = Number(o('soTrang'))
+      if (!Number.isInteger(soTrang) || soTrang < 1 || soTrang > 3000) { bao(`Số trang "${o('soTrang')}" không hợp lệ`); continue }
+    }
+    const cauHoi = tachCauHoiExcel(cot.cauHoi >= 0 ? d[cot.cauHoi] : '')
+    if (cauHoi.length > 1000) { bao('Câu hỏi quá dài (> 1000 ký tự)'); continue }
 
     for (const c of chuDe) if (!coSan.has(c.toLowerCase())) chuDeMoi.set(c.toLowerCase(), c)
     daMa.set(ma, soDong)
     sach.push({
       dong: soDong, ma_sach: ma, ten, tac_gia: tacGia, nxb: nxb ?? '', nam, ...khoi,
-      so_ban: soBan, vi_tri: viTri, gioi_thieu: gioiThieu, chu_de: chuDe,
+      so_ban: soBan, vi_tri: viTri, gioi_thieu: gioiThieu, chu_de: chuDe, so_trang: soTrang, cau_hoi: cauHoi,
     })
   }
   return { sach, loi, chuDeMoi: [...chuDeMoi.values()] }

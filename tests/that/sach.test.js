@@ -35,6 +35,13 @@ describe.skipIf(!DU)('quyền danh mục sách thật', () => {
     expect(ds[0].ten).toBe('Sách thử quyền (sửa)')
   })
 
+  it('nhập số trang + câu hỏi; nhập lại để trống thì giữ giá trị cũ', async () => {
+    await tt.db.rpc('nhap_danh_muc', { p_ds: [{ ma_sach: MA, ten: 'Sách thử quyền (sửa)', so_trang: 96, cau_hoi: 'Câu 1\nCâu 2' }] })
+    await tt.db.rpc('nhap_danh_muc', { p_ds: [{ ma_sach: MA, ten: 'Sách thử quyền (sửa)', so_trang: null, cau_hoi: '' }] })
+    const { data } = await tt.db.from('sach').select('so_trang, cau_hoi').eq('ma_sach', MA).single()
+    expect(data).toEqual({ so_trang: 96, cau_hoi: 'Câu 1\nCâu 2' })
+  })
+
   it('máy chủ chặn quá 2 chủ đề / sách', async () => {
     const { error } = await tt.db.rpc('nhap_danh_muc', { p_ds: [{ ma_sach: MA, ten: 'x', chu_de: ['A', 'B', 'C'] }] })
     expect(error).toBeTruthy()

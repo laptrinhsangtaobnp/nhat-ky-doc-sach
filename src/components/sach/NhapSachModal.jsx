@@ -52,7 +52,8 @@ export default function NhapSachModal({ chuDe, onDong }) {
         <div className="space-y-1 text-sm text-stone-600">
           <p>Tệp <b>.xlsx</b>, dòng tiêu đề có cột <b>Mã sách</b> và <b>Tên sách</b>. Các cột khác (có thì app tự nhận):</p>
           <p><b>Tác giả</b> · <b>NXB - năm</b> (ví dụ “Kim Đồng, 2020”, hoặc 2 cột <b>NXB</b>, <b>Năm</b>) · <b>Chủ đề</b> (tối đa 2, cách nhau bằng dấu ;)
-            · <b>Khối</b> (3 hoặc 3-4; trống = mọi khối) · <b>Số bản</b> · <b>Vị trí</b> · <b>Giới thiệu</b></p>
+            · <b>Khối</b> (3 hoặc 3-4; trống = mọi khối) · <b>Số bản</b> · <b>Vị trí</b> · <b>Giới thiệu</b> · <b>Số trang</b>
+            · <b>Câu hỏi</b> (câu bố mẹ hỏi con; nhiều câu thì xuống dòng trong ô hoặc cách nhau bằng dấu ;)</p>
           <p>Nhập lại tệp đã sửa không tạo sách trùng: sách cùng mã được cập nhật, ô để trống giữ nội dung cũ.</p>
           <a href="/mau-danh-muc-sach.xlsx" download className="inline-block font-semibold text-emerald-700 underline">Tải tệp mẫu (.xlsx)</a>
         </div>

@@ -27,7 +27,11 @@ Ghi mới nhất ở trên. Mỗi phiên thêm 1 mục: đã làm, kiểm tra g�
 - Thầy đã Refresh + cho phép: đã đặt secret NEON_PIN_URL, deploy `dang-nhap-pin --no-verify-jwt`. `npm run test:quyen` 34/34.
   Thử Chrome 390px: thủ thư tạo PIN lớp 3THU → in phiếu (QR) → HS mở link ?lop= → chọn tên → PIN sai báo "còn 4 lần" → PIN đúng
   vào /hoc-sinh → thoát → "Ai đang đọc sách?" nhớ em. PIN thử đã xoá. Lỗi 400 lúc thử = `chua_nhan_dien` được gọi lại (đã đo).
-- Chưa commit / đẩy (chờ thầy).
+- Đã commit `15cfe47` + đẩy (thầy cho phép).
+- Nhập Excel có cột Số trang, Câu hỏi (`sql/2026-11-19_nhap_so_trang.sql` đã chạy; tệp mẫu `public/mau-danh-muc-sach.xlsx` có 2 cột mới).
+- Tạo tài khoản GVCN thử `thu.gv1` (lớp 3THU, `THU_GV` trong .env) — tạo bằng thủ thư thử qua `tao-tai-khoan` (vai trò HS) rồi đổi
+  vai trò bằng SQL chủ (PAT không đọc được khoá quản trị Supabase). `tests/that/giaoVien.test.js` 5/5; tổng test thật 40/40.
+- **Link thật có "Vercel Security Checkpoint" (chống bot)** → curl / Chrome tự động không vào được; phải nhờ thầy mở bằng điện thoại để kiểm.
 
 ### Còn dở
 - [ ] Nhập số trang / câu hỏi theo sách bằng Excel (hiện chỉ sửa từng cuốn).

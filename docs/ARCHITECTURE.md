@@ -42,6 +42,7 @@ Có rồi thì dùng lại; thấy 2 hàm cùng việc thì gộp. Thêm / đổ
 | | `docKhoi(s)`, `chuKhoi(tu, den)` | "3-4" → {3,4}; hiển thị "Khối 3–4" / "Mọi khối" |
 | | `tachChuDe(s)` | "Cổ tích; Khoa học" → mảng, bỏ trùng |
 | | `docBangSach(dongs, chuDeCo)` | dòng Excel → sách + lỗi từng dòng + chủ đề mới; chống trùng mã trong tệp |
+| | `tachCauHoiExcel(s)` | ô Câu hỏi → mỗi câu 1 dòng (xuống dòng / dấu ;) |
 | | `mauTim(s)` | chữ ô tìm → mẫu không dấu cho cột `sach.tim` |
 | `ngay.js` | `ngayVN(luc)` | "YYYY-MM-DD" theo giờ Việt Nam (khớp `hom_nay()` ở máy chủ) |
 | | `soNgayDen(han, homNay)`, `chuNgay(ngay, homNay)` | số ngày đến hạn (âm = quá); "25/11" |
@@ -74,7 +75,7 @@ Có rồi thì dùng lại; thấy 2 hàm cùng việc thì gộp. Thêm / đổ
 | `taiKhoan.js` | `taoTaiKhoan(ds, moiLan)`, `datLaiMatKhau(id, mk)`, `xoaTaiKhoan(id)` | Edge Functions tài khoản (lô 40 người) |
 | `sach.js` | `timSach({tuKhoa, chuDeId, khoi, trang})` | tìm không dấu, lọc chủ đề / khối, 30 cuốn/trang + tổng |
 | | `laySach(id)`, `suaSach(id, {...so_trang, cau_hoi, chuDeIds})`, `xoaSach(id)` | chi tiết / sửa (cột được phép + rpc `dat_chu_de_sach`) / xoá |
-| | `nhapDanhMuc(ds, moiLan)` | rpc `nhap_danh_muc`, lô 200 cuốn |
+| | `nhapDanhMuc(ds, moiLan)` | rpc `nhap_danh_muc` (có số trang, câu hỏi — `sql/2026-11-19_nhap_so_trang.sql`), lô 200 cuốn |
 | `chuDe.js` | `layChuDe`, `themChuDe`, `suaChuDe`, `xoaChuDe` | bảng `chu_de` |
 | `muonTra.js` | `datTruoc(sachId, nguon)`, `huyDatTruoc(id)`, `layMuonCuaToi()`, `layTinhTrangSach(sachId)` | HS (rpc; ném lỗi khi máy chủ từ chối) |
 | | `soanSach`, `choMuon`, `choMuonTrucTiep(hsId, sachId)`, `ghiTra`, `baoMat`, `layDsMuon({loai, tuKhoa, trang})`, `demMuon()` | nhân viên (rpc), 50 dòng/trang |
@@ -148,5 +149,6 @@ Hàm hỏi quyền: `vai_tro_cua_toi()`, `lop_cua_toi()`, `la_nhan_vien()` — S
   không xem lượt của bạn; trùng / tối đa / hết bản / sách ẩn bị chặn; đủ vòng đặt → soạn → mượn → trả; báo mất giảm số bản),
   `nhatKy.test.js` nhật ký (bạn khác không đọc / sửa; máy chủ tính cây, mốc; 7 ngày; đọc xong cần nhật ký;
   riêng tư: nhân viên chỉ đọc lần cho cô xem, không đọc cảm nhận / thư; thư chỉ mở khi đến ngày),
+  `giaoVien.test.js` GVCN (tài khoản THU_GV: chỉ lớp mình, chỉ con số + lần cho cô xem, PIN lớp mình, không ghi thay em),
   `pin.test.js` mã lớp + PIN (HS không xem mã / tạo PIN / gọi kiem_pin; vai trò PIN chỉ gọi 2 hàm; khoá khi sai; đổi mã; Edge Function)
   — người lạ, HS, thủ thư thật trên Neon / Edge Function. Chạy lần lượt từng tệp; dọn dữ liệu thử bằng `sqlChu` (quyền chủ CSDL).

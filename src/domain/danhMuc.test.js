@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { chuanHoaMaSach, chuKhoi, docBangSach, docKhoi, mauTim, tachChuDe, tachNxbNam } from './danhMuc.js'
+import { chuanHoaMaSach, chuKhoi, docBangSach, docKhoi, mauTim, tachCauHoiExcel, tachChuDe, tachNxbNam } from './danhMuc.js'
 
 describe('danhMuc', () => {
   it('chuẩn hoá mã sách', () => {
@@ -47,6 +47,19 @@ describe('danhMuc', () => {
     expect(loi.map(l => l.dong)).toEqual([4, 5, 6, 7, 9])
     expect(loi[1].ly_do).toMatch(/trùng với dòng 3/)
     expect(chuDeMoi).toEqual(['Phiêu lưu'])
+  })
+  it('đọc cột Số trang, Câu hỏi (xuống dòng hoặc ;)', () => {
+    const { sach, loi } = docBangSach([
+      ['Mã sách', 'Tên sách', 'Số trang', 'Câu hỏi'],
+      ['A1', 'Dế Mèn', 96, 'Vì sao Dế Mèn hối hận?\nCon thích nhân vật nào?'],
+      ['A2', 'Không trang', '', 'Câu 1 ; Câu 2;'],
+      ['A3', 'Trang sai', 'mười', ''],
+      ['A4', 'Trang quá lớn', 5000, ''],
+    ])
+    expect(sach[0]).toMatchObject({ so_trang: 96, cau_hoi: 'Vì sao Dế Mèn hối hận?\nCon thích nhân vật nào?' })
+    expect(sach[1]).toMatchObject({ so_trang: null, cau_hoi: 'Câu 1\nCâu 2' })
+    expect(loi.map(l => l.dong)).toEqual([4, 5])
+    expect(tachCauHoiExcel(null)).toBe('')
   })
   it('không có tiêu đề → báo lỗi', () => {
     expect(docBangSach([['a', 'b']]).loi[0].ly_do).toMatch(/Mã sách/)
