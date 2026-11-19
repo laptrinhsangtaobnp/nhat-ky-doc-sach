@@ -24,7 +24,9 @@ export const suaNhatKy = (id, nd) => goi('sua_nhat_ky', { p_id: id, ...thamSoGhi
 export const xoaNhatKy = id => goi('xoa_nhat_ky', { p_id: id })
 /** Bật / tắt "Cho cô xem" 1 lần ghi của em (lúc nào cũng được). */
 export const doiChoCoXem = (id, cho) => goi('doi_cho_co_xem', { p_id: id, p_cho: cho })
-/** Em đọc xong (cần đã ghi ≥ 1 lần); thu = thư gửi chính mình (mở lại sau 90 ngày). Trả { moc_moi }. */
+/** Hộ chiếu thể loại của em: { tem: [{ id, ten, ngay, sach, goi_y: [≤ 2 sách] | null }] } (máy chủ tính tem). */
+export const layHoChieu = () => goi('ho_chieu_cua_toi')
+/** Em đọc xong (cần đã ghi ≥ 1 lần); thu = thư gửi chính mình (mở lại sau 90 ngày). Trả { moc_moi, tem_moi: [tên thể loại] }. */
 export const danhDauDocXong = (sachId, mucThich, camNhan, thu) =>
   goi('danh_dau_doc_xong', { p_sach_id: sachId, p_muc_thich: mucThich, p_cam_nhan: camNhan || null, p_thu: thu || null })
 /** Mở 1 lá thư đã đến ngày: { sach_id, ten, noi_dung, viet_ngay }. */

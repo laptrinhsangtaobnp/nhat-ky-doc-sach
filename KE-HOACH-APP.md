@@ -169,6 +169,12 @@ So sánh cũ / mới đã trình thầy; thầy đồng ý theo đề xuất c�
   chỉ hiện số "X bạn lớp Y đã đọc") — **đã làm 19/11**, xem dưới; hộ chiếu thể loại (8–10 thể loại); thử thách lớp **theo số ngày ghi**, không theo trang;
   thống kê. **Hoãn:** ghi âm (dữ liệu trẻ em, ~5 GB/năm), nhắc giờ bằng thông báo đẩy. Khảo sát phụ huynh: Google Forms.
 
+### Hộ chiếu thể loại — thầy duyệt 19/11/2026 (đã làm, `sql/2026-11-19_ho_chieu.sql`)
+- Mỗi con tem = 1 **chủ đề** sách của thư viện (nên giữ 8–10 chủ đề). Em "đọc xong" 1 cuốn → tem các chủ đề của cuốn đó (≤ 2).
+  Máy chủ tính tem từ đọc xong, không theo số trang; sửa chủ đề của sách thì tem tính lại.
+- Trang **Hộ chiếu** (menu HS): tem có màu + ngày + cuốn; tem chưa có: gợi ý ≤ 2 cuốn cùng thể loại (đúng khối, còn trên kệ) + Đặt trước.
+- Mốc **Nhà thám hiểm** (5 tem) và **Hộ chiếu đầy** (đủ tem, khi thư viện có ≥ 5 chủ đề). GVCN / thủ thư: cột "Tem thể loại" (chỉ số).
+
 ### Review bạn bè — thầy duyệt 19/11/2026 (đã làm, `sql/2026-11-19_review.sql`)
 - Em **đã đọc xong** mới viết "Giới thiệu sách cho bạn" (10–300 ký tự): ở hộp "Em đọc xong rồi" hoặc trang cuốn sách. Tách riêng
   cảm nhận / thư (chỉ em xem). Mỗi em 1 bài / cuốn; tối đa 5 bài viết mới / ngày.

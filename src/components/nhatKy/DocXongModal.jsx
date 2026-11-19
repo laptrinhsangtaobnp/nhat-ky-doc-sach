@@ -62,6 +62,9 @@ export default function DocXongModal({ sach, onDong }) {
         <p className="text-center text-lg">Em đã đọc xong <b>{sach.ten}</b>!</p>
         {thu.trim() && <p className="rounded-lg bg-rose-50 p-2 text-center text-rose-900">💌 Thư của em đã được cất. Khoảng 3 tháng nữa app sẽ mở lại cho em đọc!</p>}
         {xong.daGuiReview && <p className="rounded-lg bg-sky-50 p-2 text-center text-sky-900">📣 Bài giới thiệu đã gửi cô thư viện. Cô duyệt xong, các bạn sẽ thấy ở trang cuốn sách.</p>}
+        {xong.tem_moi?.map(t => (
+          <p key={t} className="rounded-lg bg-indigo-50 p-2 text-center text-indigo-900">🎫 Em nhận tem <b>{t}</b> trong <Link to="/ho-chieu" onClick={() => onDong(true)} className="underline">Hộ chiếu đọc sách</Link>!</p>
+        ))}
         {xong.moc_moi?.map(m => (
           <p key={m} className="rounded-lg bg-amber-50 p-2 text-center text-amber-900">{MOC[m]?.hinh} Em đạt mốc <b>{MOC[m]?.ten}</b></p>
         ))}

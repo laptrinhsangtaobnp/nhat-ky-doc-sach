@@ -58,7 +58,7 @@ export default function LopCuaToiPage() {
         <div className="overflow-x-auto rounded-xl bg-white shadow-sm">
           <table className="w-full text-sm">
             <thead className="bg-stone-50 text-left text-stone-600">
-              <tr><th className="p-3">Học sinh</th><th className="p-3">Cây (số ngày ghi)</th><th className="p-3">Tuần này</th><th className="p-3">Lần ghi gần nhất</th><th className="p-3">Đọc xong (năm học)</th><th className="p-3">Em cho cô xem</th></tr>
+              <tr><th className="p-3">Học sinh</th><th className="p-3">Cây (số ngày ghi)</th><th className="p-3">Tuần này</th><th className="p-3">Lần ghi gần nhất</th><th className="p-3">Đọc xong (năm học)</th><th className="p-3">Tem thể loại</th><th className="p-3">Em cho cô xem</th></tr>
             </thead>
             <tbody>
               {ds.map(h => (
@@ -68,6 +68,7 @@ export default function LopCuaToiPage() {
                   <td className="p-3">{h.cay.tuan_nay} ngày</td>
                   <td className="p-3">{h.lan_ghi_cuoi ? `${chuNgay(h.lan_ghi_cuoi, homNay)} (${soNgayDen(h.lan_ghi_cuoi, homNay) === 0 ? 'hôm nay' : `${-soNgayDen(h.lan_ghi_cuoi, homNay)} ngày trước`})` : <span className="text-rose-700">chưa ghi</span>}</td>
                   <td className="p-3">{h.so_cuon_nam}</td>
+                  <td className="p-3">{h.so_tem ?? 0}/{kq.tong_chu_de ?? '?'}</td>
                   <td className="p-3">{h.so_chia_se > 0 ? `${h.so_chia_se} lần` : '—'}</td>
                 </tr>
               ))}

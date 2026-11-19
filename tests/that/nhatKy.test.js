@@ -143,7 +143,7 @@ describe.skipIf(!DU)('quyền nhật ký thật', () => {
     const lq = (await tt.db.rpc('lop_tong_quan', { p_lop_id: lop })).data
     const em = lq.hoc_sinh.find(h => h.id === hs1.id)
     expect(em).toMatchObject({ so_cuon_nam: 1, so_chia_se: 1, cay: { so_ngay: 7 } })
-    expect(Object.keys(em).sort()).toEqual(['cay', 'ho_ten', 'id', 'lan_ghi_cuoi', 'so_chia_se', 'so_cuon_nam'])
+    expect(Object.keys(em).sort()).toEqual(['cay', 'ho_ten', 'id', 'lan_ghi_cuoi', 'so_chia_se', 'so_cuon_nam', 'so_tem'])
     expect(loi(await hs1.db.rpc('lop_tong_quan', { p_lop_id: lop }))).toBe('forbidden')
   })
 })

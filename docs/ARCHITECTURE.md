@@ -60,6 +60,7 @@ Có rồi thì dùng lại; thấy 2 hàm cùng việc thì gộp. Thêm / đổ
 | | `conSuaDuoc(ngay, homNay)` | trong 7 ngày (máy chủ cũng chặn) |
 | | `loiNhac(lanGhiCuoi, homNay)` | dòng nhắc trang chủ |
 | | `camXucNhieuNhat(dem)`, `chuThang(thang)`, `loiNhatKy(loi)` | Nhìn lại; "T11"; lỗi máy chủ → câu dễ hiểu |
+| `hoChieu.js` | `mauTem(i)`, `tienDoHoChieu(tem)`, `loiHoChieu(td)` | màu tem; { co, tong, conLai }; câu khích lệ |
 | `review.js` | `REVIEW_TOI_THIEU`, `REVIEW_TOI_DA`, `LY_DO_KHONG_DUYET`, `TRANG_THAI_REVIEW` | 10–300 ký tự; lý do không duyệt; nhãn trạng thái |
 | | `kiemReview(noiDung)`, `tenNguoiViet({ten, lop})`, `chuDaDoc({da_doc, cung_lop, lop})`, `loiReview(loi)` | kiểm trước khi gửi; "Lan N.T. – lớp 3A" / "Một bạn lớp 3A"; "12 bạn đã đọc · 5 bạn lớp 3A"; lỗi máy chủ |
 
@@ -83,6 +84,7 @@ Có rồi thì dùng lại; thấy 2 hàm cùng việc thì gộp. Thêm / đổ
 | | `soanSach`, `choMuon`, `choMuonTrucTiep(hsId, sachId)`, `ghiTra`, `baoMat`, `layDsMuon({loai, tuKhoa, trang})`, `demMuon()` | nhân viên (rpc), 50 dòng/trang |
 | `caiDat.js` | `layCaiDat()`, `suaCaiDat({...})` | quy tắc mượn (bảng `cai_dat`) |
 | `nhatKy.js` | `ghiNhatKy(sachId, nd)`, `suaNhatKy(id, nd)`, `xoaNhatKy(id)`, `doiChoCoXem(id, cho)`, `danhDauDocXong(sachId, mucThich, camNhan, thu)`, `moThu(sachId)` | HS ghi (rpc, ném lỗi) |
+| | `layHoChieu()` | hộ chiếu thể loại (rpc `ho_chieu_cua_toi`) |
 | | `layTongQuan()`, `layGoiYDocTiep(sachId)`, `layNhinLai(hsId)`, `layLopTongQuan(lopId)` | rpc đọc (máy chủ tính cây / mốc / thống kê; người khác chỉ nhận con số) |
 | | `layNhatKy({hsId, sachId, camXuc, tuKhoa, trang})`, `layMotNhatKy(id)` | bảng `nhat_ky` (RLS: em hết; GVCN / nhân viên chỉ lần "Cho cô xem"), 30 dòng/trang |
 | `review.js` | `vietReview(sachId, noiDung, anTen)`, `xoaReview(sachId)`, `layReviewSach(sachId)` | HS viết / sửa (→ chờ duyệt lại) / xoá; trang sách (rpc) |
@@ -114,6 +116,9 @@ Mượn – trả: HS `dat_truoc`, `huy_dat_truoc` (cả nhân viên), `muon_cua
 `hom_nay()` (giờ VN), `ban_ranh(sach)`, `thu_tu_cho(luot)`, `kiem_con_cho(hs, sach)` (không trùng, chưa quá tối đa).
 Nhật ký: HS `ghi_nhat_ky`, `sua_nhat_ky` / `xoa_nhat_ky` (7 ngày), `doi_cho_co_xem`, `danh_dau_doc_xong` (cần ≥ 1 lần ghi; kèm thư gửi chính mình), `mo_thu` (đến ngày mới mở),
 `tong_quan_cua_toi` (cây, đọc tiếp, tuần này, thư), `goi_y_doc_tiep`; `nhin_lai_nam(hs, tu)` (em; GVCN / nhân viên: không có cảm nhận / thư), `lop_tong_quan(lop)` (GVCN lớp mình / nhân viên).
+Hộ chiếu (`sql/2026-11-19_ho_chieu.sql`, **thay** `cap_nhat_moc`, `danh_dau_doc_xong` (+ `tem_moi`), `lop_tong_quan` (+ `so_tem`, `tong_chu_de`)):
+HS `ho_chieu_cua_toi` (tem theo chủ đề + ≤ 2 gợi ý cho tem chưa có); nội bộ `tem_cua(hs)` (chủ đề đã có tem, tính từ doc_xong + sach_chu_de).
+Mốc `tham_hiem` (5 tem), `ho_chieu_day` (đủ tem, thư viện ≥ 5 chủ đề).
 Review (`sql/2026-11-19_review.sql`): HS `viet_review` (đã đọc xong, ≤ 5 bài / ngày, sửa → chờ duyệt lại), `xoa_review`;
 mọi người đã đăng nhập `review_cua_sach` (con số + 30 bài đã duyệt, ẩn tên thì không gửi tên; HS: bài của em); nhân viên `review_cho_duyet`,
 `duyet_review(id, duyet, ly_do, sua_luc)`.
@@ -160,5 +165,7 @@ Hàm hỏi quyền: `vai_tro_cua_toi()`, `lop_cua_toi()`, `la_nhan_vien()` — S
   `giaoVien.test.js` GVCN (tài khoản THU_GV: chỉ lớp mình, chỉ con số + lần cho cô xem, PIN lớp mình, không ghi thay em),
   `review.test.js` review (không ai đọc / ghi thẳng bảng; chưa đọc xong không viết; bài chờ duyệt không hiện; chỉ nhân viên duyệt —
   HS, GVCN bị chặn; duyệt cần đúng bản; ẩn tên không lộ tên; sửa → duyệt lại; sách ẩn; ≤ 5 bài / ngày),
+  `hoChieu.test.js` hộ chiếu (chỉ HS, không gọi hàm nội bộ; 2 chủ đề → 2 tem; không tem lại; gợi ý không có sách ẩn;
+  mốc 5 tem / đầy; GVCN / nhân viên chỉ con số so_tem),
   `pin.test.js` mã lớp + PIN (HS không xem mã / tạo PIN / gọi kiem_pin; vai trò PIN chỉ gọi 2 hàm; khoá khi sai; đổi mã; Edge Function)
   — người lạ, HS, thủ thư thật trên Neon / Edge Function. Chạy lần lượt từng tệp; dọn dữ liệu thử bằng `sqlChu` (quyền chủ CSDL).

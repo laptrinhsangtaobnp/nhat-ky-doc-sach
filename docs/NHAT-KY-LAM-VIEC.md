@@ -4,6 +4,20 @@ Ghi mới nhất ở trên. Mỗi phiên thêm 1 mục: đã làm, kiểm tra g�
 
 ---
 
+## 19/11/2026 (tối) — Hộ chiếu thể loại
+
+- Thầy duyệt: tem = chủ đề, có 2 mốc. `sql/2026-11-19_ho_chieu.sql` đã chạy Neon 2 lần (thay 3 hàm của tệp cay_doc_sach).
+- Trang `/ho-chieu` (menu "Hộ chiếu"), hộp Đọc xong báo tem mới, cột "Tem thể loại" ở Lớp của tôi. `tests/that/hoChieu.test.js` (5).
+- Kho sách thật hiện **chưa có chủ đề nào** → hộ chiếu trống cho đến khi thủ thư nhập danh mục có chủ đề.
+- Kiểm tra (sau khi thầy Refresh schema cache): `npm test` 61/61 · `npm run test:quyen` 52/52 (sửa `nhatKy.test.js`: lop_tong_quan
+  có thêm khoá `so_tem`) · eslint sạch. Thử Chrome 1200px + 390px: 4 chủ đề, đọc xong 1 → 1/4 tem, 3 ô gợi ý + Đặt trước. Đã dọn.
+
+### Còn dở
+- [ ] Thử thách lớp theo số ngày ghi, thống kê sáng kiến. Hướng dẫn thủ thư: thêm phần duyệt review + nhắc nhập chủ đề.
+- [ ] Menu HS trên điện thoại đã 5 mục, phải vuốt ngang mới thấy "Tìm sách" — xem lại khi thêm mục mới.
+
+---
+
 ## 19/11/2026 (tối) — Review bạn bè
 
 ### Đã làm
@@ -14,8 +28,9 @@ Ghi mới nhất ở trên. Mỗi phiên thêm 1 mục: đã làm, kiểm tra g�
 - Kiểm tra: `npm test` 58/58 · `npm run test:quyen` 47/47 (`review.test.js` 7: người lạ, HS, GVCN, thủ thư; gọi thẳng bảng bị chặn;
   duyệt sai bản bị chặn; ẩn tên không lộ tên) · eslint sạch · build OK. Thử Chrome (390px + 1100px): HS1 viết → thủ thư duyệt →
   HS2 thấy bài. Dữ liệu thử đã dọn (review / nhat_ky / doc_xong = 0).
-- Lần này hàm mới gọi được ngay qua Data API **không cần** Refresh schema cache (đã đo bằng test thật). Vẫn nhắc thầy bấm nếu gặp lỗi PGRST.
-- **Chưa commit / đẩy.**
+- Lần review hàm mới gọi được ngay không cần Refresh — **nhưng lần hộ chiếu sau đó thì cần** (lỗi "Could not find the function").
+  → Vẫn luôn nhờ thầy Refresh sau khi thêm hàm mới.
+- Đã commit `865126c` + đẩy.
 
 ### Còn dở
 - [ ] Hộ chiếu thể loại, thử thách lớp theo số ngày ghi, thống kê sáng kiến. Hướng dẫn thủ thư: thêm phần duyệt review.
