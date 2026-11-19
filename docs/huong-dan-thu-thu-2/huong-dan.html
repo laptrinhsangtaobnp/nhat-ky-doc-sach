@@ -1,0 +1,300 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<title>Hướng dẫn thủ thư (tập 2) — Nhật ký đọc sách</title>
+<style>
+  @page { size: A4; margin: 20mm 20mm 20mm 30mm; }
+  body { font-family: "Times New Roman", Times, serif; font-size: 13pt; line-height: 1.5; color: #000; margin: 0; }
+  h1, h2, h3 { font-weight: bold; page-break-after: avoid; }
+  h1 { font-size: 14pt; text-transform: uppercase; margin: 18pt 0 6pt; }
+  h2 { font-size: 13pt; margin: 12pt 0 4pt; }
+  h3 { font-size: 13pt; font-style: italic; margin: 8pt 0 2pt; }
+  p { margin: 4pt 0; text-align: justify; }
+  ol, ul { margin: 4pt 0 4pt 0; padding-left: 22pt; }
+  li { margin: 2pt 0; text-align: justify; }
+  .bia { height: 247mm; display: flex; flex-direction: column; text-align: center; border: 3px double #000; padding: 14mm 12mm; box-sizing: border-box; page-break-after: always; }
+  .bia .tren { font-weight: bold; }
+  .bia .giua { margin-top: auto; margin-bottom: auto; }
+  .bia .ten { font-size: 20pt; font-weight: bold; text-transform: uppercase; line-height: 1.35; margin: 10pt 0; }
+  .bia .phu { font-size: 15pt; font-weight: bold; }
+  .bia .duoi { font-size: 13pt; }
+  .muc-luc { page-break-after: always; }
+  .muc-luc li { list-style: none; }
+  figure { margin: 8pt 0 10pt; text-align: center; page-break-inside: avoid; }
+  figure img { border: 1px solid #999; max-width: 100%; }
+  .khung { overflow: hidden; border: 1px solid #999; margin: 0 auto; }
+  .khung img { border: 0; width: 100%; display: block; }
+  figcaption { font-style: italic; font-size: 12pt; margin-top: 3pt; }
+  .doi { display: flex; gap: 10mm; justify-content: center; page-break-inside: avoid; margin: 8pt 0 10pt; }
+  .doi figure { margin: 0; width: 62mm; }
+  .doi img { width: 62mm; }
+  table { border-collapse: collapse; width: 100%; margin: 6pt 0 10pt; font-size: 12pt; page-break-inside: auto; }
+  th, td { border: 1px solid #000; padding: 3pt 5pt; vertical-align: top; text-align: left; }
+  th { background: #e8e8e8; text-align: center; }
+  tr { page-break-inside: avoid; }
+  .luu-y { border: 1px solid #000; background: #f3f3f3; padding: 5pt 8pt; margin: 6pt 0; page-break-inside: avoid; }
+  .luu-y b:first-child { text-transform: uppercase; }
+  .so-do { display: flex; align-items: center; justify-content: center; gap: 4pt; flex-wrap: wrap; margin: 8pt 0; font-size: 12pt; page-break-inside: avoid; }
+  .so-do span.b { border: 1.5px solid #000; padding: 4pt 6pt; text-align: center; border-radius: 4pt; width: 27mm; }
+  .so-do span.m { font-size: 14pt; }
+  .nut { font-family: Arial, sans-serif; font-size: 10.5pt; border: 1px solid #555; border-radius: 3pt; padding: 0 4pt; white-space: nowrap; }
+  .o { width: 14mm; text-align: center; }
+  .ngat { page-break-before: always; }
+</style>
+</head>
+<body>
+
+<section class="bia">
+  <div class="tren">TÀI LIỆU HƯỚNG DẪN SỬ DỤNG<br>SÁNG KIẾN THƯ VIỆN NĂM HỌC 2026 – 2027</div>
+  <div class="giua">
+    <div class="ten">Ứng dụng<br>Nhật ký đọc sách</div>
+    <div class="phu">HƯỚNG DẪN DÀNH CHO CÁN BỘ THƯ VIỆN<br>(TẬP 2)</div>
+    <p style="text-align:center;margin-top:10pt">Bổ sung dữ liệu sách (số trang, câu hỏi trò chuyện)<br>Mã lớp và PIN đăng nhập cho học sinh<br>
+      Nhật ký đọc sách của học sinh · Theo dõi lớp · Kế hoạch dùng thử</p>
+    <p style="text-align:center;margin-top:14pt">Địa chỉ ứng dụng: <b>https://nhat-ky-doc-sach.vercel.app</b></p>
+  </div>
+  <div class="duoi">Người biên soạn: Bùi Nguyên Phương<br>Tháng 11 năm 2026</div>
+</section>
+
+<section class="muc-luc">
+  <h1 style="text-align:center">Mục lục</h1>
+  <ul>
+    <li><b>Mở đầu</b> — Có gì mới so với tập 1, cần chuẩn bị gì</li>
+    <li><b>I. Đăng nhập của thầy cô</b></li>
+    <li><b>II. Bổ sung dữ liệu sách</b>
+      <ul><li>1. Số trang và câu hỏi trong tệp Excel · 2. Sửa từng cuốn · 3. Gợi ý viết câu hỏi</li></ul></li>
+    <li><b>III. Đưa học sinh vào ứng dụng</b>
+      <ul><li>1. Nhập danh sách học sinh · 2. Tạo PIN và in phiếu · 3. Em quên PIN, bị khoá · 4. Đổi mã lớp</li></ul></li>
+    <li><b>IV. Học sinh dùng ứng dụng</b> (để cô hướng dẫn học sinh và phụ huynh)
+      <ul><li>1. Đăng nhập · 2. Trang chủ: cây đọc sách, đọc tiếp, góc bố mẹ · 3. Ghi nhật ký · 4. Đọc xong và thư gửi chính mình
+        · 5. Nhìn lại năm đọc sách · 6. Cài ứng dụng lên điện thoại</li></ul></li>
+    <li><b>V. Theo dõi lớp và quyền riêng tư của học sinh</b></li>
+    <li><b>VI. Kế hoạch dùng thử (phiếu ghi kết quả)</b></li>
+    <li><b>VII. Khi gặp sự cố</b></li>
+  </ul>
+</section>
+
+<h1>Mở đầu</h1>
+<p>Tập 1 đã hướng dẫn <b>nhập danh mục sách</b> và <b>mượn – trả</b>. Tập 2 hướng dẫn phần chính của sáng kiến:
+<b>học sinh ghi nhật ký đọc sách</b> ở nhà bằng điện thoại của bố mẹ, để hình thành thói quen đọc và thói quen ghi chép.</p>
+<p><b>Những điểm mới:</b></p>
+<ul>
+  <li><b>Học sinh không cần nhớ mật khẩu.</b> Em vào bằng <b>mã lớp</b> (6 ký tự, hoặc quét mã QR) → chọn tên → bấm <b>PIN 4 số</b>.
+    Thư viện / giáo viên chủ nhiệm in <b>phiếu đăng nhập</b> phát cho từng em.</li>
+  <li><b>Ghi nhật ký nhanh dưới 30 giây:</b> kéo chọn trang → chọn cảm xúc → viết 1 câu.</li>
+  <li><b>Cây đọc sách:</b> mỗi ngày em có ghi, cây lớn thêm; bỏ lỡ thì cây chỉ ngừng lớn, <b>không héo</b>.
+    Ứng dụng thưởng sự <b>đều đặn</b>, không thưởng theo số trang (tránh khai khống).</li>
+  <li><b>Gắn kết bố mẹ:</b> "5 phút trò chuyện" có câu hỏi để bố mẹ hỏi con (câu riêng theo từng cuốn do thư viện nhập), bố mẹ viết thêm 1 dòng.</li>
+  <li><b>Riêng tư:</b> thầy cô chỉ xem <b>con số</b> (số ngày ghi, số sách, cảm xúc). Chữ em viết chỉ hiện khi em bấm <b>"Cho cô xem"</b>.</li>
+</ul>
+<p><b>Cần chuẩn bị:</b></p>
+<ul>
+  <li>Tài khoản thủ thư (như tập 1). Máy tính để nhập dữ liệu, in phiếu; một điện thoại để thử vai học sinh.</li>
+  <li>Danh mục sách đã nhập (tập 1). Nếu được, bổ sung <b>số trang</b> và <b>câu hỏi</b> cho các cuốn hay được mượn.</li>
+  <li>Danh sách học sinh lớp thí điểm trên Excel (cột <b>Họ và tên</b>, <b>Lớp</b>).</li>
+</ul>
+
+<h1>I. Đăng nhập của thầy cô</h1>
+<p>Màn hình đăng nhập nay có 2 thẻ. <b>Học sinh</b> là thẻ mặc định (mã lớp + PIN). Thầy cô bấm thẻ <span class="nut">Thầy cô</span>
+rồi gõ tên đăng nhập, mật khẩu như trước.</p>
+<figure><img src="anh/01-dang-nhap-thay-co.png" style="width:120mm"><figcaption>Hình 1. Thẻ "Thầy cô" ở màn hình đăng nhập</figcaption></figure>
+
+<h1 class="ngat">II. Bổ sung dữ liệu sách</h1>
+<p>Hai thông tin mới giúp học sinh ghi nhật ký nhanh và giúp bố mẹ trò chuyện với con:</p>
+<table>
+  <tr><th style="width:22%">Thông tin</th><th>Dùng để làm gì</th></tr>
+  <tr><td><b>Số trang</b></td><td>Học sinh <b>kéo thanh trượt</b> chọn "em đọc đến trang nào" (không phải gõ số). Ứng dụng nhớ trang lần trước
+    và hiện "Em đọc đến trang 85 / 144" ở trang chủ. Chưa nhập số trang thì thanh trượt tạm dài 200 trang.</td></tr>
+  <tr><td><b>Câu hỏi</b> (trò chuyện theo sách)</td><td>Hiện trong mục <b>"5 phút trò chuyện cùng bố mẹ"</b> khi em ghi nhật ký về cuốn đó.
+    Mỗi lần hiện 2 câu riêng của sách (đổi theo ngày) và 1 câu chung. Không nhập thì ứng dụng dùng câu hỏi chung.</td></tr>
+</table>
+
+<h2>1. Số trang và câu hỏi trong tệp Excel</h2>
+<p>Vào <b>Danh mục sách</b> → <span class="nut">Nhập danh mục Excel</span> → <b>Tải tệp mẫu</b> (tệp mẫu đã có thêm 2 cột).
+Với tệp đang dùng, chỉ cần <b>thêm 2 cột</b> có tiêu đề đúng như sau rồi nhập lại:</p>
+<ul>
+  <li>Cột <b>Số trang</b>: số nguyên, ví dụ <i>144</i>.</li>
+  <li>Cột <b>Câu hỏi</b>: nhiều câu thì <b>xuống dòng trong ô</b> (bấm <span class="nut">Alt</span> + <span class="nut">Enter</span>)
+    hoặc cách nhau bằng dấu chấm phẩy <b>;</b></li>
+</ul>
+<div class="luu-y"><b>Lưu ý:</b> nhập lại tệp <b>không tạo sách trùng</b>: sách cùng mã được cập nhật. Ô để trống <b>giữ nguyên</b> nội dung cũ,
+nên có thể nhập riêng một tệp chỉ gồm <i>Mã sách, Tên sách, Số trang, Câu hỏi</i> cho những cuốn cần bổ sung.</div>
+<figure><img src="anh/02-nhap-excel-xem-truoc.png" style="width:150mm"><figcaption>Hình 2. Bảng xem trước khi nhập tệp mẫu (4 sách hợp lệ)</figcaption></figure>
+
+<h2>2. Sửa từng cuốn</h2>
+<p>Mở cuốn sách → <span class="nut">Sửa</span> → điền ô <b>Số trang</b> và ô <b>Câu hỏi trò chuyện theo sách</b> (mỗi dòng 1 câu) → <span class="nut">Lưu</span>.</p>
+<figure><img src="anh/03-sua-sach-trang-cau-hoi.png" style="width:150mm"><figcaption>Hình 3. Ô Số trang và Câu hỏi trò chuyện trong màn hình sửa sách</figcaption></figure>
+
+<h2>3. Gợi ý viết câu hỏi</h2>
+<ul>
+  <li>Câu ngắn, hỏi <b>cảm nghĩ</b> chứ không kiểm tra trí nhớ: "Vì sao Dế Mèn hối hận?", "Nếu là con, con sẽ làm gì?".</li>
+  <li>Mỗi cuốn 2–4 câu là đủ. Ưu tiên các cuốn được mượn nhiều, sách theo chủ đề của tháng.</li>
+</ul>
+
+<h1 class="ngat">III. Đưa học sinh vào ứng dụng</h1>
+<h2>1. Nhập danh sách học sinh</h2>
+<p>Vào <b>Tài khoản</b> → <span class="nut">Nhập học sinh từ Excel</span>. Tệp cần cột <b>Họ và tên</b> (hoặc 2 cột <b>Họ đệm</b> + <b>Tên</b>)
+và <b>Lớp</b> (ví dụ 4A). Lớp chưa có sẽ được tạo tự động. Mỗi em có một tài khoản; học sinh <b>không cần dùng</b> tên đăng nhập và mật khẩu
+được tạo ra, vì em sẽ vào bằng mã lớp + PIN.</p>
+
+<h2>2. Tạo PIN và in phiếu đăng nhập</h2>
+<ol>
+  <li>Vào <b>Lớp học</b> → chọn lớp ở ô góc phải → bấm <span class="nut">🔑 Mã lớp &amp; PIN đăng nhập của học sinh</span> (Hình 4).</li>
+  <li>Trang <b>Mã lớp &amp; PIN</b> hiện <b>mã lớp</b>, mã QR và danh sách học sinh. Em chưa có PIN ghi "chưa có PIN" (Hình 5).</li>
+  <li>Bấm <span class="nut">Tạo PIN cho … em</span>. Mỗi em nhận một PIN 4 số ngẫu nhiên (Hình 6).</li>
+  <li>Bấm <span class="nut">In phiếu</span> → <span class="nut">In phiếu</span>. Mỗi em 1 phiếu có tên, lớp, mã lớp, PIN và mã QR (Hình 7). Cắt rời, phát cho từng em,
+    dặn em đưa bố mẹ cất giữ.</li>
+</ol>
+<div class="luu-y"><b>Quan trọng:</b> PIN <b>chỉ hiện đúng lúc vừa tạo</b>. Máy chủ chỉ lưu dạng đã mã hoá nên không ai xem lại được PIN cũ,
+kể cả thư viện. Hãy <b>in phiếu ngay</b> sau khi tạo. Rời trang mà chưa in thì phải bấm <b>Đặt PIN mới</b> cho em đó.</div>
+<figure><img src="anh/04-lop-hoc.png" style="width:150mm"><figcaption>Hình 4. Trang Lớp học, nút "Mã lớp &amp; PIN"</figcaption></figure>
+<figure><img src="anh/05-ma-lop-chua-pin.png" style="width:150mm"><figcaption>Hình 5. Mã lớp, mã QR, học sinh chưa có PIN</figcaption></figure>
+<figure><img src="anh/06-ma-lop-da-tao-pin.png" style="width:150mm"><figcaption>Hình 6. Vừa tạo PIN — PIN hiện màu xanh, nút "In phiếu"</figcaption></figure>
+<figure><img src="anh/07-phieu-in.png" style="width:150mm"><figcaption>Hình 7. Phiếu đăng nhập của từng em (in ra giấy A4, cắt rời)</figcaption></figure>
+
+<h2>3. Em quên PIN hoặc bị khoá</h2>
+<p>Để chống đoán PIN, máy chủ tự khoá khi nhập sai nhiều lần:</p>
+<table>
+  <tr><th>Trường hợp</th><th>Ứng dụng làm gì</th></tr>
+  <tr><td>Sai 5 lần liền</td><td>Khoá em đó <b>15 phút</b> (màn hình báo giờ được thử lại)</td></tr>
+  <tr><td>Sai 15 lần trong một ngày</td><td>Khoá em đó <b>đến hết ngày</b></td></tr>
+  <tr><td>Cả lớp sai 60 lần trong một ngày</td><td>Tạm khoá đăng nhập PIN của <b>cả lớp</b> đến hết ngày (có thể mã lớp đã lộ → nên đổi mã lớp)</td></tr>
+</table>
+<p>Em quên PIN hoặc bị khoá: vào trang <b>Mã lớp &amp; PIN</b> → bấm <span class="nut">Đặt PIN mới</span> ở dòng của em → đọc hoặc in PIN mới cho em.
+Đặt PIN mới cũng <b>mở khoá</b> ngay. Trong danh sách, em đang bị khoá có chữ đỏ "đang bị khoá".</p>
+
+<h2>4. Đổi mã lớp</h2>
+<p>Nếu mã lớp bị lộ ra ngoài (đăng lên mạng…), bấm <span class="nut">Đổi mã lớp (khi bị lộ)</span>. Mã và QR cũ hết dùng được; <b>PIN của các em giữ nguyên</b>.
+Cần in lại phiếu hoặc nhắn mã lớp mới cho phụ huynh.</p>
+
+<h1 class="ngat">IV. Học sinh dùng ứng dụng</h1>
+<p>Phần này để cô <b>tự thử bằng tài khoản học sinh thử</b> và hướng dẫn lại cho học sinh, phụ huynh (có thể chiếu trong buổi họp phụ huynh).</p>
+<h2>1. Đăng nhập</h2>
+<ol>
+  <li>Quét <b>mã QR</b> trên phiếu bằng camera điện thoại (mở thẳng trang đăng nhập có sẵn mã lớp), hoặc vào địa chỉ ứng dụng rồi gõ <b>mã lớp</b> (Hình 8).</li>
+  <li>Chọn <b>tên mình</b>. Để bảo vệ học sinh, tên chỉ hiện dạng rút gọn, ví dụ "Nguyễn Thị Lan" hiện là <b>Lan N.T.</b> (Hình 9).</li>
+  <li>Bấm <b>PIN 4 số</b> trên bàn phím số to (Hình 10). Đủ 4 số là tự vào.</li>
+  <li>Lần sau mở ứng dụng, màn hình hỏi <b>"Ai đang đọc sách?"</b> và hiện sẵn các bạn đã vào trên máy đó. Anh chị em dùng chung điện thoại
+    thì mỗi em bấm tên mình rồi nhập PIN của mình (Hình 11). Máy chỉ nhớ tên rút gọn, <b>không nhớ PIN</b>, không lưu nhật ký.</li>
+</ol>
+<div class="doi">
+  <figure><img src="anh/11-hs-ma-lop.png"><figcaption>Hình 8. Gõ mã lớp</figcaption></figure>
+  <figure><img src="anh/12-hs-chon-ten.png"><figcaption>Hình 9. Chọn tên</figcaption></figure>
+</div>
+<div class="doi">
+  <figure><img src="anh/13-hs-nhap-pin.png"><figcaption>Hình 10. Bấm PIN</figcaption></figure>
+  <figure><img src="anh/21-hs-ai-dang-doc.png"><figcaption>Hình 11. Lần sau: "Ai đang đọc sách?"</figcaption></figure>
+</div>
+
+<h2>2. Trang chủ: cây đọc sách, đọc tiếp, góc bố mẹ</h2>
+<ul>
+  <li>Nút to <b>Ghi nhật ký</b> ở trên cùng.</li>
+  <li><b>Cây của em:</b> lớn theo <b>số ngày có ghi nhật ký</b> (mỗi ngày tính 1 lần): hạt mầm → mầm non → cây con → cây nhỏ → cây lớn
+    → ra hoa (30 ngày) → ra quả (60 ngày) → khu vườn đọc sách (100 ngày). Có thanh tiến độ "còn … ngày nữa".
+    Bỏ lỡ ngày thì cây <b>chỉ ngừng lớn, không héo</b>.</li>
+  <li><b>Đọc tiếp:</b> cuốn em đang đọc dở và trang đọc đến lần trước; bấm <span class="nut">Ghi tiếp</span> là ghi ngay.</li>
+  <li>Cuối trang: <b>Góc bố mẹ</b>, tổng kết tuần này (số ngày con ghi, cảm xúc nhiều nhất, số lần đọc cùng bố mẹ, cuốn đang đọc).</li>
+</ul>
+<div class="luu-y"><b>Được tính cho cây:</b> lần ghi có <b>ít nhất 1 câu ngắn</b> (từ 3 chữ trở lên). Ghi nhiều lần trong ngày vẫn chỉ tính 1 ngày.
+Mốc thưởng: <b>7, 30, 100 ngày</b> ghi nhật ký và huy hiệu <b>"Gia đình đọc sách"</b> (5 lần ghi có bố mẹ cùng tham gia).
+Máy chủ tự đếm, học sinh không tự cộng được.</div>
+<div class="doi">
+  <figure><img src="anh/14-hs-trang-chu.png"><figcaption>Hình 12. Trang chủ: cây, đọc tiếp</figcaption></figure>
+  <figure><img src="anh/15b-hs-goc-bo-me.png"><figcaption>Hình 13. Góc bố mẹ (cuối trang)</figcaption></figure>
+</div>
+
+<h2>3. Ghi nhật ký (dưới 30 giây)</h2>
+<ol>
+  <li><b>Em đọc cuốn nào?</b> Sách đang mượn hiện sẵn; cuốn khác thì gõ tên tìm trong thư viện.</li>
+  <li><b>Em đọc đến trang nào?</b> Kéo thanh trượt hoặc bấm −/+. Ứng dụng đặt sẵn trang lần trước.</li>
+  <li><b>Em thấy thế nào?</b> Chạm 1 trong 7 cảm xúc: vui, buồn, bất ngờ, hồi hộp, xúc động, suy nghĩ, buồn cười.</li>
+  <li><b>Viết 1 câu.</b> Bí ý thì bấm <span class="nut">💡 Bí ý?</span>: mỗi ngày một câu hỏi gợi ý khác. Muốn viết dài thì mở <b>＋ Em muốn viết thêm</b>.</li>
+  <li>Không bắt buộc: mở <b>👨‍👩‍👧 5 phút trò chuyện cùng bố mẹ</b> để bố mẹ hỏi con 3 câu (câu theo sách do thư viện nhập), đánh dấu
+    "đọc cùng bố mẹ", <b>bố mẹ viết 1 dòng</b> cho con.</li>
+  <li>Không bắt buộc: tích <b>👀 Cho cô xem lần ghi này</b> nếu em muốn thầy cô đọc được.</li>
+  <li>Bấm <span class="nut">Lưu nhật ký</span>.</li>
+</ol>
+<div class="doi">
+  <figure><img src="anh/16-hs-ghi-nhanh.png"><figcaption>Hình 14. Ghi nhanh: trang, cảm xúc, 1 câu</figcaption></figure>
+  <figure><img src="anh/17-hs-tro-chuyen-bo-me.png"><figcaption>Hình 15. 5 phút trò chuyện, cho cô xem</figcaption></figure>
+</div>
+<p>Em sửa hoặc xoá được lần ghi trong <b>7 ngày</b> (mục <b>Nhật ký</b>). Bật / tắt "Cho cô xem" thì lúc nào cũng được.</p>
+
+<h2>4. Đọc xong và "thư gửi chính mình"</h2>
+<p>Ở trang chủ, dưới cuốn đang mượn, bấm <span class="nut">🎉 Em đọc xong rồi</span> (cần đã ghi ít nhất 1 lần nhật ký về cuốn đó).
+Em chọn mức thích, viết cảm nhận (không bắt buộc) và có thể viết <b>💌 thư gửi chính mình</b>: một lời nhắn cho em của 3 tháng sau.
+Khoảng <b>90 ngày</b> sau, trang chủ báo "Em có thư từ chính mình!" để em mở đọc. Thư và cảm nhận <b>chỉ em xem được</b>.
+Sau đó ứng dụng gợi ý 3 cuốn đọc tiếp, em đặt trước được luôn.</p>
+<div class="doi">
+  <figure><img src="anh/18-hs-doc-xong.png"><figcaption>Hình 16. Đọc xong: mức thích, thư gửi chính mình</figcaption></figure>
+  <figure><img src="anh/19-hs-chuc-mung.png"><figcaption>Hình 17. Chúc mừng em</figcaption></figure>
+</div>
+
+<h2>5. Nhìn lại năm đọc sách</h2>
+<p>Mục <b>Nhìn lại</b>: số cuốn đọc xong, số ngày ghi nhật ký, cảm xúc nhiều nhất, biểu đồ theo tháng, <b>kệ sách của em</b>.
+Bấm vào một cuốn để xem <b>hành trình cảm xúc</b>: dải biểu tượng cảm xúc đặt theo số trang, từ đầu đến cuối sách.
+Có nút <span class="nut">In sổ đọc sách</span> để in làm kỷ niệm / minh chứng.</p>
+<figure><img src="anh/20b-hs-hanh-trinh.png" style="width:70mm"><figcaption>Hình 18. Kệ sách của em và hành trình cảm xúc của 1 cuốn</figcaption></figure>
+
+<h2>6. Cài ứng dụng lên điện thoại</h2>
+<ul>
+  <li><b>Android (Chrome):</b> mở ứng dụng → bấm ⋮ → <b>Thêm vào màn hình chính</b> (hoặc <b>Cài đặt ứng dụng</b>).</li>
+  <li><b>iPhone (Safari):</b> mở ứng dụng → bấm nút <b>Chia sẻ</b> (ô vuông có mũi tên lên) → <b>Thêm vào MH chính</b>.</li>
+</ul>
+<p>Biểu tượng cuốn sách xanh hiện trên màn hình, mở như một ứng dụng thật. Mọi dữ liệu nằm trên máy chủ: đổi điện thoại không mất nhật ký.</p>
+
+<h1 class="ngat">V. Theo dõi lớp và quyền riêng tư của học sinh</h1>
+<p>Thủ thư vào <b>Lớp học</b>, chọn lớp. Giáo viên chủ nhiệm đăng nhập thẻ <b>Thầy cô</b> sẽ vào thẳng <b>Lớp của tôi</b> (chỉ lớp mình).
+Bảng chỉ có <b>con số</b> cho từng em: cây (số ngày ghi), tuần này mấy ngày, lần ghi gần nhất, số cuốn đọc xong trong năm học,
+số lần em cho cô xem. Em <b>7 ngày trở lên chưa ghi</b> được tô hồng để thầy cô nhắc nhẹ.</p>
+<figure><img src="anh/08-lop-hoc-co-so-lieu.png" style="width:150mm"><figcaption>Hình 19. Lớp học: chỉ có con số</figcaption></figure>
+<p>Bấm tên em để xem <b>Nhìn lại</b> của em đó (con số, cảm xúc, kệ sách) và <b>những lần em cho cô xem</b>.</p>
+<table>
+  <tr><th style="width:38%">Nội dung</th><th>Học sinh</th><th>GVCN lớp em</th><th>Thủ thư</th></tr>
+  <tr><td>Số ngày ghi, số sách, cảm xúc, cây, mốc</td><td>✓</td><td>✓</td><td>✓</td></tr>
+  <tr><td>Chữ em viết trong nhật ký</td><td>✓</td><td colspan="2" style="text-align:center">chỉ những lần em bấm "Cho cô xem"</td></tr>
+  <tr><td>Cảm nhận khi đọc xong, thư gửi chính mình</td><td>✓</td><td>—</td><td>—</td></tr>
+  <tr><td>Nhật ký của học sinh lớp khác</td><td>—</td><td>—</td><td>chỉ con số</td></tr>
+</table>
+<div class="luu-y"><b>Vì sao làm vậy:</b> trẻ biết cô đọc được thì sẽ viết cho cô xem, không viết thật lòng. Đây cũng là dữ liệu trẻ em nên
+càng ít người đọc càng an toàn. Thầy cô vẫn đủ thông tin để nhắc em chưa ghi và để thống kê cho sáng kiến.</div>
+<figure><div class="khung" style="width:150mm;height:120mm"><img src="anh/09-xem-mot-em.png"></div><figcaption>Hình 20. Xem 1 em: dòng nhắc quyền riêng tư</figcaption></figure>
+
+<h1 class="ngat">VI. Kế hoạch dùng thử (phiếu ghi kết quả)</h1>
+<p>Đề nghị cô dùng <b>lớp thử 3THU</b> (3 "Học sinh thử") để thử, cần 1 máy tính (thủ thư) và 1 điện thoại (học sinh).
+Đánh dấu ✓ ở cột "Được" hoặc ghi rõ ở cột "Ghi chú" nếu thấy khó dùng, báo sai hay chậm.</p>
+<table>
+  <tr><th style="width:6%">TT</th><th>Việc cần thử</th><th>Kết quả đúng</th><th class="o">Được</th><th style="width:22%">Ghi chú</th></tr>
+  <tr><td>1</td><td>Thêm cột Số trang, Câu hỏi vào tệp Excel cho 5–10 sách, nhập lại</td><td>Báo "cập nhật … sách"; mở sách thấy số trang, câu hỏi</td><td></td><td></td></tr>
+  <tr><td>2</td><td>Sửa 1 cuốn: thêm 2 câu hỏi</td><td>Lưu được</td><td></td><td></td></tr>
+  <tr><td>3</td><td>Lớp học → 3THU → Mã lớp &amp; PIN → Tạo PIN → In phiếu</td><td>Có phiếu cho 3 em, có QR</td><td></td><td></td></tr>
+  <tr><td>4</td><td>Điện thoại: quét QR trên phiếu, chọn tên, nhập PIN</td><td>Vào trang chủ học sinh</td><td></td><td></td></tr>
+  <tr><td>5</td><td>Cố ý nhập sai PIN 5 lần</td><td>Báo phải chờ đến giờ …</td><td></td><td></td></tr>
+  <tr><td>6</td><td>Máy tính: Đặt PIN mới cho em đó; điện thoại nhập PIN mới</td><td>Vào được ngay</td><td></td><td></td></tr>
+  <tr><td>7</td><td>Ghi nhật ký: kéo trang, cảm xúc, 1 câu, bấm Lưu (bấm giờ)</td><td>Dưới 30 giây; cây "đã tưới"</td><td></td><td></td></tr>
+  <tr><td>8</td><td>Ghi tiếp cuốn đó, mở 5 phút trò chuyện</td><td>Có câu hỏi riêng của sách; trang đặt sẵn lần trước</td><td></td><td></td></tr>
+  <tr><td>9</td><td>Ghi 1 lần có tích "Cho cô xem", 1 lần không tích</td><td>Thủ thư chỉ đọc được lần có tích</td><td></td><td></td></tr>
+  <tr><td>10</td><td>Thủ thư cho em mượn 1 cuốn; em bấm Đọc xong, viết thư gửi chính mình</td><td>Chúc mừng, gợi ý 3 cuốn đọc tiếp</td><td></td><td></td></tr>
+  <tr><td>11</td><td>Mở Nhìn lại, bấm vào cuốn vừa đọc</td><td>Thấy hành trình cảm xúc</td><td></td><td></td></tr>
+  <tr><td>12</td><td>Thoát; đăng nhập em thứ 2 trên cùng điện thoại</td><td>"Ai đang đọc sách?" hiện cả 2 em</td><td></td><td></td></tr>
+  <tr><td>13</td><td>Thêm ứng dụng vào màn hình chính điện thoại</td><td>Có biểu tượng, mở được</td><td></td><td></td></tr>
+  <tr><td>14</td><td>Lớp học → 3THU: xem bảng, bấm tên 1 em</td><td>Chỉ thấy con số và lần "cho cô xem"</td><td></td><td></td></tr>
+</table>
+<p><b>Góp ý thêm</b> (câu chữ có dễ hiểu với học sinh lớp 3 không? phiếu đăng nhập cần thêm gì? bố mẹ có dễ dùng không?):</p>
+<p style="line-height:2">…………………………………………………………………………………………………………………………<br>
+…………………………………………………………………………………………………………………………<br>
+…………………………………………………………………………………………………………………………</p>
+
+<h1>VII. Khi gặp sự cố</h1>
+<ul>
+  <li><b>Học sinh không vào được bằng PIN:</b> kiểm tra đúng mã lớp (mã không có số 0, chữ O, số 1, chữ I, chữ L). Vẫn không được → <b>Đặt PIN mới</b>.</li>
+  <li><b>Màn hình báo phải chờ:</b> em đã nhập sai nhiều lần. Đặt PIN mới để mở khoá ngay.</li>
+  <li><b>Lần mở đầu tiên trong ngày hơi chậm (vài giây):</b> máy chủ miễn phí "ngủ" khi không ai dùng. Bình thường.</li>
+  <li><b>Thấy sai hoặc lỗi:</b> chụp màn hình, ghi lại vừa bấm gì, gửi cho thầy Phương (Zalo).</li>
+  <li><b>Dữ liệu dùng thử:</b> nhật ký, lượt mượn và PIN của <b>lớp thử 3THU</b> có thể bị xoá khi thầy Phương chạy kiểm tra tự động.
+    Nếu PIN thử không vào được, cứ <b>Đặt PIN mới</b>. Danh mục sách thật được giữ lại dùng chính thức.</li>
+</ul>
+
+</body>
+</html>
