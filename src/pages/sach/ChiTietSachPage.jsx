@@ -9,6 +9,7 @@ import { laNhanVien } from '../../domain/taiKhoan'
 import { chuKhoi } from '../../domain/danhMuc'
 import BiaSach from '../../components/sach/BiaSach'
 import KhungDatTruoc from '../../components/muonTra/KhungDatTruoc'
+import CacBanNoiGi from '../../components/review/CacBanNoiGi'
 
 const SuaSachModal = lazy(() => import('../../components/sach/SuaSachModal'))
 
@@ -68,6 +69,8 @@ export default function ChiTietSachPage() {
           <KhungDatTruoc key={sach.so_ban} sachId={sach.id} laHocSinh={hoSo?.vai_tro === 'hoc_sinh'} />
         </div>
       </article>
+
+      <CacBanNoiGi key={sach.id} sachId={sach.id} laHocSinh={hoSo?.vai_tro === 'hoc_sinh'} laNhanVien={nv} />
 
       <Suspense fallback={null}>
         {sua && <SuaSachModal sach={sach} chuDe={chuDe} onDong={(moi, daXoa) => {

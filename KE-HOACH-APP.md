@@ -166,8 +166,17 @@ So sánh cũ / mới đã trình thầy; thầy đồng ý theo đề xuất c�
   **5 phút trò chuyện** + **bố mẹ viết 1 dòng**; **Góc bố mẹ** (tổng kết tuần) trong tài khoản con — chưa tạo tài khoản phụ huynh.
 - **PWA** (thêm vào màn hình chính). Khối 3–5.
 - Đợt sau: **đăng nhập mã lớp + chọn tên + PIN** (máy nhớ nhiều con, khoá sau 5 lần sai, QR lớp); review bạn bè (thủ thư duyệt,
-  chỉ hiện số "X bạn lớp Y đã đọc"); hộ chiếu thể loại (8–10 thể loại); thử thách lớp **theo số ngày ghi**, không theo trang;
+  chỉ hiện số "X bạn lớp Y đã đọc") — **đã làm 19/11**, xem dưới; hộ chiếu thể loại (8–10 thể loại); thử thách lớp **theo số ngày ghi**, không theo trang;
   thống kê. **Hoãn:** ghi âm (dữ liệu trẻ em, ~5 GB/năm), nhắc giờ bằng thông báo đẩy. Khảo sát phụ huynh: Google Forms.
+
+### Review bạn bè — thầy duyệt 19/11/2026 (đã làm, `sql/2026-11-19_review.sql`)
+- Em **đã đọc xong** mới viết "Giới thiệu sách cho bạn" (10–300 ký tự): ở hộp "Em đọc xong rồi" hoặc trang cuốn sách. Tách riêng
+  cảm nhận / thư (chỉ em xem). Mỗi em 1 bài / cuốn; tối đa 5 bài viết mới / ngày.
+- Tên hiện "Lan N.T. – lớp 3A"; em chọn **Ẩn tên** → "Một bạn lớp 3A" (máy chủ không gửi tên).
+- Thủ thư duyệt ở thẻ **Review chờ duyệt** (trang Mượn – trả): Duyệt / Không duyệt + lý do (chưa phù hợp / quá ngắn / lộ thông tin
+  cá nhân) — em thấy lý do ở trang sách. Em sửa → duyệt lại; em xoá lúc nào cũng được; thủ thư gỡ được bài đã duyệt.
+- Trang sách: mục "Các bạn nói gì" (bài đã duyệt, mới nhất trước) + "X bạn đã đọc · Y bạn lớp em" (chỉ con số).
+- Không thưởng / mốc cho việc viết. GVCN chỉ xem bài đã duyệt, không duyệt. Chỉ người đã đăng nhập xem được.
 
 ## 10. Thiết kế chức năng người dùng — thầy chốt 17/11/2026 (thay phần tương ứng ở mục 1, 5, 6)
 

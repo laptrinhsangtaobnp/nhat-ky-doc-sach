@@ -4,6 +4,24 @@ Ghi mới nhất ở trên. Mỗi phiên thêm 1 mục: đã làm, kiểm tra g�
 
 ---
 
+## 19/11/2026 (tối) — Review bạn bè
+
+### Đã làm
+- Thầy duyệt thiết kế (KE-HOACH-APP.md mục 11, "Review bạn bè"). `sql/2026-11-19_review.sql` đã chạy Neon 3 lần.
+  Bảng `review` không cấp quyền cho ai, mọi việc qua 5 hàm (`viet_review`, `xoa_review`, `review_cua_sach`, `review_cho_duyet`, `duyet_review`).
+- Giao diện: ô "Giới thiệu sách cho bạn" trong hộp Đọc xong; mục "Các bạn nói gì" ở trang sách (`components/review/`);
+  thẻ "Review chờ duyệt" thứ 5 trên trang Mượn – trả. Hook `useReviewSach`, `useReviewChoDuyet`; domain `review.js` (có test).
+- Kiểm tra: `npm test` 58/58 · `npm run test:quyen` 47/47 (`review.test.js` 7: người lạ, HS, GVCN, thủ thư; gọi thẳng bảng bị chặn;
+  duyệt sai bản bị chặn; ẩn tên không lộ tên) · eslint sạch · build OK. Thử Chrome (390px + 1100px): HS1 viết → thủ thư duyệt →
+  HS2 thấy bài. Dữ liệu thử đã dọn (review / nhat_ky / doc_xong = 0).
+- Lần này hàm mới gọi được ngay qua Data API **không cần** Refresh schema cache (đã đo bằng test thật). Vẫn nhắc thầy bấm nếu gặp lỗi PGRST.
+- **Chưa commit / đẩy.**
+
+### Còn dở
+- [ ] Hộ chiếu thể loại, thử thách lớp theo số ngày ghi, thống kê sáng kiến. Hướng dẫn thủ thư: thêm phần duyệt review.
+
+---
+
 ## 19/11/2026 — Đặc tả mới: cây đọc sách, ghi nhanh, riêng tư, thư gửi chính mình, Góc bố mẹ, PWA
 
 ### Trạng thái
@@ -37,8 +55,8 @@ Ghi mới nhất ở trên. Mỗi phiên thêm 1 mục: đã làm, kiểm tra g�
 - **Link thật có "Vercel Security Checkpoint" (chống bot)** → curl / Chrome tự động không vào được; phải nhờ thầy mở bằng điện thoại để kiểm.
 
 ### Còn dở
-- [ ] Nhập số trang / câu hỏi theo sách bằng Excel (hiện chỉ sửa từng cuốn).
-- [ ] Review bạn bè (thủ thư duyệt), hộ chiếu thể loại, thử thách lớp theo số ngày ghi, thống kê. Hoãn: ghi âm, nhắc giờ.
+- [x] Nhập số trang / câu hỏi theo sách bằng Excel.
+- [ ] ~~Review bạn bè~~ (xong tối 19/11), hộ chiếu thể loại, thử thách lớp theo số ngày ghi, thống kê. Hoãn: ghi âm, nhắc giờ.
 
 ---
 

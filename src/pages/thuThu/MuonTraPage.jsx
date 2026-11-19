@@ -1,10 +1,13 @@
-// Mượn – trả (trang chủ thủ thư / quản trị): Cần soạn → Chờ em đến nhận → Đang mượn → Lịch sử; cho mượn tại chỗ; quy tắc mượn.
+// Mượn – trả (trang chủ thủ thư / quản trị): Cần soạn → Chờ em đến nhận → Đang mượn → Lịch sử → Review chờ duyệt;
+// cho mượn tại chỗ; quy tắc mượn.
 // Nút chỉ để hiển thị — mọi thay đổi trạng thái qua hàm máy chủ có kiểm vai trò.
 import { lazy, Suspense, useState } from 'react'
 import { BookUp, RefreshCw, Search, Settings2 } from 'lucide-react'
 import { useMuonTra } from '../../hooks/useMuonTra'
 import { ngayVN } from '../../domain/ngay'
 import DongMuon from '../../components/muonTra/DongMuon'
+import ReviewChoDuyet from '../../components/review/ReviewChoDuyet'
+import { useReviewChoDuyet } from '../../hooks/useReviewChoDuyet'
 
 const ChoMuonTaiChoModal = lazy(() => import('../../components/muonTra/ChoMuonTaiChoModal'))
 const QuyTacMuonModal = lazy(() => import('../../components/muonTra/QuyTacMuonModal'))
@@ -25,6 +28,8 @@ const TRONG = {
 
 export default function MuonTraPage() {
   const mt = useMuonTra()
+  const rv = useReviewChoDuyet()
+  const [xemReview, setXemReview] = useState(false)
   const [mo, setMo] = useState(null)            // 'tai_cho' | 'quy_tac' | null
   const homNay = ngayVN()
 
@@ -38,17 +43,17 @@ export default function MuonTraPage() {
         <button onClick={() => setMo('quy_tac')} className="flex items-center gap-1.5 rounded-lg border border-stone-300 bg-white px-3 py-2 text-sm hover:bg-stone-50">
           <Settings2 size={16} aria-hidden /> Quy tắc mượn
         </button>
-        <button onClick={mt.taiLai} className="flex items-center gap-1.5 rounded-lg border border-stone-300 bg-white px-3 py-2 text-sm hover:bg-stone-50">
+        <button onClick={() => { mt.taiLai(); rv.taiLai() }} className="flex items-center gap-1.5 rounded-lg border border-stone-300 bg-white px-3 py-2 text-sm hover:bg-stone-50">
           <RefreshCw size={16} aria-hidden /> Làm mới
         </button>
       </div>
 
-      <div className="grid grid-cols-2 gap-2 sm:grid-cols-4" role="tablist">
+      <div className="grid grid-cols-2 gap-2 sm:grid-cols-5" role="tablist">
         {THE.map(t => {
-          const chon = mt.loai === t.loai
+          const chon = !xemReview && mt.loai === t.loai
           const cb = mt.dem && t.canhBao?.(mt.dem)
           return (
-            <button key={t.loai} role="tab" aria-selected={chon} onClick={() => mt.datLoai(t.loai)}
+            <button key={t.loai} role="tab" aria-selected={chon} onClick={() => { setXemReview(false); mt.datLoai(t.loai) }}
               className={`rounded-xl border p-3 text-left ${chon ? 'border-emerald-500 bg-emerald-50' : 'border-stone-200 bg-white hover:bg-stone-50'}`}>
               <span className="block text-sm text-stone-600">{t.ten}</span>
               {t.so ? <span className="text-2xl font-bold">{mt.dem ? t.so(mt.dem) : '…'}</span> : <span className="text-sm text-stone-500">Lượt đã trả / huỷ</span>}
@@ -56,7 +61,14 @@ export default function MuonTraPage() {
             </button>
           )
         })}
+        <button role="tab" aria-selected={xemReview} onClick={() => setXemReview(true)}
+          className={`rounded-xl border p-3 text-left ${xemReview ? 'border-sky-500 bg-sky-50' : 'border-stone-200 bg-white hover:bg-stone-50'}`}>
+          <span className="block text-sm text-stone-600">Review chờ duyệt</span>
+          <span className="text-2xl font-bold">{rv.kq ? rv.kq.so : '…'}</span>
+        </button>
       </div>
+
+      {xemReview ? <ReviewChoDuyet rv={rv} /> : <>
 
       <label className="relative block">
         <Search size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-stone-400" aria-hidden />
@@ -79,6 +91,7 @@ export default function MuonTraPage() {
           </button>
         </div>
       )}
+      </>}
 
       <Suspense fallback={null}>
         {mo === 'tai_cho' && <ChoMuonTaiChoModal onDong={daMuon => { setMo(null); if (daMuon) mt.taiLai() }} />}
